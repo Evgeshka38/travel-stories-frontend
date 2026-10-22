@@ -1,0 +1,19 @@
+.routeList {
+  padding-left: 40px;
+  /* outline: 1px solid black; */
+}
+
+.routeItem {
+  padding-top: 20px;
+}
+.routePageName {
+  /* padding-left: 40px; */
+}
+
+.componentName {
+  padding-left: 40px;
+}
+.innerRoutesContainer {
+  /* padding-left: 40px; */
+  border-left: 1px solid black;
+}
