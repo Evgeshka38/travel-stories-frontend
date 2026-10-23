@@ -179,7 +179,7 @@ export default function StructurePageClient() {
     'TravellersStories',
     'TravellersStoriesItem',
     'TravellersList',
-    'TarvellerInfo',
+    'TravellerInfo',
     'MessageNoStories',
     'AuthFooter',
     'Footer',

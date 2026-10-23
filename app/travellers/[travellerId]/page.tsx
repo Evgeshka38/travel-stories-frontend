@@ -7,16 +7,16 @@ export const metadata: Metadata = {
 };
 
 type Props = {
-  params: Promise<{ id: string }>;
+  params: Promise<{ travellerId: string }>;
 };
 
 export default async function TravellerPage({ params }: Props) {
-  const { id } = await params;
-  console.log(id);
+  const { travellerId } = await params;
+
   return (
     <div className={css.page}>
       <main className={css.main}>
-        <TravellerPageClient />
+        <TravellerPageClient travellerId={travellerId} />
       </main>
     </div>
   );

@@ -15,13 +15,14 @@ export default async function HomePage() {
   const queryClient = new QueryClient();
 
   await Promise.all([
-    queryClient
-      .query({ queryKey: ['test1'], queryFn: () => 'test1' })
-      .catch((error) => console.log(error)),
-    queryClient
-      .query({ queryKey: ['test2'], queryFn: () => 'test2' })
-      .catch((error) => console.log(error)),
-    ,
+    queryClient.prefetchQuery({
+      queryKey: ['test1'],
+      queryFn: async () => 'test1',
+    }),
+    queryClient.prefetchQuery({
+      queryKey: ['test2'],
+      queryFn: async () => 'test2',
+    }),
   ]);
 
   return (

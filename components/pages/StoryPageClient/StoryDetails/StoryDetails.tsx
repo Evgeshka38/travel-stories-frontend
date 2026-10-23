@@ -1,11 +1,13 @@
-import { useParams } from 'next/navigation';
 import css from './StoryDetails.module.css';
 
-export default function StoryDetails() {
-  const { id } = useParams<{ id: string }>();
+type Props = {
+  storyId: string;
+};
+
+export default function StoryDetails({ storyId }: Props) {
   return (
     <div className={css.container}>
-      <h2>{`StoryDetails id: ${id}`}</h2>
+      <h2>{`StoryDetails id: ${storyId}`}</h2>
     </div>
   );
 }

@@ -6,7 +6,6 @@ export default function AuthFooter() {
       <footer className={css.footer}>
         <h2>AuthFooter</h2>
       </footer>
-      ;
     </div>
   );
 }

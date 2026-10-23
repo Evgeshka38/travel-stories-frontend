@@ -12,11 +12,11 @@ type Props = {
 
 export default async function EditStoryPage({ params }: Props) {
   const { id } = await params;
-  console.log(id);
+
   return (
     <div className={css.page}>
       <main className={css.main}>
-        <EditStoryPageClient />
+        <EditStoryPageClient storyId={id} />
       </main>
     </div>
   );

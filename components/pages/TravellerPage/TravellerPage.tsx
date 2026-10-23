@@ -1,17 +1,19 @@
 'use client';
 
-import { useParams } from 'next/navigation';
-import css from './TravellerPageClient.module.css';
-import TarvellerInfo from '@/components/common/TarvellerInfo/TarvellerInfo';
+import css from './TravellerPage.module.css';
+import TravellerInfo from '@/components/common/TravellerInfo/TravellerInfo';
 import TravellersStories from '@/components/common/TravellersStories/TravellersStories';
 import MessageNoStories from '@/components/common/MessageNoStories/MessageNoStories';
 
-export default function TravellerPageClient() {
-  const { id } = useParams<{ id: string }>();
+type Props = {
+  travellerId: string;
+};
+
+export default function TravellerPageClient({ travellerId }: Props) {
   return (
     <div className={css.container}>
-      <h1 style={{ color: 'red' }}>{`TravellerPageClient id: ${id}`}</h1>
-      <TarvellerInfo />
+      <h1>{`Traveller profile: ${travellerId}`}</h1>
+      <TravellerInfo />
       <TravellersStories />
       <MessageNoStories />
     </div>

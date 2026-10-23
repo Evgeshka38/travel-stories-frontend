@@ -7,16 +7,16 @@ export const metadata: Metadata = {
 };
 
 type Props = {
-  params: Promise<{ authPage: string }>;
+  params: Promise<{ authType: string }>;
 };
 
 export default async function AuthPage({ params }: Props) {
-  const { authPage } = await params;
-  console.log(authPage);
+  const { authType } = await params;
+
   return (
     <div className={css.page}>
       <main className={css.main}>
-        <AuthPageClient />
+        <AuthPageClient authType={authType} />
       </main>
     </div>
   );
