@@ -53,12 +53,12 @@ export default function RegistrationForm() {
           <Form className={css.form}>
             {/* Поле: Ім’я та Прізвище */}
             <label className={css.label}>
-              <span className={css.labelTitle}>Ім’я та Прізвище*</span>
+              <span className={css.labelTitle}>Ім&#39;я та Прізвище*</span>
               <Field
                 className={css.input}
                 type="text"
                 name="name"
-                placeholder="Ваше ім’я та прізвище"
+                placeholder="Ваше ім&#39;я та прізвище"
               />
               <ErrorMessage
                 name="name"

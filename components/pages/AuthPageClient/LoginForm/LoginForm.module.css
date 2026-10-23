@@ -11,16 +11,16 @@
 @media only screen and (min-width: 768px) {
   .container {
     max-width: 768px;
-    padding-left: 32px;
-    padding-right: 32px;
+    padding-left: 62px;
+    padding-right: 62px;
   }
 }
 /* Styles for Desktop devices */
 @media only screen and (min-width: 1440px) {
   .container {
     max-width: 1440px;
-    padding-left: 334px;
-    padding-right: 334px;
+    padding-left: 398px;
+    padding-right: 398px;
   }
 }
 .label {
@@ -41,6 +41,12 @@
   text-align: center;
   color: #000;
   margin-bottom: 24px;
+  @media only screen and (min-width: 768px) {
+    font-size: 44px;
+  }
+  @media only screen and (min-width: 1440px) {
+    font-size: 52px;
+  }
 }
 .subtitle {
   font-family: 'Nunito Sans', sans-serif;
@@ -50,6 +56,9 @@
   text-align: center;
   color: #000;
   margin-bottom: 32px;
+  @media only screen and (min-width: 1440px) {
+    font-size: 20px;
+  }
 }
 .form {
   display: flex;
@@ -63,6 +72,9 @@
   line-height: 1.5;
   color: #000;
   margin-bottom: 8px;
+  @media only screen and (min-width: 1440px) {
+    font-size: 18px;
+  }
 }
 .input {
   display: block;
@@ -101,6 +113,9 @@
   transition:
     color,
     background-color 0.3s ease;
+  @media only screen and (min-width: 1440px) {
+    font-size: 18px;
+  }
 }
 .submitBtn:hover,
 .submitBtn:focus {
