@@ -26,6 +26,7 @@ const socialLinks = [
 ];
 
 export default function Footer() {
+  const currentYear = new Date().getFullYear();
   return (
     <footer className={css.footer}>
       <div className={css.container}>
@@ -66,7 +67,7 @@ export default function Footer() {
         <div className={css.divider} />
 
         <p className={css.copyright}>
-          © 2025 Подорожники. Усі права захищені.
+          © {currentYear} Подорожники. Усі права захищені.
         </p>
       </div>
     </footer>
