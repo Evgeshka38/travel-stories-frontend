@@ -1,0 +1,87 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.modal {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  padding: 32px 24px;
+  background-color: #fff;
+  border-radius: 16px;
+  text-align: center;
+}
+
+.closeButton {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #171717;
+}
+
+.closeIcon {
+  fill: currentColor;
+}
+
+.closeButton:hover {
+  color: #666;
+}
+
+.title {
+  margin-block-end: 8px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #171717;
+}
+
+.text {
+  margin-block-end: 24px;
+  color: #666;
+}
+
+.buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.confirmButton,
+.cancelButton {
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+}
+
+.confirmButton {
+  background-color: #1b2330;
+  color: #fff;
+}
+
+.cancelButton {
+  background-color: transparent;
+  border: 1px solid #ccc;
+  color: #171717;
+}
+
+.confirmButton:hover,
+.cancelButton:hover {
+  opacity: 0.8;
+}
