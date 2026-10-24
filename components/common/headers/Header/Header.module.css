@@ -1,16 +1,78 @@
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 24px;
-  padding: 12px;
-  border-block-end: 1px solid #ccc;
+.template {
+   @media screen and (min-width: 320px) and (max-width: 374) {
+   }
+   @media screen and (min-width: 375px) {
+   }
+   @media screen and (min-width: 768px) {
+   }
+   @media screen and (min-width: 1440px) {
+   }
 }
 
-.navigationList {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 12px;
-  list-style-type: none;
+.container {
+   --color-background: transparent;
+   --padding-mobile: 0 20px;
+   --padding-tablet: 0 32px;
+   --padding-desktop: 0 64px;
+
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+
+   height: 72px;
+   max-width: 375px;
+   padding: 0 20px;
+
+   background-color: transparent;
+
+   @media screen and (min-width: 320px) and (max-width: 374) {
+   }
+
+   @media screen and (min-width: 375px) {
+      max-width: 768px;
+   }
+
+   @media screen and (min-width: 768px) {
+      max-width: 1440px;
+      padding: 0 32px;
+   }
+
+   @media screen and (min-width: 1440px) {
+      padding: 0 64px;
+   }
+}
+
+.header {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+
+   @media screen and (min-width: 768px) {
+   }
+   @media screen and (min-width: 1440px) {
+   }
+}
+
+.logoLink {
+}
+.logoIcon {
+}
+.logoText {
+}
+.menuControls {
+}
+.storyPublicBtn {
+}
+.menuBtn {
+}
+.menu {
+}
+.navigation {
+}
+.authControls {
+}
+.userControls {
+}
+.storyUserBtn {
 }
