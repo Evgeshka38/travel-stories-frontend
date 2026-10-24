@@ -46,6 +46,7 @@ export default function RegistrationForm() {
       toast.success('Реєстрація успішна!');
       actions.resetForm();
       router.push('/');
+      router.refresh();
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const message = error.response?.data?.message;
