@@ -1,6 +1,7 @@
 import AuthPageClient from '@/components/pages/AuthPageClient/AuthPageClient';
 import css from './AuthPage.module.css';
 import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 
 export const metadata: Metadata = {
   title: 'AuthPage',
