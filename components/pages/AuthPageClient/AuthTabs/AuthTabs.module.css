@@ -1,0 +1,46 @@
+/* Styles for Mobile devices */
+.container {
+  max-width: 375px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 20px;
+  padding-right: 20px;
+  @media only screen and (min-width: 768px) {
+    max-width: 768px;
+    padding-left: 62px;
+    padding-right: 62px;
+  }
+  @media only screen and (min-width: 1440px) {
+    max-width: 1440px;
+    padding-left: 398px;
+    padding-right: 398px;
+  }
+}
+.section {
+  padding: 64px 0 0 0;
+}
+.authTabs {
+  display: flex;
+  margin-bottom: 32px;
+  width: 100%;
+}
+.authTabRegister,
+.authTabLogin {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 16px;
+  font-family: 'Nunito Sans', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #000;
+  border-bottom: 1px solid transparent;
+  @media only screen and (min-width: 1440px) {
+    font-size: 18px;
+  }
+}
+.active {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+}

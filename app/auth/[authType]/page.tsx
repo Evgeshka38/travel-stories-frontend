@@ -14,6 +14,9 @@ type Props = {
 
 export default async function AuthPage({ params }: Props) {
   const { authType } = await params;
+  if (authType !== 'register' && authType !== 'login') {
+    notFound();
+  }
 
   if (authType !== 'register' && authType !== 'login') {
     notFound();
