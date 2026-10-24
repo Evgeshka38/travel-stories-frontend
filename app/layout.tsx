@@ -4,6 +4,7 @@ import './globals.css';
 import Header from '@/components/common/headers/Header/Header';
 import AppFooter from '@/components/common/footers/AppFooter/AppFooter';
 import TanStackProvider from '@/components/providers/TanStackProvider/TanStackProvider';
+import { Toaster } from 'react-hot-toast';
 
 const inter = Inter({
   variable: '--font-inter',
@@ -32,6 +33,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
           <Header />
           {children}
           <AppFooter />
+          <Toaster position="top-right" />
         </TanStackProvider>
       </body>
     </html>

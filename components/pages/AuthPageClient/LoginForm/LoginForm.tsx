@@ -1,10 +1,11 @@
 'use client';
 import css from './LoginForm.module.css';
-import Link from 'next/link';
 import * as Yup from 'yup';
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import toast from 'react-hot-toast';
+import { login } from '@/lib/api/clientApi';
 
 interface LoginValues {
   email: string;
@@ -28,10 +29,23 @@ const initialValues: LoginValues = {
 export default function LoginForm() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const handleSubmit = (
+  const handleSubmit = async (
     values: LoginValues,
     actions: FormikHelpers<LoginValues>,
-  ) => {};
+  ) => {
+    setIsLoading(true);
+    try {
+      await login(values);
+      toast.success('Ви успішно увійшли!');
+      router.push('/');
+      router.refresh();
+    } catch {
+      toast.error('Не вдалося увійти. Перевірте email і пароль.');
+    } finally {
+      setIsLoading(false);
+      actions.setSubmitting(false);
+    }
+  };
   return (
     <section className={css.section}>
       <div className={css.container}>
@@ -44,7 +58,6 @@ export default function LoginForm() {
           onSubmit={handleSubmit}
         >
           <Form className={css.form}>
-            {/* Поле: Пошта */}
             <label className={css.label}>
               <span className={css.labelTitle}>Пошта*</span>
               <Field
@@ -60,7 +73,6 @@ export default function LoginForm() {
               />
             </label>
 
-            {/* Поле: Пароль */}
             <label className={css.label}>
               <span className={css.labelTitle}>Пароль*</span>
               <Field
@@ -76,9 +88,12 @@ export default function LoginForm() {
               />
             </label>
 
-            {/* Кнопка відправки */}
-            <button type="submit" className={css.submitBtn}>
-              Увійти
+            <button
+              type="submit"
+              className={css.submitBtn}
+              disabled={isLoading}
+            >
+              {isLoading ? 'Вхід...' : 'Увійти'}
             </button>
           </Form>
         </Formik>
