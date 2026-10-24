@@ -1,6 +1,8 @@
 import AuthPageClient from '@/components/pages/AuthPageClient/AuthPageClient';
+import AuthFooter from '@/components/common/footers/AuthFooter/AuthFooter';
 import css from './AuthPage.module.css';
 import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 
 export const metadata: Metadata = {
   title: 'AuthPage',
@@ -13,11 +15,17 @@ type Props = {
 export default async function AuthPage({ params }: Props) {
   const { authType } = await params;
 
+  if (authType !== 'register' && authType !== 'login') {
+    notFound();
+  }
+
   return (
     <div className={css.page}>
       <main className={css.main}>
         <AuthPageClient authType={authType} />
       </main>
+
+      <AuthFooter />
     </div>
   );
 }
