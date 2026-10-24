@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/common/headers/Header/Header';
-import Footer from '@/components/common/footers/Footer/Footer';
+import AppFooter from '@/components/common/footers/AppFooter/AppFooter';
 import TanStackProvider from '@/components/providers/TanStackProvider/TanStackProvider';
 
 const geistSans = Geist({
@@ -27,7 +27,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
         <TanStackProvider>
           <Header />
           {children}
-          <Footer />
+          <AppFooter />
         </TanStackProvider>
       </body>
     </html>
