@@ -1,0 +1,4 @@
+.decorationDot::after {
+  /* todo? set content to none and use bg color and border radius */
+  content: '•';
+}
