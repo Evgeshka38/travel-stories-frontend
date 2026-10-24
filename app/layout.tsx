@@ -1,18 +1,22 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Inter, Nunito_Sans } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/common/headers/Header/Header';
 import AppFooter from '@/components/common/footers/AppFooter/AppFooter';
 import TanStackProvider from '@/components/providers/TanStackProvider/TanStackProvider';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
+const inter = Inter({
+  variable: '--font-inter',
+  subsets: ['latin', 'cyrillic'],
+  weight: ['700'],
+  display: 'swap',
 });
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
+const nunitoSans = Nunito_Sans({
+  variable: '--font-nunito-sans',
+  subsets: ['latin', 'cyrillic'],
+  weight: ['400', '500', '600', '700'],
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
@@ -22,7 +26,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
-    <html lang="uk" className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html lang="uk" className={`${inter.variable} ${nunitoSans.variable}`}>
       <body>
         <TanStackProvider>
           <Header />
