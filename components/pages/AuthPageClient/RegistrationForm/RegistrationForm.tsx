@@ -3,10 +3,11 @@ import css from './RegistrationForm.module.css';
 import * as Yup from 'yup';
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { register } from '@/lib/api/clientApi';
 import toast from 'react-hot-toast';
 import axios from 'axios';
+import SessionDraft from '@/components/common/SessionDraft/SessionDraft';
 
 interface RegisterValues {
   name: string;
@@ -27,7 +28,8 @@ const registerSchema = Yup.object().shape({
     .max(64, 'Занадто довгий пароль')
     .required('Обов’язкове поле'),
 });
-const initialValues: RegisterValues = {
+
+const defaultValues: RegisterValues = {
   name: '',
   email: '',
   password: '',
@@ -35,6 +37,33 @@ const initialValues: RegisterValues = {
 export default function RegistrationForm() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+
+  const [initialValues, setInitialValues] = useState(defaultValues);
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    const savedDraft = sessionStorage.getItem('register-draft');
+
+    if (savedDraft) {
+      try {
+        const draft = JSON.parse(savedDraft);
+
+        setInitialValues({
+          ...defaultValues,
+          name: draft.name ?? '',
+          email: draft.email ?? '',
+          password: '',
+        });
+      } catch {
+        sessionStorage.removeItem('register-draft');
+      }
+    }
+
+    setIsReady(true);
+  }, []);
+
+  if (!isReady) return null;
+
   const handleSubmit = async (
     values: RegisterValues,
     actions: FormikHelpers<RegisterValues>,
@@ -43,6 +72,7 @@ export default function RegistrationForm() {
 
     try {
       await register(values);
+      sessionStorage.removeItem('register-draft');
       toast.success('Реєстрація успішна!');
       actions.resetForm();
       router.push('/');
@@ -78,6 +108,10 @@ export default function RegistrationForm() {
           validateOnMount={false}
         >
           <Form className={css.form}>
+            <SessionDraft
+              storageKey="register-draft"
+              fields={['name', 'email']}
+            />
             <label className={css.label}>
               <span className={css.labelTitle}>Ім&#39;я та Прізвище*</span>
               <Field
