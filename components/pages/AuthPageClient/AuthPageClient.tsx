@@ -10,7 +10,6 @@ type Props = {
 };
 
 export default function AuthPageClient({ authType }: Props) {
-  
   return (
     <div className={css.container}>
       <AuthTabs authType={authType} />

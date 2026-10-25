@@ -16,8 +16,7 @@
     padding-right: 398px;
   }
 }
-
-.label {
+q .label {
   display: flex;
   flex-direction: column;
   position: relative;
