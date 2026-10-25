@@ -1,4 +1,141 @@
+.container {
+  max-width: 335px;
+  border-radius: 16px;
+  overflow: hidden;
+
+  background: var(--color-scheme-2-foreground);
+}
+
+.image {
+  width: 335px;
+  height: 223px;
+  object-fit: cover;
+}
+
+.infoContainer {
+  padding: 24px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.mainText {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.category {
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--color-neutral-darkest);
+}
+
+.title {
+  font-weight: 700;
+  font-size: 18px;
+
+  /* todo: note: limit lines not well supported but its how it is done in the design */
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  color: var(--color-scheme-1-text);
+}
+
+.description {
+  /* todo: note: limit lines fallback */
+  height: 72px;
+  overflow: hidden;
+  /* `text-overflow: ellipsis;` works if  `white-space: wrap;` */
+
+  /* todo: note: limit lines not well supported but its how it is done in the design */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+
+  color: var(--color-scheme-1-text);
+}
+
+.details {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 16px;
+}
+
+.authorImage {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+
+.detailsRight {
+}
+
+.authorName {
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--color-scheme-1-text);
+}
+
+.detailsLine {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 8px;
+}
+
+.date {
+  font-size: 12px;
+  color: var(--color-scheme-1-text);
+}
+
 .decorationDot::after {
   /* todo? set content to none and use bg color and border radius */
   content: '•';
+}
+
+.favoriteWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: row;
+  gap: 2px;
+}
+
+.favoriteCount {
+  font-size: 12px;
+  color: var(--color-scheme-1-text);
+}
+.actions {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.button {
+  padding: 12px 6px;
+  border: none;
+  border-radius: 8px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: var(--opacity-neutral-darkest-5);
+  outline: 1px solid var(--color-scheme-2-border);
+
+  font-family: var(--font-family);
+  font-weight: 500;
+  color: var(--color-neutral-darkest);
+}
+
+.buttonWide {
+  flex: 1;
+}
+
+.buttonSquare {
+  padding: 12px;
 }
