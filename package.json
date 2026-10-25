@@ -17,6 +17,7 @@
     "next": "16.4.2",
     "react": "19.3.0",
     "react-dom": "19.3.0",
+    "react-hot-toast": "^2.6.1",
     "yup": "^1.7.1"
   },
   "devDependencies": {
