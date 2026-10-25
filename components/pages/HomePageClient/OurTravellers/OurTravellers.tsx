@@ -46,17 +46,15 @@ export default function OurTravellers({ travellers = MOCK_TRAVELLERS }: OurTrave
   return (
     <section className={css.section}>
       <div className={css.container}>
-        {/* Section Header / Title */}
+
         <div className={css.sectionHeader}>
           <h2 className={css.sectionTitle}>Наші Мандрівники</h2>
         </div>
 
-        {/* Content Container (список + кнопка внизу) e8eeff */}
         <div className={css.contentContainer}>
           <ul className={css.list}>
             {displayedTravellers.map((traveller) => (
               <li key={traveller._id} className={css.travellerCard}>
-                {/* Placeholder Image */}
                 <div className={css.placeholderImage}>
                   <Image
                     src={traveller.avatarUrl}
@@ -67,7 +65,6 @@ export default function OurTravellers({ travellers = MOCK_TRAVELLERS }: OurTrave
                   />
                 </div>
 
-                {/* Card Content */}
                 <div className={css.cardContent}>
                   <h3 className={css.title}>{traveller.name}</h3>
                   <p className={css.text}>{traveller.description}</p>
@@ -80,7 +77,6 @@ export default function OurTravellers({ travellers = MOCK_TRAVELLERS }: OurTrave
           </ul>
         </div>
         
-        {/* Bottom Navigation Button */}
           <div className={css.buttonWrapper}>
             <Link href="/travellers" className={css.viewAllButton}>
               Переглянути всіх
