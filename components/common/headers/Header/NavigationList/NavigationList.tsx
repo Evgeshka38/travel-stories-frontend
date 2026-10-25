@@ -1,19 +1,19 @@
 import Link from 'next/link';
 import css from './NavigationList.module.css';
 
-export default function NavigationList() {
+interface NavigationListProps {
+   navItems: string[];
+}
+export default function NavigationList({ navItems }: NavigationListProps) {
    return (
-      <ul className={css.navigationList}>
-         <li className={css.navigationItem}>
-            <Link className={css.navigationLink} href="/">
-               Home
-            </Link>
-         </li>
-         <li className={css.navigationItem}>
-            <Link className={css.navigationLink} href="/stories">
-               Stories
-            </Link>
-         </li>
+      <ul className={css.navList}>
+         {navItems.map((item) => (
+            <li key={item} className={css.navItem}>
+               <Link className={css.navLink} href="/">
+                  <p className={css.navLinkText}>{item}</p>
+               </Link>
+            </li>
+         ))}
       </ul>
    );
 }

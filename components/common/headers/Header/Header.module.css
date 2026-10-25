@@ -1,12 +1,16 @@
 .template {
-   @media screen and (min-width: 320px) and (max-width: 374) {
+   @media (max-width: 374) {
    }
-   @media screen and (min-width: 375px) {
+   @media (min-width: 375px) {
    }
-   @media screen and (min-width: 768px) {
+   @media (min-width: 768px) {
    }
-   @media screen and (min-width: 1440px) {
+   @media (min-width: 1440px) {
    }
+}
+.wrapper {
+   /* position: fixed;
+   width: 100%; */
 }
 
 .container {
@@ -15,46 +19,56 @@
    --padding-tablet: 0 32px;
    --padding-desktop: 0 64px;
 
+   position: relative;
+
    display: flex;
    flex-direction: column;
    justify-content: center;
    align-items: center;
-
    height: 72px;
-   max-width: 375px;
+
    padding: 0 20px;
+   margin: 0 auto;
 
    background-color: transparent;
 
-   @media screen and (min-width: 320px) and (max-width: 374) {
+   @media (max-width: 374) {
+      width: auto;
    }
 
-   @media screen and (min-width: 375px) {
-      max-width: 768px;
+   @media (min-width: 375px) {
+      width: 375px;
    }
 
-   @media screen and (min-width: 768px) {
-      max-width: 1440px;
+   @media (min-width: 768px) {
+      width: 768px;
       padding: 0 32px;
    }
 
-   @media screen and (min-width: 1440px) {
+   @media (min-width: 1440px) {
+      width: 1440px;
       padding: 0 64px;
    }
 }
 
 .header {
    display: flex;
-   justify-content: space-between;
    align-items: center;
+   justify-content: space-between;
+   width: 100%;
 
-   @media screen and (min-width: 768px) {
+   @media (min-width: 768px) {
    }
-   @media screen and (min-width: 1440px) {
+   @media (min-width: 1440px) {
    }
 }
 
 .logoLink {
+   display: flex;
+   gap: 3.31px;
+   align-items: center;
+   height: 40px;
+   width: 156px;
 }
 .logoIcon {
 }
@@ -66,7 +80,34 @@
 }
 .menuBtn {
 }
+
 .menu {
+   position: absolute;
+   top: 72px;
+   left: 0;
+
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+
+   width: 100%;
+   padding: 16px 20px;
+
+   background-color: gray;
+
+   @media (max-width: 374) {
+   }
+
+   @media (min-width: 768px) {
+   }
+   @media (min-width: 1440px) {
+      flex-direction: row;
+      justify-content: space-between;
+      position: static;
+
+      width: auto;
+      padding: 0;
+   }
 }
 .navigation {
 }
