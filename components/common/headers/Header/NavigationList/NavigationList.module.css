@@ -1,3 +1,6 @@
+.container {
+}
+
 .navList {
 	display: flex;
 	flex-direction: column;
@@ -19,5 +22,14 @@
 }
 
 .navLinkText {
-	font-family: var(--font-nunito-sans);
+	font-family: var(--font-family);
+	font-weight: 400;
+	font-size: 16px;
+	/* line-height: 24px; */
+	line-height: 1.5;
+	color: var(--color-neutral-darkest);
+
+	@media (min-width: 1440px) {
+		font-size: 18px;
+	}
 }
