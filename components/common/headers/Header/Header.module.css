@@ -1,119 +1,134 @@
 .template {
-   @media (max-width: 374) {
-   }
-   @media (min-width: 375px) {
-   }
-   @media (min-width: 768px) {
-   }
-   @media (min-width: 1440px) {
-   }
+  @media (max-width: 374) {
+  }
+
+  @media (min-width: 375px) {
+  }
+
+  @media (min-width: 768px) {
+  }
+
+  @media (min-width: 1440px) {
+  }
 }
+
 .wrapper {
-   /* position: fixed;
+  /* position: fixed;
    width: 100%; */
 }
 
 .container {
-   --color-background: transparent;
-   --padding-mobile: 0 20px;
-   --padding-tablet: 0 32px;
-   --padding-desktop: 0 64px;
+  --color-background: transparent;
+  --padding-mobile: 0 20px;
+  --padding-tablet: 0 32px;
+  --padding-desktop: 0 64px;
 
-   position: relative;
+  position: relative;
 
-   display: flex;
-   flex-direction: column;
-   justify-content: center;
-   align-items: center;
-   height: 72px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 72px;
 
-   padding: 0 20px;
-   margin: 0 auto;
+  padding: 0 20px;
+  margin: 0 auto;
 
-   background-color: transparent;
+  background-color: transparent;
 
-   @media (max-width: 374) {
-      width: auto;
-   }
+  @media (max-width: 374) {
+    width: auto;
+  }
 
-   @media (min-width: 375px) {
-      width: 375px;
-   }
+  @media (min-width: 375px) {
+    width: 375px;
+  }
 
-   @media (min-width: 768px) {
-      width: 768px;
-      padding: 0 32px;
-   }
+  @media (min-width: 768px) {
+    width: 768px;
+    padding: 0 32px;
+  }
 
-   @media (min-width: 1440px) {
-      width: 1440px;
-      padding: 0 64px;
-   }
+  @media (min-width: 1440px) {
+    width: 1440px;
+    padding: 0 64px;
+  }
 }
 
 .header {
-   display: flex;
-   align-items: center;
-   justify-content: space-between;
-   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
 
-   @media (min-width: 768px) {
-   }
-   @media (min-width: 1440px) {
-   }
+  @media (min-width: 768px) {
+  }
+
+  @media (min-width: 1440px) {
+  }
 }
 
 .logoLink {
-   display: flex;
-   gap: 3.31px;
-   align-items: center;
-   height: 40px;
-   width: 156px;
+  display: flex;
+  gap: 3.31px;
+  align-items: center;
+  height: 40px;
+  width: 156px;
 }
+
 .logoIcon {
 }
+
 .logoText {
 }
+
 .menuControls {
 }
+
 .storyPublicBtn {
 }
+
 .menuBtn {
 }
 
 .menu {
-   position: absolute;
-   top: 72px;
-   left: 0;
+  position: absolute;
+  top: 72px;
+  left: 0;
 
-   display: flex;
-   flex-direction: column;
-   align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-   width: 100%;
-   padding: 16px 20px;
+  width: 100%;
+  padding: 16px 20px;
 
-   background-color: gray;
+  background-color: gray;
 
-   @media (max-width: 374) {
-   }
+  @media (max-width: 374) {
+  }
 
-   @media (min-width: 768px) {
-   }
-   @media (min-width: 1440px) {
-      flex-direction: row;
-      justify-content: space-between;
-      position: static;
+  @media (min-width: 768px) {
+  }
 
-      width: auto;
-      padding: 0;
-   }
+  @media (min-width: 1440px) {
+    flex-direction: row;
+    justify-content: space-between;
+    position: static;
+
+    width: auto;
+    padding: 0;
+  }
 }
+
 .navigation {
 }
+
 .authControls {
 }
+
 .userControls {
 }
+
 .storyUserBtn {
 }

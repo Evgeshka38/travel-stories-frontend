@@ -1,15 +1,15 @@
 .navList {
-   display: flex;
-   flex-direction: column;
-   align-items: center;
-   gap: 32px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 32px;
 
-   @media (min-width: 768px) {
-   }
+	@media (min-width: 768px) {
+	}
 
-   @media (min-width: 1440px) {
-      flex-direction: row;
-   }
+	@media (min-width: 1440px) {
+		flex-direction: row;
+	}
 }
 
 .navItem {
@@ -19,5 +19,5 @@
 }
 
 .navLinkText {
-   font-family: var(--font-nunito-sans);
+	font-family: var(--font-nunito-sans);
 }
