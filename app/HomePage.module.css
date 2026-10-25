@@ -21,13 +21,11 @@
 .main {
   display: flex;
   flex: 1;
-  width: 100%;
-  max-width: 800px;
   flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-between;
+  align-items: stretch;
+  width: 100%;
+  max-width: none;
   background-color: var(--foreground);
-  padding: 120px 60px;
 }
 
 a.primary {
