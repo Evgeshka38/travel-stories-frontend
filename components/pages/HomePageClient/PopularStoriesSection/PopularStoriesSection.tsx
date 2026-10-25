@@ -6,10 +6,10 @@ import Link from 'next/link';
 // todo
 export default function PopularStoriesSection() {
   return (
-    <div className={clsx(css.container, css.globalLocalStyles)}>
+    <section className={clsx(css.container, css.globalLocalStyles)}>
       <PopularStories />
       {/* todo: Tab and Pc only */}
       <Link href="/stories">Переглянути всі </Link>
-    </div>
+    </section>
   );
 }
