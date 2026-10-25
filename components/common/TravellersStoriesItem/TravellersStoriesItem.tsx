@@ -8,7 +8,7 @@ import clsx from 'clsx';
 
 export default function TravellersStoriesItem() {
   return (
-    <div className={css.container}>
+    <article className={css.container}>
       <Image
         className={css.image}
         alt="Будівлі побудовані на воді"
@@ -17,7 +17,7 @@ export default function TravellersStoriesItem() {
         height={223}
       />
       <div className={css.infoContainer}>
-        <div className={css.mainText}>
+        <header className={css.mainText}>
           <p className={css.category}>Європа</p>
           <h3 className={css.title}>
             Венеція без туристів: маршрути для справжніх мандрівників
@@ -27,8 +27,8 @@ export default function TravellersStoriesItem() {
             Ми вирішили дослідити місто з іншого боку — вулицями, де не ходять
             натовпи
           </p>
-        </div>
-        <div className={css.details}>
+        </header>
+        <footer className={css.details}>
           <Image
             className={css.authorImage}
             alt="Жінка із русявим волоссям"
@@ -37,19 +37,26 @@ export default function TravellersStoriesItem() {
             height={48}
           />
           <div className={css.detailsRight}>
-            <p className={css.authorName}>Анастасія Олійник</p>
+            <address className={css.authorName}>Анастасія Олійник</address>
             <div className={css.detailsLine}>
-              <p className={css.date}>27.03.2025</p>
-              <div className={css.decorationDot} />
+              <time className={css.date} dateTime="2025-03-27">
+                27.03.2025
+              </time>
+              <div className={css.decorationDot} aria-hidden="true" />
               <div className={css.favoriteWrapper}>
                 <p className={css.favoriteCount}>5</p>
-                <svg className={css.favoriteIcon} width="16" height="16">
+                <svg
+                  width="16"
+                  height="16"
+                  aria-hidden="true"
+                  focusable="false"
+                >
                   <use href={'/sprite.svg#icon-bookmark'} />
                 </svg>
               </div>
             </div>
           </div>
-        </div>
+        </footer>
         <div className={css.actions}>
           <Link
             href="/stories/123"
@@ -65,12 +72,18 @@ export default function TravellersStoriesItem() {
             name="Додати в збережені історії | Видалити із збережених історій"
             onClick={() => alert('todo')}
           >
-            <svg className={css.buttonSquareIcon} width="24" height="24">
+            <svg
+              className={css.buttonSquareIcon}
+              width="24"
+              height="24"
+              aria-hidden="true"
+              focusable="false"
+            >
               <use href={'/sprite.svg#icon-bookmark'} />
             </svg>
           </button>
         </div>
       </div>
-    </div>
+    </article>
   );
 }
