@@ -47,4 +47,9 @@
   --color-scheme-2-accent: var(--color-royal-blue);
   --color-scheme-2-foreground: var(--color-royal-blue-lighter);
   --color-red: #b00101;
+
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
 }
