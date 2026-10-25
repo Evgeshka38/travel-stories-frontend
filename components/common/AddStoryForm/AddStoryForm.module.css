@@ -167,7 +167,7 @@ img {
   font-size: 16px;
   line-height: 1.5;
   color: #000;
-  margin-bottom: 24px;
+  /* margin-bottom: 24px; */
   @media only screen and (min-width: 1440px) {
     font-size: 18px;
   }
@@ -203,7 +203,7 @@ img {
   font-size: 12px;
   line-height: 1.5;
   color: #000;
-  margin-bottom: 24px;
+  /* margin-bottom: 24px; */
 }
 .content {
   font-family: 'Nunito Sans', sans-serif;
@@ -212,7 +212,7 @@ img {
   line-height: 1.5;
   color: #000;
   padding: 12px;
-  margin-bottom: 24px;
+  /* margin-bottom: 24px; */
   width: 100%;
   min-height: 180px;
   resize: vertical;
@@ -270,14 +270,16 @@ img {
   }
 }
 .errorMessage {
+  display: block;
   font-family: 'Nunito Sans', sans-serif;
   font-weight: 400;
   font-size: 12px;
   line-height: 1.5;
   color: #b00101;
   margin-top: 4px;
-  min-height: 18px;
+  height: 24px;
   visibility: hidden;
+  overflow: hidden;
 }
 
 .field.hasError .errorMessage {

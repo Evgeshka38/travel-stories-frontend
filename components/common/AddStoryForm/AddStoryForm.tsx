@@ -7,6 +7,8 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import type { ChangeEvent } from 'react';
+import { getCategories, type Category } from '@/lib/api/clientApi';
+import toast from 'react-hot-toast';
 
 interface CreateStoryValues {
   title: string;
@@ -39,12 +41,27 @@ const createStorySchema = Yup.object({
 export default function AddStoryForm() {
   const router = useRouter();
   const [coverPreview, setCoverPreview] = useState('');
+  const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
     return () => {
       if (coverPreview) URL.revokeObjectURL(coverPreview);
     };
   }, [coverPreview]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const categories = await getCategories();
+        setCategories(categories);
+      } catch (error) {
+        console.error('Не вдалося завантажити категорії:', error);
+        toast.error('Не вдалося завантажити категорії');
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const handleSubmit = async (values: CreateStoryValues) => {
     console.log(values);
@@ -76,7 +93,7 @@ export default function AddStoryForm() {
                     />
                   </div>
 
-                  <Field
+                  <input
                     type="file"
                     id="cover-upload"
                     accept="image/*"
@@ -113,11 +130,9 @@ export default function AddStoryForm() {
                     placeholder="Введіть заголовок історії"
                   />
 
-                  <ErrorMessage
-                    name="title"
-                    component="span"
-                    className={css.errorMessage}
-                  />
+                  <span className={css.errorMessage}>
+                    {touched.title && errors.title ? errors.title : ''}
+                  </span>
                 </div>
 
                 <div
@@ -138,16 +153,21 @@ export default function AddStoryForm() {
                     <option value="" disabled>
                       Категорія
                     </option>
-                    <option value="travel">Подорожі</option>
-                    <option value="nature">Природа</option>
-                    <option value="city">Міста</option>
+                    {categories.map((category) => (
+                      <option key={category._id} value={category._id}>
+                        {category.name}
+                      </option>
+                    ))}
                   </Field>
 
-                  <ErrorMessage
+                  {/* <ErrorMessage
                     name="category"
                     component="span"
                     className={css.errorMessage}
-                  />
+                  /> */}
+                  <span className={css.errorMessage}>
+                    {touched.title && errors.title ? errors.title : ''}
+                  </span>
                 </div>
 
                 <div
@@ -170,15 +190,17 @@ export default function AddStoryForm() {
                     placeholder="Введіть короткий опис історії"
                   />
 
-                  <ErrorMessage
+                  {/* <ErrorMessage
                     name="description"
                     component="span"
                     className={css.errorMessage}
-                  />
-
+                  /> */}
                   <p className={css.charsLeft}>
                     Лишилось символів: {100 - values.description.length}
                   </p>
+                  <span className={css.errorMessage}>
+                    {touched.title && errors.title ? errors.title : ''}
+                  </span>
                 </div>
 
                 <div
@@ -198,11 +220,14 @@ export default function AddStoryForm() {
                     placeholder="Ваша історія тут"
                   />
 
-                  <ErrorMessage
+                  {/* <ErrorMessage
                     name="content"
                     component="span"
                     className={css.errorMessage}
-                  />
+                  /> */}
+                  <span className={css.errorMessage}>
+                    {touched.title && errors.title ? errors.title : ''}
+                  </span>
                 </div>
               </div>
               <div className={css.actions}>
