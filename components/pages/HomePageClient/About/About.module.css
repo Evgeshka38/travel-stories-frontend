@@ -115,7 +115,7 @@
     row-gap: 32px;
   }
 }
-@media (min-width: 1024px) {
+@media (min-width: 1440px) {
   .container {
     padding: 72px 64px;
   }
