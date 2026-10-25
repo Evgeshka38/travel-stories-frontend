@@ -30,8 +30,11 @@ export default function Header({ isAuthenticate = false }: HeaderProps) {
 				</Link>
 				<div className={css.menuControls}>
 					<div className={css.storyPublicBtn}></div>
-
-					<Button type="button" variant="menu" isHomePage={isHomePage}>
+					<Button
+						semanticVariant="button"
+						styleVariant="menu"
+						isHomePage={isHomePage}
+					>
 						<svg className={css.menuIcon} width="24" height="24">
 							<use href="/sprite.svg#icon-menu" aria-hidden="true"></use>
 						</svg>
