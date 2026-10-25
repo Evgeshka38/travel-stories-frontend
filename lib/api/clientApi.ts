@@ -31,9 +31,7 @@ export async function login(loginData: LoginRequest): Promise<void> {
 }
 
 export async function getCurrentUser(): Promise<CurrentUser | null> {
-  const { data } = await nextApi.get('/auth/me', {
-    baseURL: '/api',
-  });
+  const { data } = await nextApi.get('/auth/session');
 
   return data.data;
 }
