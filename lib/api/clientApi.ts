@@ -22,6 +22,22 @@ export interface Category {
   _id: string;
   name: string;
 }
+export interface CreateStoryRequest {
+  title: string;
+  category: string;
+  article: string;
+  cover: File;
+}
+
+export interface CreatedStory {
+  _id: string;
+  img: string;
+  title: string;
+  article: string;
+  category: string;
+  ownerId: string;
+  date: string;
+}
 
 export async function register(registerData: RegisterRequest): Promise<void> {
   await nextApi.post('/auth/register', registerData);
@@ -39,5 +55,19 @@ export async function getCurrentUser(): Promise<CurrentUser | null> {
 
 export async function getCategories(): Promise<Category[]> {
   const { data } = await nextApi.get('/categories');
+  return data.data;
+}
+export async function createStory(
+  storyData: CreateStoryRequest,
+): Promise<CreatedStory> {
+  const formData = new FormData();
+
+  formData.append('cover', storyData.cover);
+  formData.append('title', storyData.title);
+  formData.append('category', storyData.category);
+  formData.append('article', storyData.article);
+
+  const { data } = await nextApi.post('/stories', formData);
+
   return data.data;
 }

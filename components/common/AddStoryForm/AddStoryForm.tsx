@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import type { ChangeEvent } from 'react';
-import { getCategories, type Category } from '@/lib/api/clientApi';
+import { createStory, getCategories, type Category } from '@/lib/api/clientApi';
 import toast from 'react-hot-toast';
 
 interface CreateStoryValues {
@@ -27,6 +27,7 @@ const initialValues: CreateStoryValues = {
 };
 
 const createStorySchema = Yup.object({
+  cover: Yup.mixed<File>().required("Обов'язкове поле"),
   title: Yup.string().required("Обов'язкове поле"),
   category: Yup.string().required('Оберіть категорію'),
   description: Yup.string()
@@ -42,6 +43,7 @@ export default function AddStoryForm() {
   const router = useRouter();
   const [coverPreview, setCoverPreview] = useState('');
   const [categories, setCategories] = useState<Category[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     return () => {
@@ -64,7 +66,29 @@ export default function AddStoryForm() {
   }, []);
 
   const handleSubmit = async (values: CreateStoryValues) => {
-    console.log(values);
+    if (!values.cover) {
+      toast.error('Завантажте обкладинку історії');
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const story = await createStory({
+        title: values.title,
+        category: values.category,
+        article: values.content,
+        cover: values.cover,
+      });
+
+      toast.success('Історію успішно створено');
+      router.push(`/stories/${story._id}`);
+    } catch (error) {
+      console.error('Не вдалося створити історію:', error);
+      toast.error('Помилка збереження');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -102,7 +126,7 @@ export default function AddStoryForm() {
                       const file = event.currentTarget.files?.[0] ?? null;
 
                       if (file) {
-                        setFieldValue('cover', file);
+                        setFieldValue('cover', file, true);
                         setCoverPreview(URL.createObjectURL(file));
                       }
                     }}
@@ -160,13 +184,8 @@ export default function AddStoryForm() {
                     ))}
                   </Field>
 
-                  {/* <ErrorMessage
-                    name="category"
-                    component="span"
-                    className={css.errorMessage}
-                  /> */}
                   <span className={css.errorMessage}>
-                    {touched.title && errors.title ? errors.title : ''}
+                    {touched.category && errors.category ? errors.category : ''}
                   </span>
                 </div>
 
@@ -190,16 +209,13 @@ export default function AddStoryForm() {
                     placeholder="Введіть короткий опис історії"
                   />
 
-                  {/* <ErrorMessage
-                    name="description"
-                    component="span"
-                    className={css.errorMessage}
-                  /> */}
                   <p className={css.charsLeft}>
                     Лишилось символів: {100 - values.description.length}
                   </p>
                   <span className={css.errorMessage}>
-                    {touched.title && errors.title ? errors.title : ''}
+                    {touched.description && errors.description
+                      ? errors.description
+                      : ''}
                   </span>
                 </div>
 
@@ -220,13 +236,8 @@ export default function AddStoryForm() {
                     placeholder="Ваша історія тут"
                   />
 
-                  {/* <ErrorMessage
-                    name="content"
-                    component="span"
-                    className={css.errorMessage}
-                  /> */}
                   <span className={css.errorMessage}>
-                    {touched.title && errors.title ? errors.title : ''}
+                    {touched.content && errors.content ? errors.content : ''}
                   </span>
                 </div>
               </div>
@@ -234,9 +245,9 @@ export default function AddStoryForm() {
                 <button
                   type="submit"
                   className={css.saveBtn}
-                  disabled={!dirty || !isValid}
+                  disabled={!dirty || !isValid || isSubmitting}
                 >
-                  Зберегти
+                  {isSubmitting ? 'Збереження...' : 'Зберегти'}
                 </button>
 
                 <button
