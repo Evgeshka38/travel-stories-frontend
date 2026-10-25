@@ -42,9 +42,9 @@ export default function TravellersStoriesItem() {
               <time className={css.date} dateTime="2025-03-27">
                 27.03.2025
               </time>
-              <div className={css.decorationDot} aria-hidden="true" />
-              <div className={css.favoriteWrapper}>
-                <p className={css.favoriteCount}>5</p>
+              <span className={css.decorationDot} aria-hidden="true" />
+              <span className={css.favoriteWrapper}>
+                <span className={css.favoriteCount}>5</span>
                 <svg
                   width="16"
                   height="16"
@@ -53,7 +53,7 @@ export default function TravellersStoriesItem() {
                 >
                   <use href={'/sprite.svg#icon-bookmark'} />
                 </svg>
-              </div>
+              </span>
             </div>
           </div>
         </footer>
