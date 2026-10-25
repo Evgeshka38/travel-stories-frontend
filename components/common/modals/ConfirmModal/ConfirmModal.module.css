@@ -5,29 +5,29 @@
   align-items: center;
   justify-content: center;
   padding: 16px;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.25);
   z-index: 1000;
 }
 
 .modal {
   position: relative;
   width: 100%;
-  max-width: 400px;
-  padding: 32px 24px;
+  max-width: 335px;
+  padding: 64px 20px 20px;
   background-color: #fff;
-  border-radius: 16px;
+  border-radius: 24px;
   text-align: center;
 }
 
 .closeButton {
   position: absolute;
   top: 12px;
-  right: 12px;
+  right: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
   padding: 0;
   background: none;
   border: none;
@@ -44,44 +44,80 @@
 }
 
 .title {
-  margin-block-end: 8px;
-  font-size: 20px;
+  margin-block-end: 16px;
+  font-size: 24px;
   font-weight: 700;
   color: #171717;
 }
 
 .text {
-  margin-block-end: 24px;
+  margin-block-end: 32px;
+  font-size: 16px;
   color: #666;
 }
 
 .buttons {
   display: flex;
-  gap: 12px;
-  justify-content: center;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .confirmButton,
 .cancelButton {
-  padding: 12px 24px;
+  padding: 16px 32px;
   border-radius: 8px;
-  border: none;
   cursor: pointer;
   font: inherit;
-}
-
-.confirmButton {
-  background-color: #1b2330;
-  color: #fff;
+  font-weight: 500;
 }
 
 .cancelButton {
-  background-color: transparent;
-  border: 1px solid #ccc;
-  color: #171717;
+  background-color: rgba(0, 0, 0, 0.05);;
+  border: 1px solid rgba(0, 0, 0, 0.15);;
+  color: #000;
+}
+
+.confirmButton {
+  background-color: #4169e1;
+   border: none;
+  color: #fff;
 }
 
 .confirmButton:hover,
 .cancelButton:hover {
   opacity: 0.8;
+}
+
+/* tablet */
+@media (min-width: 768px) {
+  .modal {
+    max-width: 704px;
+    padding: 64px 32px;
+  }
+
+  .title {
+    font-size: 32px;
+  }
+
+  .buttons {
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .confirmButton,
+  .cancelButton {
+    min-width: 180px;
+  }
+}
+
+/* desktop */
+@media (min-width: 1440px) {
+  .modal {
+    max-width: 768px;
+    padding: 64px;
+  }
+
+  .title {
+    font-size: 40px;
+  }
 }
