@@ -2,13 +2,16 @@ import Image from 'next/image';
 import css from './TravellersStoriesItem.module.css';
 import Link from 'next/link';
 
+import storyImg from '@/public/images/story_1.webp';
+import avatarImg from '@/public/images/avatar_1.webp';
+
 export default function TravellersStoriesItem() {
   return (
     <div className={css.container}>
       <Image
         className={css.image}
         alt="Будівлі побудовані на воді"
-        src="https://ftp.goit.study/img/travel-blog/68498236a100312bea079039.webp"
+        src={storyImg}
         width={335}
         height={223}
       />
@@ -27,7 +30,7 @@ export default function TravellersStoriesItem() {
         <Image
           className={css.authorImage}
           alt="Жінка із русявим волоссям"
-          src="https://ftp.goit.study/img/harmoniq/users/6881563901add19ee16fd009.webp"
+          src={avatarImg}
           width={48}
           height={48}
         />
