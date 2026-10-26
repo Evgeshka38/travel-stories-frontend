@@ -76,3 +76,8 @@ export async function createStory(
 
   return data.data;
 }
+
+export async function getAllUsers() {
+  const { data } = await nextApi.get('/users');
+  return data.data.users;
+}
