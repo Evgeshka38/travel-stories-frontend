@@ -1,4 +1,3 @@
-import clsx from 'clsx';
 import TravellersStoriesItem from '../TravellersStoriesItem/TravellersStoriesItem';
 import css from './PopularStories.module.css';
 import { PopularStory } from '@/lib/types/stories';
@@ -27,11 +26,6 @@ export default function PopularStories() {
             />
           </li>
         ))}
-
-        {/* todo css nth child */}
-        {/* <li className={clsx(css.popularStoriesListItem, css.tabletOnly)}>
-          <TravellersStoriesItem />
-        </li> */}
       </ul>
     </div>
   );
