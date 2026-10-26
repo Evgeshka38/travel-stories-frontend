@@ -53,16 +53,22 @@ export default function Header() {
 
   return (
     <div className={clsx(css.absoluteWrapper, isHomePage && css.absolute)}>
-      <div className={clsx(css.container, isHomePage && css.transparent)}>
+      <div className={clsx(css.container, isHomePage && css.homePageStyles)}>
         <header className={css.header}>
           <Link className={css.logoLink} href="/" aria-label="Домашня сторінка">
             <svg className={css.logoIcon} width="auto" height="auto">
-              <use href="/logo.svg" aria-hidden="true"></use>
+              <use
+                href={isHomePage ? '/sprite.svg/#icon-logo-home' : '/logo.svg'}
+                aria-hidden="true"
+              ></use>
             </svg>
           </Link>
+
           <div className={clsx(css.authHidden, isAuth && css.hidden)}>
             <div className={css.menuControls}>
-              <div className={clsx(css.storyPublicBtn, isAuth && css.hidden)}>
+              <div
+                className={clsx(css.storyPublicBtn, isAuth && css.displayOff)}
+              >
                 <Button
                   semanticVariant="link"
                   styleVariant="primary"
@@ -72,6 +78,7 @@ export default function Header() {
                   Опублікувати історію
                 </Button>
               </div>
+
               <Button
                 semanticVariant="button"
                 styleVariant="custom"
@@ -91,15 +98,48 @@ export default function Header() {
                 )}
               </Button>
             </div>
-            <div className={clsx(css.menu, isMenuOpen && css.visible)}>
-              <nav className={css.navigation} aria-label="Сторінки">
-                <NavigationList navItems={navLinks} />
+            <div className={clsx(css.menu, isMenuOpen && css.menuOpen)}>
+              <nav
+                className={clsx(
+                  css.navigation,
+                  isHomePage && css.homePageStyles,
+                )}
+                aria-label="Сторінки"
+              >
+                <NavigationList navItems={navLinks} isHomePage={isHomePage} />
               </nav>
-              <div className={css.authControls}></div>
+              <div
+                className={clsx(
+                  css.authControls,
+                  isAuthenticated && css.displayOff,
+                )}
+              >
+                <Button
+                  semanticVariant="link"
+                  styleVariant="custom"
+                  styleCustomName="login"
+                  linkRoute="/auth/login"
+                  ariaLabel="Увійти в застосунок"
+                  isHomePage={isHomePage}
+                >
+                  Вхід
+                </Button>
+                <Button
+                  semanticVariant="link"
+                  styleVariant="custom"
+                  styleCustomName="register"
+                  linkRoute="/auth/register"
+                  ariaLabel="Реєстрація"
+                  isHomePage={isHomePage}
+                >
+                  Реєстрація
+                </Button>
+              </div>
+
               <div
                 className={clsx(
                   css.storyPrivateBtn,
-                  isAuthenticated && css.visible,
+                  isAuthenticated && css.displayOn,
                 )}
               >
                 <Button
