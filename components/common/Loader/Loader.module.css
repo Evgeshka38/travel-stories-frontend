@@ -1,0 +1,20 @@
+.loader {
+  width: 50px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #514b82;
+  -webkit-mask: radial-gradient(
+    circle closest-side at 50% 40%,
+    #0000 94%,
+    #000
+  );
+  mask: radial-gradient(circle closest-side at 50% 40%, #0000 94%, #000);
+  transform-origin: 50% 40%;
+  animation: spin 1s infinite linear;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
