@@ -10,7 +10,7 @@ export default function Join() {
           <Image
             className={css.bg}
             src="/images/join_2x.jpg"
-            alt=""
+            alt="Нічне море з кораловим рифом під водою і горами на горизонті"
             fill
             sizes="(min-width: 1440px) 1312px, (min-width: 768px) 704px, 335px"
           />

@@ -93,6 +93,28 @@
   line-height: 1.5;
   color: rgba(0, 0, 0, 0.6);
 }
+.passwordWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.passwordWrapper .input {
+  width: 100%;
+  padding-right: 48px;
+}
+
+.passwordToggle {
+  position: absolute;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
 .submitBtn {
   font-family: 'Nunito Sans', sans-serif;
   font-weight: 500;
@@ -129,4 +151,13 @@
   line-height: 1.5;
   color: #b00101;
   font-family: 'Nunito Sans', sans-serif;
+}
+.icon {
+  width: 24px;
+  height: 24px;
+  color: #000;
+}
+
+.icon use {
+  fill: currentColor;
 }

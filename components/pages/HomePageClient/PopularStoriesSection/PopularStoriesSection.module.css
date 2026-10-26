@@ -1,0 +1,65 @@
+.globalLocalStyles {
+  /* todo: mv to global styles */
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.container {
+  padding: 64px 20px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  background: var(--color-scheme-2-background);
+
+  @media (min-width: 768px) {
+    padding: 64px 32px;
+  }
+
+  @media (min-width: 1440px) {
+    padding: 72px 64px;
+    gap: 40px;
+  }
+}
+
+.link {
+  width: 147px;
+  height: 48px;
+  padding: 12px;
+  margin: 0px auto;
+  border-radius: 8px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  outline: 1px solid var(--color-royal-blue);
+  background: var(--color-royal-blue);
+
+  font-weight: 500;
+  color: var(--color-white);
+
+  transition-property: background-color, outline, color;
+  transition-duration: 200ms;
+  transition-timing-function: ease;
+
+  &:hover,
+  &:focus {
+    background-color: var(--color-royal-blue-lighter);
+    outline: 1px solid var(--color-royal-blue);
+    color: var(--color-scheme-2-text);
+  }
+
+  &:active {
+    background-color: var(--color-royal-blue-light);
+    outline: 1px solid var(--color-royal-blue);
+    color: var(--color-scheme-2-text);
+  }
+
+  @media (max-width: 767px) {
+    display: none;
+  }
+}

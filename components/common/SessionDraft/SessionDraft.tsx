@@ -15,6 +15,14 @@ export default function SessionDraft({
     const draft = Object.fromEntries(
       fields.map((field) => [field, values[field] ?? '']),
     );
+
+    const isEmpty = Object.values(draft).every((value) => !value.trim());
+
+    if (isEmpty) {
+      sessionStorage.removeItem(storageKey);
+      return;
+    }
+
     sessionStorage.setItem(storageKey, JSON.stringify(draft));
   }, [values, fields, storageKey]);
   return null;

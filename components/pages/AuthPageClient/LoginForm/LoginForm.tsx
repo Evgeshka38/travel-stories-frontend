@@ -33,6 +33,7 @@ export default function LoginForm() {
 
   const [initialValues, setInitialValues] = useState(defaultValues);
   const [isReady, setIsReady] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     const savedDraft = sessionStorage.getItem('login-draft');
@@ -104,19 +105,35 @@ export default function LoginForm() {
 
             <label className={css.label}>
               <span className={css.labelTitle}>Пароль*</span>
-              <Field
-                className={css.input}
-                type="password"
-                name="password"
-                placeholder="********"
-              />
+              <div className={css.passwordWrapper}>
+                <Field
+                  className={css.input}
+                  type={showPassword ? 'text' : 'password'}
+                  name="password"
+                  placeholder="********"
+                />
+
+                <button
+                  type="button"
+                  className={css.passwordToggle}
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  aria-label={
+                    showPassword ? 'Приховати пароль' : 'Показати пароль'
+                  }
+                >
+                  <svg className={css.icon}>
+                    <use
+                      href={`/sprite.svg#${showPassword ? 'icon-eyeCross' : 'icon-eye'}`}
+                    />
+                  </svg>
+                </button>
+              </div>
               <ErrorMessage
                 name="password"
                 component="span"
                 className={css.error}
               />
             </label>
-
             <button
               type="submit"
               className={css.submitBtn}
