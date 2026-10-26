@@ -14,7 +14,6 @@ interface OurTravellersProps {
 }
 
 export default function OurTravellers({ travellers = [] }: OurTravellersProps) {
-  const displayedTravellers = travellers.slice(0, 4);
 
   return (
     <section className={css.section}>
@@ -25,8 +24,8 @@ export default function OurTravellers({ travellers = [] }: OurTravellersProps) {
 
         <div className={css.contentContainer}>
           <ul className={css.list}>
-            {displayedTravellers.map((traveller) => (
-              <li key={traveller._id} className={css.travellerCard}>
+          {travellers.map((traveller) => (
+            <li key={traveller._id} className={css.travellerCard}>
                 <div className={css.placeholderImage}>
                   <Image
                     src={traveller.avatarUrl || '/images/default-avatar.webp'}
