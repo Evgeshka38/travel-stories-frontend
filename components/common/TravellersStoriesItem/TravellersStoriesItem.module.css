@@ -4,12 +4,30 @@
   overflow: hidden;
 
   background: var(--color-scheme-2-foreground);
+
+  @media (min-width: 768px) {
+    max-width: 340px;
+  }
+
+  @media (min-width: 1440px) {
+    max-width: 421px;
+  }
 }
 
 .image {
   width: 335px;
   height: 223px;
   object-fit: cover;
+
+  @media (min-width: 768px) {
+    width: 340px;
+    height: 226px;
+  }
+
+  @media (min-width: 1440px) {
+    width: 421px;
+    height: 280px;
+  }
 }
 
 .infoContainer {
@@ -30,9 +48,14 @@
   font-weight: 600;
   font-size: 12px;
   color: var(--color-neutral-darkest);
+
+  @media (min-width: 1440px) {
+    font-size: 16px;
+  }
 }
 
 .title {
+  height: 54px;
   font-weight: 700;
   font-size: 18px;
 
@@ -42,6 +65,11 @@
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   color: var(--color-scheme-1-text);
+
+  @media (min-width: 1440px) {
+    height: 78px;
+    font-size: 26px;
+  }
 }
 
 .description {
@@ -56,6 +84,11 @@
   -webkit-line-clamp: 3;
 
   color: var(--color-scheme-1-text);
+
+  @media (min-width: 1440px) {
+    height: 81px;
+    font-size: 18px;
+  }
 }
 
 .details {
@@ -79,6 +112,10 @@
   font-weight: 600;
   font-size: 12px;
   color: var(--color-scheme-1-text);
+
+  @media (min-width: 1440px) {
+    font-size: 16px;
+  }
 }
 
 .detailsLine {
@@ -91,11 +128,20 @@
 .date {
   font-size: 12px;
   color: var(--color-scheme-1-text);
+
+  @media (min-width: 1440px) {
+    font-size: 16px;
+  }
 }
 
 .decorationDot::after {
   /* todo? set content to none and use bg color and border radius */
   content: '•';
+  color: var(--color-scheme-1-text);
+
+  @media (min-width: 1440px) {
+    font-size: 20px;
+  }
 }
 
 .favoriteWrapper {
@@ -109,7 +155,12 @@
 .favoriteCount {
   font-size: 12px;
   color: var(--color-scheme-1-text);
+
+  @media (min-width: 1440px) {
+    font-size: 16px;
+  }
 }
+
 .actions {
   display: flex;
   flex-direction: row;
