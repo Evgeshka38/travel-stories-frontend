@@ -13,40 +13,12 @@ interface OurTravellersProps {
   travellers?: Traveller[];
 }
 
-const MOCK_TRAVELLERS: Traveller[] = [
-  {
-    _id: '1',
-    name: 'Анастасія Олійник',
-    avatarUrl: '/images/avatar_1.webp',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros',
-  },
-  {
-    _id: '2',
-    name: 'Назар Ткаченко',
-    avatarUrl: '/images/avatar_2.webp',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros',
-  },
-  {
-    _id: '3',
-    name: 'Єва Бондаренко',
-    avatarUrl: '/images/avatar_3.webp',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros',
-  },
-  {
-    _id: '4',
-    name: 'Дмитро Романенко',
-    avatarUrl: '/images/avatar_4.webp',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros',
-  },
-];
-
-export default function OurTravellers({ travellers = MOCK_TRAVELLERS }: OurTravellersProps) {
-  const displayedTravellers = (travellers.length > 0 ? travellers : MOCK_TRAVELLERS).slice(0, 4);
+export default function OurTravellers({ travellers = [] }: OurTravellersProps) {
+  const displayedTravellers = travellers.slice(0, 4);
 
   return (
     <section className={css.section}>
       <div className={css.container}>
-
         <div className={css.sectionHeader}>
           <h2 className={css.sectionTitle}>Наші Мандрівники</h2>
         </div>
@@ -57,7 +29,7 @@ export default function OurTravellers({ travellers = MOCK_TRAVELLERS }: OurTrave
               <li key={traveller._id} className={css.travellerCard}>
                 <div className={css.placeholderImage}>
                   <Image
-                    src={traveller.avatarUrl}
+                    src={traveller.avatarUrl || '/images/default-avatar.webp'}
                     alt={traveller.name}
                     width={112}
                     height={112}
@@ -77,11 +49,11 @@ export default function OurTravellers({ travellers = MOCK_TRAVELLERS }: OurTrave
           </ul>
         </div>
         
-          <div className={css.buttonWrapper}>
-            <Link href="/travellers" className={css.viewAllButton}>
-              Переглянути всіх
-            </Link>
-          </div>
+        <div className={css.buttonWrapper}>
+          <Link href="/travellers" className={css.viewAllButton}>
+            Переглянути всіх
+          </Link>
+        </div>
       </div>
     </section>
   );
