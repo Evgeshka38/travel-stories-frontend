@@ -18,10 +18,12 @@ export interface CurrentUser {
   description?: string;
   articlesAmount?: number;
 }
+
 export interface Category {
   _id: string;
   name: string;
 }
+
 export interface CreateStoryRequest {
   title: string;
   category: string;
@@ -37,11 +39,6 @@ export interface CreatedStory {
   category: string;
   ownerId: string;
   date: string;
-}
-
-export interface Category {
-  _id: string;
-  name: string;
 }
 
 export interface Traveller {
@@ -61,8 +58,9 @@ interface UsersResponse {
   };
 }
 
-
-export async function register(registerData: RegisterRequest): Promise<void> {
+export async function register(
+  registerData: RegisterRequest,
+): Promise<void> {
   await nextApi.post('/auth/register', registerData);
 }
 
@@ -78,8 +76,10 @@ export async function getCurrentUser(): Promise<CurrentUser | null> {
 
 export async function getCategories(): Promise<Category[]> {
   const { data } = await nextApi.get('/categories');
+
   return data.data;
 }
+
 export async function createStory(
   storyData: CreateStoryRequest,
 ): Promise<CreatedStory> {
@@ -95,10 +95,17 @@ export async function createStory(
   return data.data;
 }
 
-export async function getUsers(page = 1, limit = 4) {
+export async function getUsers(
+  page = 1,
+  limit = 4,
+): Promise<Traveller[]> {
   const { data } = await nextApi.get<UsersResponse>('/users', {
     params: { page, limit },
   });
-  
+
   return data.data.users;
+}
+
+export async function logout(): Promise<void> {
+  await nextApi.post('/auth/logout');
 }
