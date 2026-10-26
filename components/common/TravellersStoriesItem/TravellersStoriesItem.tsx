@@ -37,7 +37,7 @@ export default function TravellersStoriesItem() {
             height={48}
           />
           <div className={css.detailsRight}>
-            <address className={css.authorName}>Анастасія Олійник</address>
+            <span className={css.authorName}>Анастасія Олійник</span>
             <div className={css.detailsLine}>
               <time className={css.date} dateTime="2025-03-27">
                 27.03.2025
