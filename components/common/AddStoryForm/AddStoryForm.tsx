@@ -5,12 +5,10 @@ import * as Yup from 'yup';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { register } from '@/lib/api/clientApi';
-import toast from 'react-hot-toast';
-import axios from 'axios';
-import SessionDraft from '@/components/common/SessionDraft/SessionDraft';
 import Image from 'next/image';
-import { ChangeEvent } from 'react';
+import type { ChangeEvent } from 'react';
+import { createStory, getCategories, type Category } from '@/lib/api/clientApi';
+import toast from 'react-hot-toast';
 
 interface CreateStoryValues {
   title: string;
@@ -29,6 +27,7 @@ const initialValues: CreateStoryValues = {
 };
 
 const createStorySchema = Yup.object({
+  cover: Yup.mixed<File>().required("Обов'язкове поле"),
   title: Yup.string().required("Обов'язкове поле"),
   category: Yup.string().required('Оберіть категорію'),
   description: Yup.string()
@@ -43,6 +42,8 @@ const createStorySchema = Yup.object({
 export default function AddStoryForm() {
   const router = useRouter();
   const [coverPreview, setCoverPreview] = useState('');
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     return () => {
@@ -50,14 +51,53 @@ export default function AddStoryForm() {
     };
   }, [coverPreview]);
 
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const categories = await getCategories();
+        setCategories(categories);
+      } catch (error) {
+        console.error('Не вдалося завантажити категорії:', error);
+        toast.error('Не вдалося завантажити категорії');
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
   const handleSubmit = async (values: CreateStoryValues) => {
-    console.log(values);
+    if (!values.cover) {
+      toast.error('Завантажте обкладинку історії');
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const story = await createStory({
+        title: values.title,
+        category: values.category,
+        article: values.content,
+        cover: values.cover,
+      });
+
+      toast.success('Історію успішно створено');
+      router.push(`/stories/${story._id}`);
+    } catch (error) {
+      console.error('Не вдалося створити історію:', error);
+      toast.error('Помилка збереження');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <section className={`${css.section} ${css.createStory}`}>
       <div className={css.container}>
         <h1 className={css.sectionTitle}>Створити нову історію</h1>
+        <label className={css.formLabel} htmlFor="cover-upload">
+          Обкладинка статті
+        </label>
 
         <Formik
           initialValues={initialValues}
@@ -66,154 +106,148 @@ export default function AddStoryForm() {
         >
           {({ values, setFieldValue, isValid, dirty, errors, touched }) => (
             <Form className={css.storyForm}>
-              <div className={css.coverSection}>
-                <label className={css.formLabel} htmlFor="cover-upload">
-                  Обкладинка статті
-                </label>
+              <div className={css.wrapperForm}>
+                <div className={css.coverSection}>
+                  <div className={css.coverPreview}>
+                    <Image
+                      src={coverPreview || '/images/placeholderImage.webp'}
+                      alt="Попередній перегляд обкладинки"
+                      fill
+                      className={css.image}
+                    />
+                  </div>
 
-                <div className={css.coverPreview}>
-                  <Image
-                    src={coverPreview || '/images/placeholderImage.webp'}
-                    alt="Попередній перегляд обкладинки"
-                    width={335}
-                    height={223}
+                  <input
+                    type="file"
+                    id="cover-upload"
+                    accept="image/*"
+                    hidden
+                    onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                      const file = event.currentTarget.files?.[0] ?? null;
+
+                      if (file) {
+                        setFieldValue('cover', file, true);
+                        setCoverPreview(URL.createObjectURL(file));
+                      }
+                    }}
                   />
+
+                  <label htmlFor="cover-upload" className={css.uploadBtn}>
+                    Завантажити фото
+                  </label>
                 </div>
 
-                <Field
-                  type="file"
-                  id="cover-upload"
-                  accept="image/*"
-                  hidden
-                  onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                    const file = event.currentTarget.files?.[0] ?? null;
-
-                    if (file) {
-                      setFieldValue('cover', file);
-                      setCoverPreview(URL.createObjectURL(file));
-                    }
-                  }}
-                />
-
-                <label htmlFor="cover-upload" className={css.uploadBtn}>
-                  Завантажити фото
-                </label>
-              </div>
-
-              <div
-                className={`${css.field} ${
-                  touched.title && errors.title ? css.hasError : ''
-                }`}
-              >
-                <label htmlFor="title" className={css.formLabel}>
-                  Заголовок
-                </label>
-
-                <Field
-                  className={css.storyInput}
-                  type="text"
-                  id="title"
-                  name="title"
-                  placeholder="Введіть заголовок історії"
-                />
-
-                <ErrorMessage
-                  name="title"
-                  component="span"
-                  className={css.errorMessage}
-                />
-              </div>
-
-              <div
-                className={`${css.field} ${
-                  touched.category && errors.category ? css.hasError : ''
-                }`}
-              >
-                <label htmlFor="category" className={css.formLabel}>
-                  Категорія
-                </label>
-
-                <Field
-                  as="select"
-                  className={css.storyInput}
-                  id="category"
-                  name="category"
+                <div
+                  className={`${css.field} ${
+                    touched.title && errors.title ? css.hasError : ''
+                  }`}
                 >
-                  <option value="" disabled>
+                  <label htmlFor="title" className={css.formLabel}>
+                    Заголовок
+                  </label>
+
+                  <Field
+                    className={css.storyInput}
+                    type="text"
+                    id="title"
+                    name="title"
+                    placeholder="Введіть заголовок історії"
+                  />
+
+                  <span className={css.errorMessage}>
+                    {touched.title && errors.title ? errors.title : ''}
+                  </span>
+                </div>
+
+                <div
+                  className={`${css.field} ${
+                    touched.category && errors.category ? css.hasError : ''
+                  }`}
+                >
+                  <label htmlFor="category" className={css.formLabel}>
                     Категорія
-                  </option>
-                  <option value="travel">Подорожі</option>
-                  <option value="nature">Природа</option>
-                  <option value="city">Міста</option>
-                </Field>
+                  </label>
 
-                <ErrorMessage
-                  name="category"
-                  component="span"
-                  className={css.errorMessage}
-                />
+                  <Field
+                    as="select"
+                    className={css.storyInput}
+                    id="category"
+                    name="category"
+                  >
+                    <option value="" disabled>
+                      Категорія
+                    </option>
+                    {categories.map((category) => (
+                      <option key={category._id} value={category._id}>
+                        {category.name}
+                      </option>
+                    ))}
+                  </Field>
+
+                  <span className={css.errorMessage}>
+                    {touched.category && errors.category ? errors.category : ''}
+                  </span>
+                </div>
+
+                <div
+                  className={`${css.field} ${css.fieldDescription} ${
+                    touched.description && errors.description
+                      ? css.hasError
+                      : ''
+                  }`}
+                >
+                  <label htmlFor="description" className={css.formLabel}>
+                    Короткий опис
+                  </label>
+
+                  <Field
+                    as="textarea"
+                    className={css.description}
+                    id="description"
+                    name="description"
+                    maxLength={100}
+                    placeholder="Введіть короткий опис історії"
+                  />
+
+                  <p className={css.charsLeft}>
+                    Лишилось символів: {100 - values.description.length}
+                  </p>
+                  <span className={css.errorMessage}>
+                    {touched.description && errors.description
+                      ? errors.description
+                      : ''}
+                  </span>
+                </div>
+
+                <div
+                  className={`${css.field} ${
+                    touched.content && errors.content ? css.hasError : ''
+                  }`}
+                >
+                  <label htmlFor="content" className={css.formLabel}>
+                    Текст історії
+                  </label>
+
+                  <Field
+                    as="textarea"
+                    className={css.content}
+                    id="content"
+                    name="content"
+                    placeholder="Ваша історія тут"
+                  />
+
+                  <span className={css.errorMessage}>
+                    {touched.content && errors.content ? errors.content : ''}
+                  </span>
+                </div>
               </div>
-
-              <div
-                className={`${css.field} ${css.fieldDescription} ${
-                  touched.description && errors.description ? css.hasError : ''
-                }`}
-              >
-                <label htmlFor="description" className={css.formLabel}>
-                  Короткий опис
-                </label>
-
-                <Field
-                  as="textarea"
-                  className={css.description}
-                  id="description"
-                  name="description"
-                  maxLength={100}
-                  placeholder="Введіть короткий опис історії"
-                />
-
-                <ErrorMessage
-                  name="description"
-                  component="span"
-                  className={css.errorMessage}
-                />
-
-                <p className={css.charsLeft}>
-                  Лишилось символів: {100 - values.description.length}
-                </p>
-              </div>
-
-              <div
-                className={`${css.field} ${
-                  touched.content && errors.content ? css.hasError : ''
-                }`}
-              >
-                <label htmlFor="content" className={css.formLabel}>
-                  Текст історії
-                </label>
-
-                <Field
-                  as="textarea"
-                  className={css.content}
-                  id="content"
-                  name="content"
-                  placeholder="Ваша історія тут"
-                />
-
-                <ErrorMessage
-                  name="content"
-                  component="span"
-                  className={css.errorMessage}
-                />
-              </div>
-
               <div className={css.actions}>
                 <button
                   type="submit"
                   className={css.saveBtn}
-                  disabled={!dirty || !isValid}
+                  disabled={!dirty || !isValid || isSubmitting}
                 >
-                  Зберегти
+                  {isSubmitting ? 'Збереження...' : 'Зберегти'}
                 </button>
 
                 <button
