@@ -16,7 +16,7 @@
     padding-right: 398px;
   }
 }
-q .label {
+.label {
   display: flex;
   flex-direction: column;
   position: relative;
@@ -113,7 +113,7 @@ q .label {
   height: 44px;
   background-color: #4169e1;
   transition:
-    color,
+    color 0.3s ease,
     background-color 0.3s ease;
   @media only screen and (min-width: 1440px) {
     font-size: 18px;

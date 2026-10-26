@@ -6,7 +6,7 @@ export default function AuthFooter() {
   return (
     <footer className={css.footer}>
       <p className={css.copyright}>
-        © {currentYear} Подорожники. Усі права захищені.
+        © {currentYear} Подорожники
       </p>
     </footer>
   );
