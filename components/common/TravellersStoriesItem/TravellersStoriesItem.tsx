@@ -18,6 +18,8 @@ type Props = {
 
   date: string;
   favoriteCount: number;
+
+  variant: 'save' | 'edit';
 };
 
 export default function TravellersStoriesItem({
@@ -30,6 +32,7 @@ export default function TravellersStoriesItem({
   ownerName,
   date,
   favoriteCount,
+  variant,
 }: Props) {
   return (
     <article className={css.container}>
@@ -96,7 +99,11 @@ export default function TravellersStoriesItem({
               aria-hidden="true"
               focusable="false"
             >
-              <use href={'/sprite.svg#icon-bookmark'} />
+              {variant === 'edit' ? (
+                <use href={'/sprite.svg#icon-edit'} />
+              ) : (
+                <use href={'/sprite.svg#icon-bookmark'} />
+              )}
             </svg>
           </button>
         </div>

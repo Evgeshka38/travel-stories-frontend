@@ -23,6 +23,7 @@ export default function PopularStories() {
               ownerName={story.ownerId.name}
               date={story.date}
               favoriteCount={story.favoriteCount}
+              variant="save"
             />
           </li>
         ))}
