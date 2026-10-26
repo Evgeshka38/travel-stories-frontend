@@ -61,6 +61,8 @@
   flex-direction: column;
   gap: 24px;
 
+  background: var(--color-scheme-2-background);
+
   @media (min-width: 768px) {
     padding: 64px 32px;
   }
