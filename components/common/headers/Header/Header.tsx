@@ -1,8 +1,8 @@
-import css from "./Header.module.css";
-import Link from "next/link";
-import NavigationList from "./NavigationList/NavigationList";
-import { NavLink } from "@/types/link";
-import Button from "./ui/Button/Button";
+import css from './Header.module.css';
+import Link from 'next/link';
+import NavigationList from './NavigationList/NavigationList';
+import { NavLink } from '@/types/link';
+import Button from './ui/Button/Button';
 
 interface HeaderProps {
 	isAuthenticate?: boolean;
@@ -10,15 +10,15 @@ interface HeaderProps {
 
 export default function Header({ isAuthenticate = false }: HeaderProps) {
 	const navLinks: NavLink[] = [
-		{ linkText: "Головна", linkRoute: "/" },
-		{ linkText: "Історії", linkRoute: "/stories" },
-		{ linkText: "Мандрівники", linkRoute: "/travellers" },
+		{ linkText: 'Головна', linkRoute: '/' },
+		{ linkText: 'Історії', linkRoute: '/stories' },
+		{ linkText: 'Мандрівники', linkRoute: '/travellers' },
 	];
 
 	const isHomePage = true;
 
 	if (isAuthenticate)
-		navLinks.push({ linkText: "Мій Профіль", linkRoute: "/profile" });
+		navLinks.push({ linkText: 'Мій Профіль', linkRoute: '/profile' });
 
 	return (
 		<div className={css.container}>
@@ -32,7 +32,8 @@ export default function Header({ isAuthenticate = false }: HeaderProps) {
 					<div className={css.storyPublicBtn}></div>
 					<Button
 						semanticVariant="button"
-						styleVariant="menu"
+						styleVariant="custom"
+						styleCustomName="menu"
 						isHomePage={isHomePage}
 					>
 						<svg className={css.menuIcon} width="24" height="24">
