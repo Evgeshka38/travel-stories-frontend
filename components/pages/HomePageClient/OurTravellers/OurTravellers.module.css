@@ -73,16 +73,16 @@
 }
 
 .cardContent {
-  width: 287px;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: left;
+  align-items: flex-start;
   justify-content: space-between;
   flex-grow: 1;
 }
 
 .title {
-  width: 287px;
+  width: 100%;
   height: 27px;
   opacity: 1;
   text-align: left;
@@ -94,12 +94,12 @@
 
 .text {
   font-size: 16px;
-  width: 287px;
-  height: 72px;
+  width: 100%;
   line-height: 150%;
   color: rgba(0, 0, 0, 1);
   margin-bottom: 16px;
   display: -webkit-box;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -108,7 +108,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 287px;
+  width: 100%;
   height: 48px;
   background-color: rgba(0, 0, 0, 0.05);
   color: rgba(0, 0, 0, 1);
@@ -195,7 +195,6 @@
   }
 
   .title {
-    width: 292px;
     height: 27px;
     opacity: 1;
     text-align: left;
@@ -208,10 +207,6 @@
   .text {
     font-size: 16px;
     line-height: 150%;
-  }
-
-  .button {
-    width: 292px;
   }
 
   .buttonWrapper {
@@ -259,9 +254,7 @@
     max-width: 310px;
     min-height: 384px;
   }
-  .button {
-    width: 262px;
-  }
+
   .viewAllButton {
     display: inline-flex;
     align-items: center;
