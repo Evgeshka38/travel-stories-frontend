@@ -1,9 +1,8 @@
+import clsx from 'clsx';
 import TravellersStoriesItem from '../TravellersStoriesItem/TravellersStoriesItem';
 import css from './PopularStories.module.css';
 
 export default function PopularStories() {
-  const isTablet = false; // todo: useEffect
-
   return (
     <div className={css.container}>
       <h2 className={css.title}>Популярні історії</h2>
@@ -18,11 +17,9 @@ export default function PopularStories() {
         <li className={css.popularStoriesListItem}>
           <TravellersStoriesItem />
         </li>
-        {isTablet && (
-          <li className={css.popularStoriesListItem}>
-            <TravellersStoriesItem />
-          </li>
-        )}
+        <li className={clsx(css.popularStoriesListItem, css.tabletOnly)}>
+          <TravellersStoriesItem />
+        </li>
       </ul>
     </div>
   );

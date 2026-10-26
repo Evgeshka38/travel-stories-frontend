@@ -43,3 +43,9 @@
     flex-wrap: wrap;
   }
 }
+
+.tabletOnly {
+  @media (max-width: 767px) or (min-width: 1440px) {
+    display: none;
+  }
+}
