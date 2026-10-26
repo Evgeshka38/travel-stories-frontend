@@ -68,7 +68,6 @@ export default function AddStoryForm() {
         console.error('Не вдалося завантажити категорії:', error);
         toast.error('Не вдалося завантажити категорії');
       } finally {
-        await new Promise((resolve) => setTimeout(resolve, 1500));
         setIsLoadingCategories(false);
       }
     };
@@ -234,6 +233,7 @@ export default function AddStoryForm() {
                       <button
                         type="button"
                         className={css.isOpenCategory}
+                        disabled={isLoadingCategories}
                         onClick={() => {
                           setFieldTouched('category', true);
                           setIsOpenCategory((prev) => !prev);
