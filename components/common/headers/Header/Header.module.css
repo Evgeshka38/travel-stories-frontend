@@ -12,16 +12,15 @@
 	}
 }
 
-.wrapper {
-	/* position: fixed;
-   width: 100%; */
+.absoluteWrapper {
+	width: 100%;
 }
 
 .container {
-	--color-background: transparent;
+	/* --color-background: transparent;
 	--padding-mobile: 0 20px;
 	--padding-tablet: 0 32px;
-	--padding-desktop: 0 64px;
+	--padding-desktop: 0 64px; */
 
 	position: relative;
 
@@ -34,7 +33,7 @@
 	padding: 0 20px;
 	margin: 0 auto;
 
-	background-color: lightgray;
+	background-color: inherit;
 
 	@media (max-width: 374) {
 		width: auto;
@@ -60,6 +59,7 @@
 	align-items: center;
 	justify-content: space-between;
 	width: 100%;
+	/* margin: 0 auto; */
 
 	@media (min-width: 768px) {
 	}
@@ -76,6 +76,12 @@
 	width: 156px;
 }
 
+.authHidden {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
 .logoIcon {
 }
 
@@ -83,9 +89,16 @@
 }
 
 .menuControls {
+	display: flex;
+	gap: 16px;
+	align-items: center;
 }
 
 .storyPublicBtn {
+	visibility: hidden;
+	@media (min-width: 768) and (max-width: 1439) {
+		visibility: visible;
+	}
 }
 
 .menuBtn {
@@ -95,6 +108,7 @@
 }
 
 .menu {
+	visibility: hidden;
 	position: absolute;
 	top: 72px;
 	left: 0;
@@ -102,6 +116,7 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	gap: 32px;
 
 	width: 100%;
 	padding: 16px 20px;
@@ -115,6 +130,7 @@
 	}
 
 	@media (min-width: 1440px) {
+		visibility: visible;
 		flex-direction: row;
 		justify-content: space-between;
 		position: static;
@@ -130,8 +146,54 @@
 .authControls {
 }
 
-.userControls {
+.storyPrivateBtn {
+	display: none;
 }
 
-.storyUserBtn {
+.userControls {
+	display: flex;
+	/* display: none; */
+	align-items: center;
+	gap: 8px;
+}
+
+.userPhoto {
+	width: 32px;
+	height: 32px;
+	object-fit: cover;
+	border-radius: 100%;
+}
+
+.userName {
+}
+
+.divider {
+	border: 1px solid var(--opacity-neutral-darkest-15);
+	width: 0;
+	height: 29px;
+}
+
+.visible {
+	visibility: visible;
+}
+
+.hidden {
+	visibility: hidden;
+}
+
+.displayOn {
+	display: flex;
+}
+
+.displayOff {
+	display: block;
+}
+.transparent {
+	background-color: var(--opacity-transparent);
+}
+
+.absolute {
+	position: absolute;
+	top: 0;
+	left: 0;
 }

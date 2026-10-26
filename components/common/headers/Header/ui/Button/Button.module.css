@@ -3,6 +3,7 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	padding: 4px 10px;
 
 	font-family: var(--font-family);
 	font-weight: 500;
@@ -10,7 +11,7 @@
 	/* line-height: 24px; */
 	line-height: 1.5;
 
-	@media (min-width: 768px) {
+	@media (min-width: 1440px) {
 		font-size: 18px;
 		/* line-height: 27px; */
 	}
@@ -21,6 +22,41 @@
 	border-radius: 8px;
 
 	background: var(--color-royal-blue);
+
+	color: var(--color-white);
+	fill: var(--color-white);
+}
+
+.secondary,
+.menu {
+	border: 1px solid var(--opacity-neutral-darkest-15);
+	border-radius: 8px;
+
+	background: var(--opacity-white-5);
+
+	color: var(--color-neutral-darkest);
+	fill: var(--color-neutral-darkest);
+}
+
+/*! CUSTOM COMPONENTS */
+
+.menu {
+	padding: 4px;
+
+	@media (min-width: 1440px) {
+		display: none;
+	}
+}
+
+.logout {
+	padding: 0;
+	border: none;
+	background: var(--opacity-transparent);
+}
+
+.homePage {
+	border: 1px solid var(--opacity-transparent);
+	background: var(--opacity-white-10);
 
 	color: var(--color-white);
 	fill: var(--color-white);
@@ -45,18 +81,10 @@
 	opacity: 0.3;
 }
 
-.secondary {
-	border: 1px solid var(--opacity-neutral-darkest-15);
-	border-radius: 8px;
-
-	background: var(--opacity-white-5);
-
-	color: var(--color-neutral-darkest);
-	fill: var(--color-neutral-darkest);
-}
-
 .secondary:hover,
-.secondary:focus {
+.secondary:focus,
+.menu:hover,
+.menu:focus {
 	border: 1px solid var(--opacity-transparent);
 	background: var(--color-scheme-1-accent);
 
@@ -64,7 +92,8 @@
 	fill: var(--color-white);
 }
 
-.secondary:active {
+.secondary:active,
+.menu:active {
 	border: 1px solid var(--opacity-transparent);
 	background: var(--color-royal-blue-darker);
 
@@ -72,19 +101,11 @@
 	fill: var(--color-white);
 }
 
-.secondary:disabled {
+.secondary:disabled,
+.menu:disabled {
 	border: 1px solid var(--opacity-transparent);
 	background: var(--opacity-neutral-darkest-5);
 	opacity: 0.3;
-}
-
-.menu {
-	height: 32px;
-	width: 32px;
-
-	@media (min-width: 1440px) {
-		display: none;
-	}
 }
 
 .homePage {
@@ -109,6 +130,7 @@
 	opacity: 0.3;
 }
 
+/* ! DEFAULT CUSTOM STYLES */
 .custom {
 	display: flex;
 	justify-content: center;

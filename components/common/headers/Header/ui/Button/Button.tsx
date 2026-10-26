@@ -10,7 +10,7 @@ interface ButtonProps {
 	buttonType?: 'button' | 'submit' | 'reset';
 	styleCustomName?: string;
 	linkRoute?: string;
-	linkAreaLabel?: string;
+	ariaLabel?: string;
 	isHomePage?: boolean;
 	handler?: (
 		event: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>,
@@ -23,7 +23,7 @@ export default function Button({
 	styleVariant,
 	styleCustomName = 'custom',
 	linkRoute = '/',
-	linkAreaLabel = '',
+	ariaLabel = '',
 	buttonType = 'submit',
 	isHomePage = false,
 	handler = () => {},
@@ -38,10 +38,11 @@ export default function Button({
 							styleVariant !== 'custom'
 								? css[styleVariant]
 								: css[styleCustomName],
-							styleCustomName === 'menu' && css.secondary,
+							// styleCustomName === 'menu' && css.secondary,
 							styleCustomName === 'menu' && isHomePage && css.homePage,
 						)}
 						type={buttonType}
+						aria-label={ariaLabel}
 						onClick={handler}
 					>
 						{children}
@@ -52,14 +53,14 @@ export default function Button({
 			{semanticVariant === 'link' && (
 				<div className={css.container}>
 					<Link
-						href={linkRoute}
-						aria-label={linkAreaLabel}
 						className={clsx(
 							css.link,
 							styleVariant !== 'custom'
 								? css[styleVariant]
 								: css[styleCustomName],
 						)}
+						href={linkRoute}
+						aria-label={ariaLabel}
 					>
 						{children}
 					</Link>
