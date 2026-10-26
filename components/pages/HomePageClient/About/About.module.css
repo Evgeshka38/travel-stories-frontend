@@ -1,12 +1,12 @@
 .section {
   width: 100%;
+  padding: 64px 20px;
 }
 
 .container {
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
-  padding: 64px 20px;
 
   display: flex;
   flex-direction: column;
@@ -100,7 +100,7 @@
 
 /* Tablet */
 @media (min-width: 768px) {
-  .container {
+  .section {
     padding: 64px 32px;
   }
 
@@ -151,8 +151,12 @@
 
 /* Desktop */
 @media (min-width: 1440px) {
-  .container {
+  .section {
     padding: 72px 64px;
+  }
+
+  .container {
+    padding: 0;
   }
 
   .aboutHeader {
