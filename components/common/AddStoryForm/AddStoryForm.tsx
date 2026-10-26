@@ -2,7 +2,7 @@
 
 import css from './AddStoryForm.module.css';
 import * as Yup from 'yup';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, Field } from 'formik';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
@@ -139,14 +139,19 @@ export default function AddStoryForm() {
               values,
               setFieldValue,
               setFieldTouched,
-              isValid,
-              dirty,
               errors,
               touched,
             }) => {
               const selectedCategory = categories.find(
                 (category) => category._id === values.category,
               );
+              const isSaveDisabled =
+                isSubmitting ||
+                !values.title.trim() ||
+                !values.category ||
+                !values.description.trim() ||
+                !values.content.trim() ||
+                !values.cover;
               return (
                 <Form className={css.storyForm}>
                   <SessionDraft
@@ -167,7 +172,7 @@ export default function AddStoryForm() {
                       <input
                         type="file"
                         id="cover-upload"
-                        accept="image/*"
+                        accept="image/jpeg,image/png,image/webp"
                         hidden
                         onChange={(event: ChangeEvent<HTMLInputElement>) => {
                           const file = event.currentTarget.files?.[0] ?? null;
@@ -323,9 +328,9 @@ export default function AddStoryForm() {
                     <button
                       type="submit"
                       className={`${css.saveBtn} ${
-                        !dirty || !isValid ? css.disabledBtn : ''
+                        isSaveDisabled ? css.disabledBtn : ''
                       }`}
-                      disabled={isSubmitting}
+                      disabled={isSaveDisabled}
                     >
                       {isSubmitting ? 'Збереження...' : 'Зберегти'}
                     </button>
