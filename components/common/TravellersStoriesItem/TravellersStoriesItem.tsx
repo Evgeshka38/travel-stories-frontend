@@ -67,10 +67,9 @@ export default function TravellersStoriesItem() {
           <button
             className={clsx(css.button, css.buttonSquare)}
             type="button"
-            title="Додати в збережені історії | Видалити із збережених історій"
-            aria-label="Додати в збережені історії | Видалити із збережених історій"
-            name="Додати в збережені історії | Видалити із збережених історій"
-            onClick={() => alert('todo')}
+            title="Додати в збережені історії"
+            aria-label="Додати в збережені історії"
+            name="Додати в збережені історії"
           >
             <svg
               className={css.buttonSquareIcon}
