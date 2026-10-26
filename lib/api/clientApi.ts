@@ -39,6 +39,11 @@ export interface CreatedStory {
   date: string;
 }
 
+export interface Category {
+  _id: string;
+  name: string;
+}
+
 export async function register(registerData: RegisterRequest): Promise<void> {
   await nextApi.post('/auth/register', registerData);
 }
