@@ -3,6 +3,7 @@ import css from './TravellersStoriesItem.module.css';
 import Link from 'next/link';
 import clsx from 'clsx';
 import { formatDateFromApi } from '@/lib/util/formatUtils';
+import placeholderImage from '@/public/images/placeholderImage.webp';
 
 type Props = {
   id: string;
@@ -35,7 +36,7 @@ export default function TravellersStoriesItem({
       <Image
         className={css.image}
         alt={'Обкладинка статті ' + title}
-        src={imgUrl}
+        src={imgUrl || placeholderImage}
         width={335}
         height={223}
       />
@@ -49,7 +50,7 @@ export default function TravellersStoriesItem({
           <Image
             className={css.authorImage}
             alt={'Фото автора статті - ' + ownerName}
-            src={ownerAvatarUrl}
+            src={ownerAvatarUrl || placeholderImage}
             width={48}
             height={48}
           />
