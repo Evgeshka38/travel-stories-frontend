@@ -10,6 +10,7 @@ import type { ChangeEvent } from 'react';
 import { createStory, getCategories, type Category } from '@/lib/api/clientApi';
 import toast from 'react-hot-toast';
 import SessionDraft from '../../common/SessionDraft/SessionDraft';
+import Loader from '../Loader/Loader';
 
 interface CreateStoryValues {
   title: string;
@@ -50,6 +51,7 @@ export default function AddStoryForm() {
   const [initialFormValues, setInitialFormValues] =
     useState<CreateStoryValues>(initialValues);
   const [isReady, setIsReady] = useState(false);
+  const [isLoadingCategories, setIsLoadingCategories] = useState(true);
 
   useEffect(() => {
     return () => {
@@ -65,6 +67,8 @@ export default function AddStoryForm() {
       } catch (error) {
         console.error('Не вдалося завантажити категорії:', error);
         toast.error('Не вдалося завантажити категорії');
+      } finally {
+        setIsLoadingCategories(false);
       }
     };
 
@@ -229,6 +233,7 @@ export default function AddStoryForm() {
                       <button
                         type="button"
                         className={css.isOpenCategory}
+                        disabled={isLoadingCategories}
                         onClick={() => {
                           setFieldTouched('category', true);
                           setIsOpenCategory((prev) => !prev);
@@ -239,7 +244,16 @@ export default function AddStoryForm() {
                             : 'Відкрити список категорій'
                         }
                       >
-                        {selectedCategory ? selectedCategory.name : 'Категорія'}
+                        <span className={css.categoryButtonContent}>
+                          {isLoadingCategories ? (
+                            <Loader />
+                          ) : selectedCategory ? (
+                            selectedCategory.name
+                          ) : (
+                            'Категорія'
+                          )}
+                        </span>
+
                         <svg
                           className={`${css.icon} ${isOpenCategory ? css.rotated : ''}`}
                         >
