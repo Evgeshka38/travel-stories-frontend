@@ -44,6 +44,24 @@ export interface Category {
   name: string;
 }
 
+export interface Traveller {
+  _id: string;
+  name: string;
+  avatarUrl: string;
+  articlesAmount: number;
+  description: string;
+}
+
+interface UsersResponse {
+  status: number;
+  message: string;
+  data: {
+    users: Traveller[];
+    total: number;
+  };
+}
+
+
 export async function register(registerData: RegisterRequest): Promise<void> {
   await nextApi.post('/auth/register', registerData);
 }
@@ -77,7 +95,10 @@ export async function createStory(
   return data.data;
 }
 
-export async function getAllUsers() {
-  const { data } = await nextApi.get('/users');
+export async function getUsers(page = 1, limit = 4) {
+  const { data } = await nextApi.get<UsersResponse>('/users', {
+    params: { page, limit },
+  });
+  
   return data.data.users;
 }
