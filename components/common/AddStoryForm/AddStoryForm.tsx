@@ -9,6 +9,7 @@ import Image from 'next/image';
 import type { ChangeEvent } from 'react';
 import { createStory, getCategories, type Category } from '@/lib/api/clientApi';
 import toast from 'react-hot-toast';
+import SessionDraft from '../../common/SessionDraft/SessionDraft';
 
 interface CreateStoryValues {
   title: string;
@@ -44,6 +45,11 @@ export default function AddStoryForm() {
   const [coverPreview, setCoverPreview] = useState('');
   const [categories, setCategories] = useState<Category[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isOpenCategory, setIsOpenCategory] = useState(false);
+
+  const [initialFormValues, setInitialFormValues] =
+    useState<CreateStoryValues>(initialValues);
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
     return () => {
@@ -65,6 +71,29 @@ export default function AddStoryForm() {
     fetchCategories();
   }, []);
 
+  useEffect(() => {
+    const savedDraft = sessionStorage.getItem('add-story-draft');
+
+    if (savedDraft) {
+      try {
+        const draft = JSON.parse(savedDraft);
+
+        setInitialFormValues({
+          ...initialValues,
+          title: draft.title ?? '',
+          category: draft.category ?? '',
+          description: draft.description ?? '',
+          content: draft.content ?? '',
+          cover: null,
+        });
+      } catch {
+        sessionStorage.removeItem('add-story-draft');
+      }
+    }
+
+    setIsReady(true);
+  }, []);
+
   const handleSubmit = async (values: CreateStoryValues) => {
     if (!values.cover) {
       toast.error('Завантажте обкладинку історії');
@@ -81,6 +110,7 @@ export default function AddStoryForm() {
         cover: values.cover,
       });
 
+      sessionStorage.removeItem('add-story-draft');
       toast.success('Історію успішно створено');
       router.push(`/stories/${story._id}`);
     } catch (error) {
@@ -98,169 +128,227 @@ export default function AddStoryForm() {
         <label className={css.formLabel} htmlFor="cover-upload">
           Обкладинка статті
         </label>
+        {isReady && (
+          <Formik
+            initialValues={initialFormValues}
+            validationSchema={createStorySchema}
+            onSubmit={handleSubmit}
+          >
+            {({
+              resetForm,
+              values,
+              setFieldValue,
+              setFieldTouched,
+              isValid,
+              dirty,
+              errors,
+              touched,
+            }) => {
+              const selectedCategory = categories.find(
+                (category) => category._id === values.category,
+              );
+              return (
+                <Form className={css.storyForm}>
+                  <SessionDraft
+                    storageKey="add-story-draft"
+                    fields={['title', 'category', 'description', 'content']}
+                  />
+                  <div className={css.wrapperForm}>
+                    <div className={css.coverSection}>
+                      <div className={css.coverPreview}>
+                        <Image
+                          src={coverPreview || '/images/placeholderImage.webp'}
+                          alt="Попередній перегляд обкладинки"
+                          fill
+                          className={css.image}
+                        />
+                      </div>
 
-        <Formik
-          initialValues={initialValues}
-          validationSchema={createStorySchema}
-          onSubmit={handleSubmit}
-        >
-          {({ values, setFieldValue, isValid, dirty, errors, touched }) => (
-            <Form className={css.storyForm}>
-              <div className={css.wrapperForm}>
-                <div className={css.coverSection}>
-                  <div className={css.coverPreview}>
-                    <Image
-                      src={coverPreview || '/images/placeholderImage.webp'}
-                      alt="Попередній перегляд обкладинки"
-                      fill
-                      className={css.image}
-                    />
+                      <input
+                        type="file"
+                        id="cover-upload"
+                        accept="image/*"
+                        hidden
+                        onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                          const file = event.currentTarget.files?.[0] ?? null;
+
+                          if (file) {
+                            setFieldValue('cover', file, true);
+                            setCoverPreview(URL.createObjectURL(file));
+                          }
+                        }}
+                      />
+
+                      <label htmlFor="cover-upload" className={css.uploadBtn}>
+                        Завантажити фото
+                      </label>
+                      <span
+                        className={`${css.errorMessage} ${
+                          touched.cover && errors.cover ? css.visibleError : ''
+                        }`}
+                      >
+                        {touched.cover && errors.cover ? errors.cover : ''}
+                      </span>
+                    </div>
+
+                    <div
+                      className={`${css.field} ${
+                        touched.title && errors.title ? css.hasError : ''
+                      }`}
+                    >
+                      <label htmlFor="title" className={css.formLabel}>
+                        Заголовок
+                      </label>
+
+                      <Field
+                        className={css.storyInput}
+                        type="text"
+                        id="title"
+                        name="title"
+                        placeholder="Введіть заголовок історії"
+                      />
+
+                      <span className={css.errorMessage}>
+                        {touched.title && errors.title ? errors.title : ''}
+                      </span>
+                    </div>
+
+                    <div
+                      className={`${css.field} ${
+                        touched.category && errors.category ? css.hasError : ''
+                      }`}
+                    >
+                      <label htmlFor="category" className={css.formLabel}>
+                        Категорія
+                      </label>
+                      <button
+                        type="button"
+                        className={css.isOpenCategory}
+                        onClick={() => {
+                          setFieldTouched('category', true);
+                          setIsOpenCategory((prev) => !prev);
+                        }}
+                        aria-label={
+                          isOpenCategory
+                            ? 'Закрити список категорій'
+                            : 'Відкрити список категорій'
+                        }
+                      >
+                        {selectedCategory ? selectedCategory.name : 'Категорія'}
+                        <svg
+                          className={`${css.icon} ${isOpenCategory ? css.rotated : ''}`}
+                        >
+                          <use href="/sprite.svg#icon-arrow-down" />
+                        </svg>
+                      </button>
+                      {isOpenCategory && (
+                        <div className={css.categoryDropdown}>
+                          {categories.map((category) => (
+                            <button
+                              className={css.categoryOption}
+                              type="button"
+                              key={category._id}
+                              onClick={() => {
+                                setFieldValue('category', category._id);
+                                setIsOpenCategory(false);
+                              }}
+                            >
+                              {category.name}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                      <span className={css.errorMessage}>
+                        {touched.category && errors.category
+                          ? errors.category
+                          : ''}
+                      </span>
+                    </div>
+
+                    <div
+                      className={`${css.field} ${css.fieldDescription} ${
+                        touched.description && errors.description
+                          ? css.hasError
+                          : ''
+                      }`}
+                    >
+                      <label htmlFor="description" className={css.formLabel}>
+                        Короткий опис
+                      </label>
+
+                      <Field
+                        as="textarea"
+                        className={css.description}
+                        id="description"
+                        name="description"
+                        maxLength={100}
+                        placeholder="Введіть короткий опис історії"
+                      />
+
+                      <p className={css.charsLeft}>
+                        Лишилось символів: {100 - values.description.length}
+                      </p>
+                      <span className={css.errorMessage}>
+                        {touched.description && errors.description
+                          ? errors.description
+                          : ''}
+                      </span>
+                    </div>
+
+                    <div
+                      className={`${css.field} ${
+                        touched.content && errors.content ? css.hasError : ''
+                      }`}
+                    >
+                      <label htmlFor="content" className={css.formLabel}>
+                        Текст історії
+                      </label>
+
+                      <Field
+                        as="textarea"
+                        className={css.content}
+                        id="content"
+                        name="content"
+                        placeholder="Ваша історія тут"
+                      />
+
+                      <span className={css.errorMessage}>
+                        {touched.content && errors.content
+                          ? errors.content
+                          : ''}
+                      </span>
+                    </div>
                   </div>
+                  <div className={css.actions}>
+                    <button
+                      type="submit"
+                      className={`${css.saveBtn} ${
+                        !dirty || !isValid ? css.disabledBtn : ''
+                      }`}
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting ? 'Збереження...' : 'Зберегти'}
+                    </button>
 
-                  <input
-                    type="file"
-                    id="cover-upload"
-                    accept="image/*"
-                    hidden
-                    onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                      const file = event.currentTarget.files?.[0] ?? null;
-
-                      if (file) {
-                        setFieldValue('cover', file, true);
-                        setCoverPreview(URL.createObjectURL(file));
-                      }
-                    }}
-                  />
-
-                  <label htmlFor="cover-upload" className={css.uploadBtn}>
-                    Завантажити фото
-                  </label>
-                </div>
-
-                <div
-                  className={`${css.field} ${
-                    touched.title && errors.title ? css.hasError : ''
-                  }`}
-                >
-                  <label htmlFor="title" className={css.formLabel}>
-                    Заголовок
-                  </label>
-
-                  <Field
-                    className={css.storyInput}
-                    type="text"
-                    id="title"
-                    name="title"
-                    placeholder="Введіть заголовок історії"
-                  />
-
-                  <span className={css.errorMessage}>
-                    {touched.title && errors.title ? errors.title : ''}
-                  </span>
-                </div>
-
-                <div
-                  className={`${css.field} ${
-                    touched.category && errors.category ? css.hasError : ''
-                  }`}
-                >
-                  <label htmlFor="category" className={css.formLabel}>
-                    Категорія
-                  </label>
-
-                  <Field
-                    as="select"
-                    className={css.storyInput}
-                    id="category"
-                    name="category"
-                  >
-                    <option value="" disabled>
-                      Категорія
-                    </option>
-                    {categories.map((category) => (
-                      <option key={category._id} value={category._id}>
-                        {category.name}
-                      </option>
-                    ))}
-                  </Field>
-
-                  <span className={css.errorMessage}>
-                    {touched.category && errors.category ? errors.category : ''}
-                  </span>
-                </div>
-
-                <div
-                  className={`${css.field} ${css.fieldDescription} ${
-                    touched.description && errors.description
-                      ? css.hasError
-                      : ''
-                  }`}
-                >
-                  <label htmlFor="description" className={css.formLabel}>
-                    Короткий опис
-                  </label>
-
-                  <Field
-                    as="textarea"
-                    className={css.description}
-                    id="description"
-                    name="description"
-                    maxLength={100}
-                    placeholder="Введіть короткий опис історії"
-                  />
-
-                  <p className={css.charsLeft}>
-                    Лишилось символів: {100 - values.description.length}
-                  </p>
-                  <span className={css.errorMessage}>
-                    {touched.description && errors.description
-                      ? errors.description
-                      : ''}
-                  </span>
-                </div>
-
-                <div
-                  className={`${css.field} ${
-                    touched.content && errors.content ? css.hasError : ''
-                  }`}
-                >
-                  <label htmlFor="content" className={css.formLabel}>
-                    Текст історії
-                  </label>
-
-                  <Field
-                    as="textarea"
-                    className={css.content}
-                    id="content"
-                    name="content"
-                    placeholder="Ваша історія тут"
-                  />
-
-                  <span className={css.errorMessage}>
-                    {touched.content && errors.content ? errors.content : ''}
-                  </span>
-                </div>
-              </div>
-              <div className={css.actions}>
-                <button
-                  type="submit"
-                  className={css.saveBtn}
-                  disabled={!dirty || !isValid || isSubmitting}
-                >
-                  {isSubmitting ? 'Збереження...' : 'Зберегти'}
-                </button>
-
-                <button
-                  type="button"
-                  className={css.cancelBtn}
-                  onClick={() => router.back()}
-                >
-                  Відмінити
-                </button>
-              </div>
-            </Form>
-          )}
-        </Formik>
+                    <button
+                      type="button"
+                      className={css.cancelBtn}
+                      onClick={() => {
+                        resetForm({ values: initialValues });
+                        setInitialFormValues(initialValues);
+                        setCoverPreview('');
+                        setIsOpenCategory(false);
+                        sessionStorage.removeItem('add-story-draft');
+                      }}
+                    >
+                      Відмінити
+                    </button>
+                  </div>
+                </Form>
+              );
+            }}
+          </Formik>
+        )}
       </div>
     </section>
   );
