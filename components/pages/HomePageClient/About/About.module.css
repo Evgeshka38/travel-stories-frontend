@@ -104,10 +104,6 @@
     line-height: 1.5;
   }
 
-  .content {
-    gap: 64px;
-  }
-
   .features {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -115,6 +111,8 @@
     row-gap: 32px;
   }
 }
+
+/* Desktop */
 @media (min-width: 1440px) {
   .container {
     padding: 72px 64px;
