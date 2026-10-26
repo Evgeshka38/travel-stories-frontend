@@ -2,6 +2,8 @@ import TravellersStoriesItem from '../TravellersStoriesItem/TravellersStoriesIte
 import css from './PopularStories.module.css';
 
 export default function PopularStories() {
+  const isTablet = false; // todo: useEffect
+
   return (
     <div className={css.container}>
       <h2 className={css.title}>Популярні історії</h2>
@@ -16,6 +18,11 @@ export default function PopularStories() {
         <li className={css.popularStoriesListItem}>
           <TravellersStoriesItem />
         </li>
+        {isTablet && (
+          <li className={css.popularStoriesListItem}>
+            <TravellersStoriesItem />
+          </li>
+        )}
       </ul>
     </div>
   );
