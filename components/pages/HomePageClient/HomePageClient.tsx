@@ -1,7 +1,7 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
-import { getAllUsers } from '@/lib/api/clientApi';
+import { getUsers } from '@/lib/api/clientApi';
 import css from './HomePageClient.module.css';
 import About from './About/About';
 import Hero from './Hero/Hero';
@@ -13,8 +13,8 @@ export default function HomePageClient() {
   const { data: user, isLoading } = useCurrentUser();
 
   const { data: travellers = [] } = useQuery({
-    queryKey: ['travellers'],
-    queryFn: getAllUsers,
+    queryKey: ['travellers', 'home', 1, 4],
+    queryFn: () => getUsers(1, 4),
   });
 
   return (
