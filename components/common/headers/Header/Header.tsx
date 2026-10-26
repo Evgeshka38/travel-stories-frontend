@@ -32,8 +32,8 @@ export default function Header() {
 
   const isHomePage = pathname === '/';
   const isAuth = pathname === '/auth/register' || pathname === '/auth/login';
-  // const isAuthenticated = user ? true : false; //! original
-  const isAuthenticated = true; //! test
+  const isAuthenticated = user ? true : false; //! original
+  // const isAuthenticated = true; //! test
 
   const navLinks = isAuthenticated
     ? [
