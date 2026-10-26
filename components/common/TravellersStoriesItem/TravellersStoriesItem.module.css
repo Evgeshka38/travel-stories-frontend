@@ -1,0 +1,211 @@
+.container {
+  max-width: 335px;
+  border-radius: 16px;
+  overflow: hidden;
+
+  background: var(--color-scheme-2-foreground);
+
+  @media (min-width: 768px) {
+    max-width: 340px;
+  }
+
+  @media (min-width: 1440px) {
+    max-width: 421px;
+  }
+}
+
+.image {
+  width: 335px;
+  height: 223px;
+  object-fit: cover;
+
+  @media (min-width: 768px) {
+    width: 340px;
+    height: 226px;
+  }
+
+  @media (min-width: 1440px) {
+    width: 421px;
+    height: 280px;
+  }
+}
+
+.infoContainer {
+  padding: 24px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.mainText {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.category {
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--color-neutral-darkest);
+
+  @media (min-width: 1440px) {
+    font-size: 16px;
+  }
+}
+
+.title {
+  height: 54px;
+  font-weight: 700;
+  font-size: 18px;
+
+  /* todo: note: limit lines not well supported but its how it is done in the design */
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  color: var(--color-scheme-1-text);
+
+  @media (min-width: 1440px) {
+    height: 78px;
+    font-size: 26px;
+  }
+}
+
+.description {
+  /* todo: note: limit lines fallback */
+  height: 72px;
+  overflow: hidden;
+  /* `text-overflow: ellipsis;` works if  `white-space: wrap;` */
+
+  /* todo: note: limit lines not well supported but its how it is done in the design */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+
+  color: var(--color-scheme-1-text);
+
+  @media (min-width: 1440px) {
+    height: 81px;
+    font-size: 18px;
+  }
+}
+
+.details {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.authorImage {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+
+.detailsRight {
+}
+
+.authorName {
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--color-scheme-1-text);
+
+  @media (min-width: 1440px) {
+    font-size: 16px;
+  }
+}
+
+.detailsLine {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 8px;
+}
+
+.date {
+  font-size: 12px;
+  color: var(--color-scheme-1-text);
+
+  @media (min-width: 1440px) {
+    font-size: 16px;
+  }
+}
+
+.decorationDot::after {
+  /* todo? set content to none and use bg color and border radius */
+  content: '•';
+  color: var(--color-scheme-1-text);
+
+  @media (min-width: 1440px) {
+    font-size: 20px;
+  }
+}
+
+.favoriteWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: row;
+  gap: 2px;
+}
+
+.favoriteCount {
+  font-size: 12px;
+  color: var(--color-scheme-1-text);
+
+  @media (min-width: 1440px) {
+    font-size: 16px;
+  }
+}
+
+.actions {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.button {
+  padding: 12px 6px;
+  border: none;
+  border-radius: 8px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: var(--opacity-neutral-darkest-5);
+  outline: 1px solid var(--color-scheme-2-border);
+
+  font-family: var(--font-family);
+  font-weight: 500;
+  color: var(--color-neutral-darkest);
+
+  transition-property: background-color, outline, color;
+  transition-duration: 200ms;
+  transition-timing-function: ease;
+
+  &:hover,
+  &:focus {
+    background-color: var(--color-royal-blue);
+    outline: 1px solid var(--opacity-transparent);
+    color: var(--color-white);
+  }
+
+  &:active {
+    background-color: var(--color-royal-blue-darker);
+    outline: 1px solid var(--opacity-transparent);
+    color: var(--color-white);
+  }
+}
+
+.buttonWide {
+  flex: 1;
+}
+
+.buttonSquare {
+  padding: 12px;
+}
