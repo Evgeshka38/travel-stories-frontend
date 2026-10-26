@@ -89,4 +89,21 @@
 
   font-weight: 500;
   color: var(--color-white);
+
+  transition-property: background-color, outline, color;
+  transition-duration: 200ms;
+  transition-timing-function: ease;
+
+  &:hover,
+  &:focus {
+    background-color: var(--color-royal-blue-lighter);
+    outline: 1px solid var(--color-royal-blue);
+    color: var(--color-scheme-2-text);
+  }
+
+  &:active {
+    background-color: var(--color-royal-blue-light);
+    outline: 1px solid var(--color-royal-blue);
+    color: var(--color-scheme-2-text);
+  }
 }
