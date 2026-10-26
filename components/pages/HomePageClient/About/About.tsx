@@ -3,20 +3,22 @@ import css from './About.module.css';
 export default function About() {
   return (
     <section className={css.container}>
-      <h2 className={css.title}>
-        Проєкт, створений для тих, хто живе подорожами
-      </h2>
-
       <div className={css.content}>
-        <div className={css.description}>
-          <p>
+        <div className={css.aboutHeader}>
+          <h2 className={css.title}>
+            Проєкт, створений для тих, хто живе подорожами
+          </h2>
+
+          <p className={css.description}>
             Ми віримо, що кожна подорож — це унікальна історія, варта того, щоб
             нею поділилися. Наша платформа створена, щоб об&apos;єднати людей,
             закоханих у відкриття нового. Тут ви можете ділитися власним
             досвідом, знаходити друзів та надихатися на наступні пригоди разом з
             нами.
           </p>
+        </div>
 
+        <div className={css.features}>
           <div className={css.feature}>
             <div className={css.featureHeading}>
               <svg className={css.icon} aria-hidden="true">
