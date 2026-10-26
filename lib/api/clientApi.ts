@@ -76,3 +76,7 @@ export async function createStory(
 
   return data.data;
 }
+
+export async function logout(): Promise<void> {
+  await nextApi.post('/auth/logout');
+}
