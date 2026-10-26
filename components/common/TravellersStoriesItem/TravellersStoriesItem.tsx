@@ -1,50 +1,67 @@
 import Image from 'next/image';
 import css from './TravellersStoriesItem.module.css';
 import Link from 'next/link';
-
-import storyImg from '@/public/images/story_1.webp';
-import avatarImg from '@/public/images/avatar_1.webp';
 import clsx from 'clsx';
+import { formatDateFromApi } from '@/lib/util/formatUtils';
 
-export default function TravellersStoriesItem() {
+type Props = {
+  id: string;
+
+  imgUrl: string;
+  categoryName: string;
+  title: string;
+  article: string;
+
+  ownerAvatarUrl: string;
+  ownerName: string;
+
+  date: string;
+  favoriteCount: number;
+};
+
+export default function TravellersStoriesItem({
+  id,
+  imgUrl,
+  categoryName,
+  title,
+  article,
+  ownerAvatarUrl,
+  ownerName,
+  date,
+  favoriteCount,
+}: Props) {
   return (
     <article className={css.container}>
       <Image
         className={css.image}
-        alt="Будівлі побудовані на воді"
-        src={storyImg}
+        alt={'Обкладинка статті ' + title}
+        src={imgUrl}
         width={335}
         height={223}
       />
       <div className={css.infoContainer}>
         <header className={css.mainText}>
-          <p className={css.category}>Європа</p>
-          <h3 className={css.title}>
-            Венеція без туристів: маршрути для справжніх мандрівників
-          </h3>
-          <p className={css.description}>
-            Венеція — це не лише площа Святого Марка і гондоли на Канале Ґранде.
-            Ми вирішили дослідити місто з іншого боку — вулицями, де не ходять
-            натовпи
-          </p>
+          <p className={css.category}>{categoryName}</p>
+          <h3 className={css.title}>{title}</h3>
+          <p className={css.description}>{article}</p>
         </header>
         <footer className={css.details}>
           <Image
             className={css.authorImage}
-            alt="Жінка із русявим волоссям"
-            src={avatarImg}
+            alt={'Фото автора статті - ' + ownerName}
+            src={ownerAvatarUrl}
             width={48}
             height={48}
           />
           <div className={css.detailsRight}>
-            <span className={css.authorName}>Анастасія Олійник</span>
+            <span className={css.authorName}>{ownerName}</span>
             <div className={css.detailsLine}>
-              <time className={css.date} dateTime="2025-03-27">
-                27.03.2025
+              <time className={css.date} dateTime={date}>
+                {formatDateFromApi(date)}
               </time>
               <span className={css.decorationDot} aria-hidden="true" />
               <span className={css.favoriteWrapper}>
-                <span className={css.favoriteCount}>5</span>
+                <span className={css.favoriteCount}>{favoriteCount}</span>
                 <svg
                   width="16"
                   height="16"
@@ -59,7 +76,7 @@ export default function TravellersStoriesItem() {
         </footer>
         <div className={css.actions}>
           <Link
-            href="/stories/123"
+            href={'/stories/' + id}
             className={clsx(css.button, css.buttonWide)}
           >
             Переглянути статтю
