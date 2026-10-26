@@ -13,21 +13,24 @@
 
 .hero {
   width: 100%;
-  margin-top: 124px;
-  margin-bottom: 331px;
+  padding-top: 196px;
+  padding-bottom: 331px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: #505052;
+
+  background-image: url(/images/hero_2x.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 
   @media screen and (min-width: 768px) {
     align-items: flex-start;
-    margin-top: 172px;
-    margin-bottom: 117px;
+    padding-top: 244px;
+    padding-bottom: 117px;
   }
   @media screen and (min-width: 1440px) {
-    margin-top: 172px;
-    margin-bottom: 347px;
+    padding-bottom: 347px;
   }
 }
 
@@ -44,7 +47,7 @@
 }
 
 .heroTitle {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-inter);
   font-weight: 700;
   font-size: 32px;
   line-height: 1.1;
@@ -62,7 +65,7 @@
 }
 
 .heroText {
-  font-family: 'Nunito Sans', sans-serif;
+  font-family: var(--font-nunito-sans);
   font-weight: 400;
   font-size: 16px;
   line-height: 1.5;
@@ -110,7 +113,7 @@
   max-width: 335px;
   height: 39px;
   background: #4169e1;
-  font-family: 'Nunito Sans', sans-serif;
+  font-family: var(--font-nunito-sans);
   font-weight: 500;
   font-size: 16px;
   line-height: 1.5;

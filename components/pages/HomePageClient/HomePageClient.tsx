@@ -9,7 +9,9 @@ import Join from './Join/Join';
 export default function HomePageClient() {
   return (
     <div className={css.container}>
-      <h1 style={{ color: 'red' }}>HomePageClient</h1>
+      <h1 className={css.homePageHeading} style={{ color: 'red' }}>
+        HomePageClient
+      </h1>
       <Hero />
       <About />
       <PopularStoriesSection />
