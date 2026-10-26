@@ -183,6 +183,23 @@
   font-family: var(--font-family);
   font-weight: 500;
   color: var(--color-neutral-darkest);
+
+  transition-property: background-color, outline, color;
+  transition-duration: 200ms;
+  transition-timing-function: ease;
+
+  &:hover,
+  &:focus {
+    background-color: var(--color-royal-blue);
+    outline: 1px solid var(--opacity-transparent);
+    color: var(--color-white);
+  }
+
+  &:active {
+    background-color: var(--color-royal-blue-darker);
+    outline: 1px solid var(--opacity-transparent);
+    color: var(--color-white);
+  }
 }
 
 .buttonWide {
