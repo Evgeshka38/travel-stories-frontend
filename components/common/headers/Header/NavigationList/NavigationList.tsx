@@ -17,7 +17,10 @@ export default function NavigationList({
     <div className={clsx(css.container, isHomePage && css.homePageStyles)}>
       <ul className={css.navList}>
         {navItems.map(({ linkRoute, linkText }) => (
-          <li key={linkRoute} className={css.navItem}>
+          <li
+            key={linkRoute}
+            className={clsx(css.navItem, isHomePage && css.homePage)}
+          >
             <Link
               className={clsx(css.navLink, isHomePage && css.homePageStyles)}
               href={linkRoute}
