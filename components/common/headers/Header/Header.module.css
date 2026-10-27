@@ -195,10 +195,19 @@
 
 .homePageStyles {
   background: var(--opacity-transparent);
+  color: var(--color-royal-blue-lightest);
+  fill: var(--color-royal-blue-lightest);
+}
+
+.homePageStyles .divider {
+  border: 1px solid var(--opacity-white-15);
 }
 
 .container.menuOpen {
   background: var(--color-royal-blue-lightest);
+  @media (min-width: 1440px) {
+    background: var(--opacity-transparent);
+  }
 }
 
 .container.auth {

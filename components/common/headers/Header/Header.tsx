@@ -36,6 +36,22 @@ export default function Header() {
   //   };
   // }, [isMenuOpen]);
 
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(min-width: 1440px)');
+
+    const handleChange = (event: MediaQueryListEvent) => {
+      if (event.matches) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    mediaQuery.addEventListener('change', handleChange);
+
+    return () => {
+      mediaQuery.removeEventListener('change', handleChange);
+    };
+  }, []);
+
   const publicNavLinks: NavLink[] = [
     {
       linkText: 'Головна',
@@ -68,7 +84,6 @@ export default function Header() {
   const toggleMenuOpen = () => {
     setIsMenuOpen((prev) => !prev);
   };
-  //!!!!!!!!!!!!!!!!!!!!!!
   const menuClose = () => setIsMenuOpen(false);
 
   const handleLogout = () => {
@@ -189,6 +204,7 @@ export default function Header() {
                   className={clsx(
                     css.authControls,
                     isAuthenticated && css.displayOff,
+                    isHomePage && css.homePageStyles,
                   )}
                 >
                   <Button
