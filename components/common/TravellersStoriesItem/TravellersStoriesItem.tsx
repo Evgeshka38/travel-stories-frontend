@@ -1,9 +1,105 @@
+import Image from 'next/image';
 import css from './TravellersStoriesItem.module.css';
+import Link from 'next/link';
+import clsx from 'clsx';
+import { formatDateFromApi } from '@/lib/util/formatUtils';
 
-export default function TravellersStoriesItem() {
+type Props = {
+  id: string;
+
+  imgUrl: string;
+  categoryName: string;
+  title: string;
+  article: string;
+
+  ownerAvatarUrl: string;
+  ownerName: string;
+
+  date: string;
+  favoriteCount: number;
+};
+
+export default function TravellersStoriesItem({
+  id,
+  imgUrl,
+  categoryName,
+  title,
+  article,
+  ownerAvatarUrl,
+  ownerName,
+  date,
+  favoriteCount,
+}: Props) {
   return (
-    <div className={css.container}>
-      <h2>TravellersStoriesItem</h2>
-    </div>
+    <article className={css.container}>
+      <Image
+        className={css.image}
+        alt={'Обкладинка статті ' + title}
+        src={imgUrl}
+        width={335}
+        height={223}
+      />
+      <div className={css.infoContainer}>
+        <header className={css.mainText}>
+          <p className={css.category}>{categoryName}</p>
+          <h3 className={css.title}>{title}</h3>
+          <p className={css.description}>{article}</p>
+        </header>
+        <footer className={css.details}>
+          <Image
+            className={css.authorImage}
+            alt={'Фото автора статті - ' + ownerName}
+            src={ownerAvatarUrl}
+            width={48}
+            height={48}
+          />
+          <div className={css.detailsRight}>
+            <span className={css.authorName}>{ownerName}</span>
+            <div className={css.detailsLine}>
+              <time className={css.date} dateTime={date}>
+                {formatDateFromApi(date)}
+              </time>
+              <span className={css.decorationDot} aria-hidden="true" />
+              <span className={css.favoriteWrapper}>
+                <span className={css.favoriteCount}>{favoriteCount}</span>
+                <svg
+                  width="16"
+                  height="16"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <use href={'/sprite.svg#icon-bookmark'} />
+                </svg>
+              </span>
+            </div>
+          </div>
+        </footer>
+        <div className={css.actions}>
+          <Link
+            href={'/stories/' + id}
+            className={clsx(css.button, css.buttonWide)}
+          >
+            Переглянути статтю
+          </Link>
+          <button
+            className={clsx(css.button, css.buttonSquare)}
+            type="button"
+            title="Додати в збережені історії"
+            aria-label="Додати в збережені історії"
+            name="Додати в збережені історії"
+          >
+            <svg
+              className={css.buttonSquareIcon}
+              width="24"
+              height="24"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <use href={'/sprite.svg#icon-bookmark'} />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </article>
   );
 }

@@ -1,0 +1,51 @@
+.container {
+  max-width: 335px;
+  margin: auto;
+
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  @media (min-width: 768px) {
+    max-width: 704px;
+  }
+
+  @media (min-width: 1440px) {
+    max-width: 1312px;
+    gap: 40px;
+  }
+}
+
+.title {
+  font-family: var(--second-family);
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--color-scheme-1-text);
+
+  @media (min-width: 768px) {
+    font-size: 44px;
+  }
+
+  @media (min-width: 1440px) {
+    font-size: 52px;
+  }
+}
+
+.popularStoriesList {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+
+.popularStoriesListItem:nth-child(n + 4) {
+  @media (max-width: 767px) or (min-width: 1440px) {
+    display: none;
+  }
+}

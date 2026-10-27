@@ -2,8 +2,8 @@ import css from './About.module.css';
 
 export default function About() {
   return (
-    <section className={css.container}>
-      <div className={css.content}>
+    <section className={css.section}>
+      <div className={css.container}>
         <div className={css.aboutHeader}>
           <h2 className={css.title}>
             Проєкт, створений для тих, хто живе подорожами
@@ -24,8 +24,10 @@ export default function About() {
               <svg className={css.icon} aria-hidden="true">
                 <use href="/sprite.svg#icon-wand-stars" />
               </svg>
+
               <h3>Наша місія</h3>
             </div>
+
             <p>
               Об&apos;єднувати людей через любов до пригод та надихати на нові
               відкриття.
@@ -37,8 +39,10 @@ export default function About() {
               <svg className={css.icon} aria-hidden="true">
                 <use href="/sprite.svg#icon-luggage" />
               </svg>
+
               <h3>Автентичні історії</h3>
             </div>
+
             <p>
               Ми цінуємо справжні, нередаговані враження від мандрівників з
               усього світу.
@@ -50,8 +54,10 @@ export default function About() {
               <svg className={css.icon} aria-hidden="true">
                 <use href="/sprite.svg#icon-communication" />
               </svg>
+
               <h3>Ваша спільнота</h3>
             </div>
+
             <p>
               Станьте частиною спільноти, де кожен може бути і автором, і
               читачем.
