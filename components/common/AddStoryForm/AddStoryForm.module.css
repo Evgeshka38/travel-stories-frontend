@@ -383,3 +383,9 @@ img {
 .rotated {
   transform: rotate(180deg);
 }
+.categoryButtonContent {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

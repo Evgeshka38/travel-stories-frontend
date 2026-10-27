@@ -44,7 +44,7 @@
   }
 }
 
-.tabletOnly {
+.popularStoriesListItem:nth-child(n + 4) {
   @media (max-width: 767px) or (min-width: 1440px) {
     display: none;
   }
