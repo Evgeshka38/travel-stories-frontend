@@ -126,7 +126,7 @@ export default function Header() {
         <div
           className={clsx(
             css.container,
-            isHomePage && css.homePageStyles,
+            !isMenuOpen && isHomePage && css.homePageStyles,
             isMenuOpen && css.menuOpen,
             isAuth && css.auth,
           )}
@@ -171,6 +171,7 @@ export default function Header() {
                   buttonType="button"
                   ariaLabel={isMenuOpen ? 'Закрити меню' : 'Відкрити меню'}
                   isHomePage={isHomePage}
+                  isMenuOpen={isMenuOpen}
                   handler={toggleMenuOpen}
                 >
                   {isMenuOpen ? (
@@ -273,6 +274,8 @@ export default function Header() {
                     buttonType="button"
                     ariaLabel="Вихід з профілю"
                     handler={handleLogout}
+                    isHomePage={isHomePage}
+                    isMenuOpen={isMenuOpen}
                   >
                     <svg className={css.logoutIcon} width="24" height="24">
                       <use href="/sprite.svg#icon-logout" aria-hidden="true" />

@@ -180,7 +180,7 @@
 
 .menu.menuOpen {
   display: flex;
-  height: 100vh;
+  height: calc(100dvh - 72px);
   width: 100vw;
   background: var(--color-royal-blue-lightest);
   color: var(--color-neutral-darkest);
