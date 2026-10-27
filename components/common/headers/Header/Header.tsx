@@ -28,13 +28,13 @@ export default function Header() {
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
-  // useEffect(() => {
-  //   document.body.style.overflow = isMenuOpen ? 'hidden' : '';
+  useEffect(() => {
+    if (isMenuOpen) document.documentElement.style.overflow = 'hidden';
 
-  //   return () => {
-  //     document.body.style.overflow = '';
-  //   };
-  // }, [isMenuOpen]);
+    return () => {
+      document.documentElement.style.overflow = '';
+    };
+  }, [isMenuOpen]);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(min-width: 1440px)');
