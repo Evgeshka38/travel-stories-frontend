@@ -138,3 +138,7 @@
     font-size: 18px;
   }
 }
+.isHidden {
+  visibility: hidden;
+  pointer-events: none;
+}
