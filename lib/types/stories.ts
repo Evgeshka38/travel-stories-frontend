@@ -6,15 +6,15 @@ export interface PopularStory {
   category: {
     _id: string;
     name: string;
-  };
+  } | null;
   ownerId: {
     _id: string;
     name: string;
     avatarUrl: string;
-  };
+  } | null;
   date: string;
   favoriteCount: number;
-};
+}
 
 export interface GetPopularStoriesResponse {
   status: number;
@@ -26,4 +26,4 @@ export interface GetPopularStoriesResponse {
     totalItems: number;
     hasNextPage: boolean;
   };
-};
+}

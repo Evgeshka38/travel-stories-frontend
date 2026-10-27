@@ -59,9 +59,7 @@ interface UsersResponse {
   };
 }
 
-export async function register(
-  registerData: RegisterRequest,
-): Promise<void> {
+export async function register(registerData: RegisterRequest): Promise<void> {
   await nextApi.post('/auth/register', registerData);
 }
 
@@ -70,7 +68,7 @@ export async function login(loginData: LoginRequest): Promise<void> {
 }
 
 export async function getCurrentUser(): Promise<CurrentUser | null> {
-  const { data } = await nextApi.get('/auth/session');
+  const { data } = await nextApi.get('/users/me');
 
   return data.data;
 }
@@ -96,10 +94,7 @@ export async function createStory(
   return data.data;
 }
 
-export async function getUsers(
-  page = 1,
-  limit = 4,
-): Promise<Traveller[]> {
+export async function getUsers(page = 1, limit = 4): Promise<Traveller[]> {
   const { data } = await nextApi.get<UsersResponse>('/users', {
     params: { page, limit },
   });
@@ -126,4 +121,26 @@ export async function getPopularStories(
   );
 
   return data;
+}
+
+export async function getSavedStories(
+  page = 1,
+  perPage = 12,
+): Promise<GetPopularStoriesResponse> {
+  const { data } = await nextApi.get<GetPopularStoriesResponse>(
+    '/stories/saved',
+    {
+      params: { page, perPage },
+    },
+  );
+
+  return data;
+}
+
+export async function addFavoriteStory(storyId: string): Promise<void> {
+  await nextApi.patch(`/stories/favorite/add/${storyId}`);
+}
+
+export async function removeFavoriteStory(storyId: string): Promise<void> {
+  await nextApi.patch(`/stories/favorite/remove/${storyId}`);
 }

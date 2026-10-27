@@ -8,6 +8,8 @@ import { useCurrentUser } from '@/hooks/useCurrentUser';
 import toast from 'react-hot-toast';
 import { useState } from 'react';
 import AuthNavModal from '../modals/AuthNavModal/AuthNavModal';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { addFavoriteStory } from '@/lib/api/clientApi';
 
 type Props = {
   id: string;
@@ -41,22 +43,36 @@ export default function TravellersStoriesItem({
   const { data: currentUser } = useCurrentUser();
   const [isAuthNavModalShown, setAuthNavModalShown] = useState<boolean>(false);
 
-  function handleButtonSquareIconClick() {
-    const canSave = !!currentUser;
+  const queryClient = useQueryClient();
 
-    // todo api req
-    if (canSave) {
-      toast.success('saving');
-    } else {
-      toast.error('you need to log in');
+  const saveMutation = useMutation({
+    mutationFn: () => addFavoriteStory(id),
+    onSuccess: async () => {
+      toast.success('Історію збережено!');
+      await queryClient.invalidateQueries({
+        queryKey: ['savedStories'],
+      });
+    },
+    onError: () => {
+      toast.error('Не вдалося зберегти історію');
+    },
+  });
+
+  function handleButtonSquareIconClick() {
+    if (!currentUser) {
+      toast.error('Увійди в акаунт, щоб зберігати історії');
       setAuthNavModalShown(true);
+      return;
     }
+
+    saveMutation.mutate();
   }
 
   return (
     <>
       <article className={css.container}>
         <Image
+          unoptimized
           className={css.image}
           alt={'Обкладинка статті ' + title}
           src={imgUrl || placeholderImage}
@@ -71,6 +87,7 @@ export default function TravellersStoriesItem({
           </header>
           <footer className={css.details}>
             <Image
+              unoptimized
               className={css.authorImage}
               alt={'Фото автора статті - ' + ownerName}
               src={ownerAvatarUrl || placeholderImage}
@@ -110,6 +127,7 @@ export default function TravellersStoriesItem({
             <button
               className={clsx(css.button, css.buttonSquare)}
               type="button"
+              disabled={saveMutation.isPending}
               title="Додати в збережені історії"
               aria-label="Додати в збережені історії"
               name="Додати в збережені історії"

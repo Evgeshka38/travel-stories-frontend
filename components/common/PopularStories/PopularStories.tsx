@@ -20,11 +20,11 @@ export default function PopularStories() {
               <TravellersStoriesItem
                 id={story._id}
                 imgUrl={story.img}
-                categoryName={story.category.name}
+                categoryName={story.category?.name ?? 'Без категорії'}
                 title={story.title}
                 article={story.article}
-                ownerAvatarUrl={story.ownerId.avatarUrl}
-                ownerName={story.ownerId.name}
+                ownerAvatarUrl={story.ownerId?.avatarUrl ?? ''}
+                ownerName={story.ownerId?.name ?? 'Невідомий автор'}
                 date={story.date}
                 favoriteCount={story.favoriteCount}
                 variant="save"
