@@ -105,7 +105,7 @@ export default function Header() {
               href="/"
               aria-label="Домашня сторінка"
             >
-              <svg className={css.logoIcon} width="auto" height="auto">
+              <svg className={css.logoIcon} width={156} height={40}>
                 <use
                   href={isHomePage ? '/sprite.svg#icon-logo-home' : '/logo.svg'}
                   aria-hidden="true"

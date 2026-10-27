@@ -17,7 +17,7 @@ export default function NavigationList({
         {navItems.map(({ linkRoute, linkText }) => (
           <li key={linkRoute} className={css.navItem}>
             <Link
-              className={css.navLink}
+              className={clsx(css.navLink, isHomePage && css.homePageStyles)}
               href={linkRoute}
               aria-label={linkText}
             >

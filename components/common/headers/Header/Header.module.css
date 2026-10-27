@@ -136,7 +136,7 @@
 }
 
 .userControls {
-  display: flex;
+  display: none;
   align-items: center;
   gap: 8px;
 }
@@ -195,7 +195,7 @@
     position: static;
     width: auto;
     height: auto;
-    /* background: var(--opacity-transparent); */
+    background: var(--opacity-transparent);
   }
 }
 
