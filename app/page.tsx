@@ -1,11 +1,16 @@
 import { Metadata } from 'next';
-import css from './HomePage.module.css';
-import HomePageClient from '@/components/pages/HomePageClient/HomePageClient';
 import {
   dehydrate,
   HydrationBoundary,
   QueryClient,
 } from '@tanstack/react-query';
+
+import css from './HomePage.module.css';
+import HomePageClient from '@/components/pages/HomePageClient/HomePageClient';
+import {
+  getPopularStoriesServer,
+  getUsersServer,
+} from '@/lib/api/serverApi';
 
 export const metadata: Metadata = {
   title: 'HomePage',
@@ -15,14 +20,19 @@ export default async function HomePage() {
   const queryClient = new QueryClient();
 
   await Promise.all([
-    queryClient.prefetchQuery({
-      queryKey: ['test1'],
-      queryFn: async () => 'test1',
-    }),
-    queryClient.prefetchQuery({
-      queryKey: ['test2'],
-      queryFn: async () => 'test2',
-    }),
+    queryClient
+      .query({
+        queryKey: ['travellers', 'home', 1, 4],
+        queryFn: () => getUsersServer(1, 4),
+      })
+      .catch(() => undefined),
+
+    queryClient
+      .query({
+        queryKey: ['popularStories', 1, 4],
+        queryFn: () => getPopularStoriesServer(1, 4),
+      })
+      .catch(() => undefined),
   ]);
 
   return (
