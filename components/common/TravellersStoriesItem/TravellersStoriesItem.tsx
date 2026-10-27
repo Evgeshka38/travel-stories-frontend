@@ -4,6 +4,10 @@ import Link from 'next/link';
 import clsx from 'clsx';
 import { formatDateFromApi } from '@/lib/util/formatUtils';
 import placeholderImage from '@/public/images/placeholderImage.webp';
+import { useCurrentUser } from '@/hooks/useCurrentUser';
+import toast from 'react-hot-toast';
+import { useState } from 'react';
+import AuthNavModal from '../modals/AuthNavModal/AuthNavModal';
 
 type Props = {
   id: string;
@@ -34,80 +38,101 @@ export default function TravellersStoriesItem({
   favoriteCount,
   variant,
 }: Props) {
+  const { data: currentUser } = useCurrentUser();
+  const [isAuthNavModalShown, setAuthNavModalShown] = useState<boolean>(false);
+
+  function handleButtonSquareIconClick() {
+    const canSave = !!currentUser;
+
+    // todo api req
+    if (canSave) {
+      toast.success('saving');
+    } else {
+      toast.error('you need to log in');
+      setAuthNavModalShown(true);
+    }
+  }
+
   return (
-    <article className={css.container}>
-      <Image
-        className={css.image}
-        alt={'Обкладинка статті ' + title}
-        src={imgUrl || placeholderImage}
-        width={335}
-        height={223}
-      />
-      <div className={css.infoContainer}>
-        <header className={css.mainText}>
-          <p className={css.category}>{categoryName}</p>
-          <h3 className={css.title}>{title}</h3>
-          <p className={css.description}>{article}</p>
-        </header>
-        <footer className={css.details}>
-          <Image
-            className={css.authorImage}
-            alt={'Фото автора статті - ' + ownerName}
-            src={ownerAvatarUrl || placeholderImage}
-            width={48}
-            height={48}
-          />
-          <div className={css.detailsRight}>
-            <span className={css.authorName}>{ownerName}</span>
-            <div className={css.detailsLine}>
-              <time className={css.date} dateTime={date}>
-                {formatDateFromApi(date)}
-              </time>
-              <span className={css.decorationDot} aria-hidden="true" />
-              <span className={css.favoriteWrapper}>
-                <span className={css.favoriteCount}>{favoriteCount}</span>
-                <svg
-                  width="16"
-                  height="16"
-                  aria-hidden="true"
-                  focusable="false"
-                >
-                  <use href={'/sprite.svg#icon-bookmark'} />
-                </svg>
-              </span>
+    <>
+      <article className={css.container}>
+        <Image
+          className={css.image}
+          alt={'Обкладинка статті ' + title}
+          src={imgUrl || placeholderImage}
+          width={335}
+          height={223}
+        />
+        <div className={css.infoContainer}>
+          <header className={css.mainText}>
+            <p className={css.category}>{categoryName}</p>
+            <h3 className={css.title}>{title}</h3>
+            <p className={css.description}>{article}</p>
+          </header>
+          <footer className={css.details}>
+            <Image
+              className={css.authorImage}
+              alt={'Фото автора статті - ' + ownerName}
+              src={ownerAvatarUrl || placeholderImage}
+              width={48}
+              height={48}
+            />
+            <div className={css.detailsRight}>
+              <span className={css.authorName}>{ownerName}</span>
+              <div className={css.detailsLine}>
+                <time className={css.date} dateTime={date}>
+                  {formatDateFromApi(date)}
+                </time>
+                <span className={css.decorationDot} aria-hidden="true" />
+                <span className={css.favoriteWrapper}>
+                  <span className={css.favoriteCount}>{favoriteCount}</span>
+                  <svg
+                    width="16"
+                    height="16"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <use href={'/sprite.svg#icon-bookmark'} />
+                  </svg>
+                </span>
+              </div>
             </div>
-          </div>
-        </footer>
-        <div className={css.actions}>
-          <Link
-            href={'/stories/' + id}
-            className={clsx(css.button, css.buttonWide)}
-          >
-            Переглянути статтю
-          </Link>
-          <button
-            className={clsx(css.button, css.buttonSquare)}
-            type="button"
-            title="Додати в збережені історії"
-            aria-label="Додати в збережені історії"
-            name="Додати в збережені історії"
-          >
-            <svg
-              className={css.buttonSquareIcon}
-              width="24"
-              height="24"
-              aria-hidden="true"
-              focusable="false"
+          </footer>
+          <div className={css.actions}>
+            <Link
+              href={'/stories/' + id}
+              className={clsx(css.button, css.buttonWide)}
             >
-              {variant === 'edit' ? (
-                <use href={'/sprite.svg#icon-edit'} />
-              ) : (
-                <use href={'/sprite.svg#icon-bookmark'} />
-              )}
-            </svg>
-          </button>
+              Переглянути статтю
+            </Link>
+            {/* todo: if edit - Link */}
+            {/* todo: use universal button */}
+            <button
+              className={clsx(css.button, css.buttonSquare)}
+              type="button"
+              title="Додати в збережені історії"
+              aria-label="Додати в збережені історії"
+              name="Додати в збережені історії"
+              onClick={() => handleButtonSquareIconClick()}
+            >
+              <svg
+                className={css.buttonSquareIcon}
+                width="24"
+                height="24"
+                aria-hidden="true"
+                focusable="false"
+              >
+                {variant === 'edit' ? (
+                  <use href={'/sprite.svg#icon-edit'} />
+                ) : (
+                  <use href={'/sprite.svg#icon-bookmark'} />
+                )}
+              </svg>
+            </button>
+          </div>
         </div>
-      </div>
-    </article>
+      </article>
+      {isAuthNavModalShown && <AuthNavModal />}
+    </>
   );
 }
