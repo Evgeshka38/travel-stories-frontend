@@ -68,7 +68,7 @@ export async function login(loginData: LoginRequest): Promise<void> {
 }
 
 export async function getCurrentUser(): Promise<CurrentUser | null> {
-  const { data } = await nextApi.get('/users/me');
+  const { data } = await nextApi.get('/auth/session');
 
   return data.data;
 }
@@ -123,6 +123,21 @@ export async function getPopularStories(
   return data;
 }
 
+export async function getStories(
+  page = 1,
+  perPage = 12,
+  category?: string | null,
+): Promise<GetPopularStoriesResponse> {
+  const { data } = await nextApi.get<GetPopularStoriesResponse>('/stories', {
+    params: {
+      page,
+      perPage,
+      ...(category ? { category } : {}),
+    },
+  });
+
+  return data;
+}
 export async function getSavedStories(
   page = 1,
   perPage = 12,
@@ -130,7 +145,10 @@ export async function getSavedStories(
   const { data } = await nextApi.get<GetPopularStoriesResponse>(
     '/stories/saved',
     {
-      params: { page, perPage },
+      params: {
+        page,
+        perPage,
+      },
     },
   );
 

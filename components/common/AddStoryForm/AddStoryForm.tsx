@@ -48,6 +48,10 @@ const createStorySchema = Yup.object({
 });
 
 function getInitialValues(): CreateStoryValues {
+  if (typeof window === 'undefined') {
+    return { ...defaultValues };
+  }
+
   const savedDraft = sessionStorage.getItem('add-story-draft');
 
   if (!savedDraft) {
