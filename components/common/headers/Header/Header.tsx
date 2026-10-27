@@ -68,6 +68,8 @@ export default function Header() {
   const toggleMenuOpen = () => {
     setIsMenuOpen((prev) => !prev);
   };
+  //!!!!!!!!!!!!!!!!!!!!!!
+  const menuClose = () => setIsMenuOpen(false);
 
   const handleLogout = () => {
     setIsMenuOpen(false);
@@ -106,7 +108,14 @@ export default function Header() {
   return (
     <>
       <div className={clsx(css.absoluteWrapper, isHomePage && css.absolute)}>
-        <div className={clsx(css.container, isHomePage && css.homePageStyles)}>
+        <div
+          className={clsx(
+            css.container,
+            isHomePage && css.homePageStyles,
+            isMenuOpen && css.menuOpen,
+            isAuth && css.auth,
+          )}
+        >
           <header className={css.header}>
             <Link
               className={css.logoLink}
@@ -115,7 +124,11 @@ export default function Header() {
             >
               <svg className={css.logoIcon} width={156} height={40}>
                 <use
-                  href={isHomePage ? '/sprite.svg#icon-logo-home' : '/logo.svg'}
+                  href={
+                    !isMenuOpen && isHomePage
+                      ? '/sprite.svg#icon-logo-home'
+                      : '/logo.svg'
+                  }
                   aria-hidden="true"
                 />
               </svg>
@@ -165,7 +178,11 @@ export default function Header() {
                   )}
                   aria-label="Сторінки"
                 >
-                  <NavigationList navItems={navLinks} isHomePage={isHomePage} />
+                  <NavigationList
+                    navItems={navLinks}
+                    isHomePage={isHomePage}
+                    onClick={menuClose}
+                  />
                 </nav>
 
                 <div

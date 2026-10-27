@@ -6,10 +6,12 @@ import clsx from 'clsx';
 interface NavigationListProps {
   navItems: NavLink[];
   isHomePage: boolean;
+  onClick: () => void;
 }
 export default function NavigationList({
   navItems,
   isHomePage,
+  onClick,
 }: NavigationListProps) {
   return (
     <div className={clsx(css.container, isHomePage && css.homePageStyles)}>
@@ -20,6 +22,7 @@ export default function NavigationList({
               className={clsx(css.navLink, isHomePage && css.homePageStyles)}
               href={linkRoute}
               aria-label={linkText}
+              onClick={onClick}
             >
               <p className={css.navLinkText}>{linkText}</p>
             </Link>

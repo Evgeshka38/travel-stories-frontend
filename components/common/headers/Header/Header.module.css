@@ -178,7 +178,7 @@
   left: 0;
 }
 
-.menuOpen {
+.menu.menuOpen {
   display: flex;
   height: 100vh;
   width: 100vw;
@@ -197,4 +197,10 @@
   background: var(--opacity-transparent);
 }
 
+.container.menuOpen {
+  background: var(--color-royal-blue-lightest);
+}
 
+.container.auth {
+  background: var(--color-white);
+}
