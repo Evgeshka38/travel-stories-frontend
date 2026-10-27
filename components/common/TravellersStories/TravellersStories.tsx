@@ -1,9 +1,29 @@
 import css from './TravellersStories.module.css';
+import TravellersStoriesItem from '@/components/common/TravellersStoriesItem/TravellersStoriesItem';
+import { Story } from '@/lib/types/stories';
 
-export default function TravellersStories() {
+type Props = {
+  stories: Story[];
+};
+
+export default function TravellersStories({ stories }: Props) {
   return (
-    <div className={css.container}>
-      <h2>TravellersStories</h2>
-    </div>
+     <ul className={css.list}>
+      {stories.map(story => (
+        <li key={story._id} className={css.item}>
+          <TravellersStoriesItem
+            id={story._id}
+            imgUrl={story.img}
+            categoryName={story.category.name}
+            title={story.title}
+            article={story.article}
+            ownerAvatarUrl={story.ownerId.avatarUrl}
+            ownerName={story.ownerId.name}
+            date={story.date}
+            favoriteCount={story.favoriteCount}
+          />
+        </li>
+      ))}
+    </ul>
   );
 }
