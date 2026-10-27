@@ -12,6 +12,7 @@ interface ButtonProps {
   linkRoute?: string;
   ariaLabel?: string;
   isHomePage?: boolean;
+  isMenuOpen?: boolean;
   handler?: (
     event: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>,
   ) => void;
@@ -26,6 +27,7 @@ export default function Button({
   ariaLabel = '',
   buttonType = 'submit',
   isHomePage = false,
+  isMenuOpen = false,
   handler = () => {},
 }: ButtonProps) {
   return (
@@ -38,7 +40,8 @@ export default function Button({
               styleVariant !== 'custom'
                 ? css[styleVariant]
                 : css[styleCustomName],
-              styleCustomName === 'menu' && isHomePage && css.homePage,
+              // styleCustomName === 'menu' && isHomePage && css.homePage,
+              !isMenuOpen && isHomePage && css.homePage,
             )}
             type={buttonType}
             aria-label={ariaLabel}
@@ -57,6 +60,7 @@ export default function Button({
               styleVariant !== 'custom'
                 ? css[styleVariant]
                 : css[styleCustomName],
+              !isMenuOpen && isHomePage && css.homePage,
             )}
             href={linkRoute}
             aria-label={ariaLabel}

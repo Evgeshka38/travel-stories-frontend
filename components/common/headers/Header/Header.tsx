@@ -214,6 +214,7 @@ export default function Header() {
                     linkRoute="/auth/login"
                     ariaLabel="Увійти в застосунок"
                     isHomePage={isHomePage}
+                    isMenuOpen={isMenuOpen}
                   >
                     Вхід
                   </Button>
@@ -225,6 +226,7 @@ export default function Header() {
                     linkRoute="/auth/register"
                     ariaLabel="Реєстрація"
                     isHomePage={isHomePage}
+                    isMenuOpen={isMenuOpen}
                   >
                     Реєстрація
                   </Button>
