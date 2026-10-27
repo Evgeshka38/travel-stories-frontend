@@ -68,7 +68,7 @@ export async function login(loginData: LoginRequest): Promise<void> {
 }
 
 export async function getCurrentUser(): Promise<CurrentUser | null> {
-  const { data } = await nextApi.get('/auth/session');
+  const { data } = await nextApi.get('/users/me');
 
   return data.data;
 }
