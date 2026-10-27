@@ -113,7 +113,7 @@ export default function Header() {
               </svg>
             </Link>
 
-            <div className={clsx(css.authHidden, isAuth && css.hidden)}>
+            <div className={clsx(css.authHidden, isAuth && css.displayOff)}>
               <div className={css.menuControls}>
                 <div
                   className={clsx(css.storyPublicBtn, isAuth && css.displayOff)}
