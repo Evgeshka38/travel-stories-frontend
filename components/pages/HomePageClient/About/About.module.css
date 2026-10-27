@@ -164,6 +164,9 @@
     align-items: flex-start;
 
     width: 100%;
+    max-width: 1312px;
+    margin-left: auto;
+    margin-right: auto;
     gap: 24px;
   }
 

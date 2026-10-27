@@ -1,6 +1,10 @@
+import { useCurrentUser } from '@/hooks/useCurrentUser';
 import css from './Hero.module.css';
+import clsx from 'clsx';
 
 export default function Hero() {
+  const { data: user } = useCurrentUser();
+
   return (
     <section className={css.hero}>
       <div className={css.container}>
@@ -15,9 +19,14 @@ export default function Hero() {
             натхнення для нових пригод. Відкрийте для себе нові місця та
             знайдіть однодумців!
           </p>
-          <a href="#join-title" className={css.joinBtn}>
-            Доєднатись
-          </a>
+          {
+            <a
+              href="#join-title"
+              className={clsx(css.joinBtn, user && css.isHidden)}
+            >
+              Доєднатись
+            </a>
+          }
         </div>
       </div>
     </section>
