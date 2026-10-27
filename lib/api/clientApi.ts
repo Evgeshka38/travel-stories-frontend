@@ -1,3 +1,4 @@
+import { GetPopularStoriesResponse } from '../types/stories';
 import { nextApi } from './api';
 
 export interface RegisterRequest {
@@ -108,4 +109,21 @@ export async function getUsers(
 
 export async function logout(): Promise<void> {
   await nextApi.post('/auth/logout');
+}
+
+export async function getPopularStories(
+  page = 1,
+  perPage = 3,
+): Promise<GetPopularStoriesResponse> {
+  const { data } = await nextApi.get<GetPopularStoriesResponse>(
+    '/stories/popular',
+    {
+      params: {
+        page,
+        perPage,
+      },
+    },
+  );
+
+  return data;
 }
