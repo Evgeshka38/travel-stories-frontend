@@ -1,10 +1,12 @@
 'use client';
 import css from './LoginForm.module.css';
-import Link from 'next/link';
 import * as Yup from 'yup';
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
+import { login } from '@/lib/api/clientApi';
+import SessionDraft from '@/components/common/SessionDraft/SessionDraft';
 
 interface LoginValues {
   email: string;
@@ -20,7 +22,7 @@ const loginSchema = Yup.object().shape({
     .max(64, 'Занадто довгий пароль')
     .required('Обов’язкове поле'),
 });
-const initialValues: LoginValues = {
+const defaultValues: LoginValues = {
   email: '',
   password: '',
 };
@@ -28,10 +30,51 @@ const initialValues: LoginValues = {
 export default function LoginForm() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const handleSubmit = (
+
+  const [initialValues, setInitialValues] = useState(defaultValues);
+  const [isReady, setIsReady] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    const savedDraft = sessionStorage.getItem('login-draft');
+
+    if (savedDraft) {
+      try {
+        const draft = JSON.parse(savedDraft);
+
+        setInitialValues({
+          ...defaultValues,
+          email: draft.email ?? '',
+          password: '',
+        });
+      } catch {
+        sessionStorage.removeItem('login-draft');
+      }
+    }
+
+    setIsReady(true);
+  }, []);
+
+  if (!isReady) return null;
+
+  const handleSubmit = async (
     values: LoginValues,
     actions: FormikHelpers<LoginValues>,
-  ) => {};
+  ) => {
+    setIsLoading(true);
+    try {
+      await login(values);
+      sessionStorage.removeItem('login-draft');
+      toast.success('Ви успішно увійшли!');
+      router.push('/');
+      router.refresh();
+    } catch {
+      toast.error('Не вдалося увійти. Перевірте email і пароль.');
+    } finally {
+      setIsLoading(false);
+      actions.setSubmitting(false);
+    }
+  };
   return (
     <section className={css.section}>
       <div className={css.container}>
@@ -44,7 +87,7 @@ export default function LoginForm() {
           onSubmit={handleSubmit}
         >
           <Form className={css.form}>
-            {/* Поле: Пошта */}
+            <SessionDraft storageKey="login-draft" fields={['email']} />
             <label className={css.label}>
               <span className={css.labelTitle}>Пошта*</span>
               <Field
@@ -60,25 +103,43 @@ export default function LoginForm() {
               />
             </label>
 
-            {/* Поле: Пароль */}
             <label className={css.label}>
               <span className={css.labelTitle}>Пароль*</span>
-              <Field
-                className={css.input}
-                type="password"
-                name="password"
-                placeholder="********"
-              />
+              <div className={css.passwordWrapper}>
+                <Field
+                  className={css.input}
+                  type={showPassword ? 'text' : 'password'}
+                  name="password"
+                  placeholder="********"
+                />
+
+                <button
+                  type="button"
+                  className={css.passwordToggle}
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  aria-label={
+                    showPassword ? 'Приховати пароль' : 'Показати пароль'
+                  }
+                >
+                  <svg className={css.icon}>
+                    <use
+                      href={`/sprite.svg#${showPassword ? 'icon-eyeCross' : 'icon-eye'}`}
+                    />
+                  </svg>
+                </button>
+              </div>
               <ErrorMessage
                 name="password"
                 component="span"
                 className={css.error}
               />
             </label>
-
-            {/* Кнопка відправки */}
-            <button type="submit" className={css.submitBtn}>
-              Увійти
+            <button
+              type="submit"
+              className={css.submitBtn}
+              disabled={isLoading}
+            >
+              {isLoading ? 'Вхід...' : 'Увійти'}
             </button>
           </Form>
         </Formik>
