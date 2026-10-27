@@ -1,5 +1,5 @@
 .template {
-  @media (max-width: 374) {
+  @media (max-width: 374px) {
   }
 
   @media (min-width: 375px) {
@@ -28,9 +28,9 @@
   padding: 0 20px;
   margin: 0 auto;
 
-  background-color: inherit;
+  background: var(--color-royal-blue-lightest);
 
-  @media (max-width: 374) {
+  @media (max-width: 374px) {
     width: auto;
   }
 
@@ -84,7 +84,7 @@
 
 .storyPublicBtn {
   display: none;
-  @media (min-width: 768) and (max-width: 1439) {
+  @media (min-width: 768px) and (max-width: 1439px) {
     display: flex;
   }
 }
@@ -105,7 +105,7 @@
 
   background: inherit;
 
-  @media (max-width: 374) {
+  @media (max-width: 374px) {
   }
 
   @media (min-width: 768px) {
@@ -130,15 +130,13 @@
 
 .storyPrivateBtn {
   display: flex;
-  /* display: none; */
   align-items: center;
   gap: 8px;
   display: none;
 }
 
 .userControls {
-  display: flex;
-  /* display: none; */
+  display: none;
   align-items: center;
   gap: 8px;
 }
@@ -151,6 +149,8 @@
 }
 
 .userName {
+  @media (min-width: 1440px) {
+  }
 }
 
 .divider {
@@ -179,15 +179,24 @@
   position: absolute;
   top: 0;
   left: 0;
+  width: 100wv;
+  height: 100vh;
 }
 
 .menuOpen {
   /* position: absolute; */
-
-  /* width: 100vw; */
+  height: 100vh;
+  width: 100vw;
   visibility: visible;
   background: var(--color-royal-blue-lightest);
   color: var(--color-neutral-darkest);
+
+  @media (min-width: 1440px) {
+    position: static;
+    width: auto;
+    height: auto;
+    background: var(--opacity-transparent);
+  }
 }
 
 .homePageStyles {

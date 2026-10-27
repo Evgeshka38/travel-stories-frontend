@@ -19,9 +19,6 @@
 }
 
 .navLink {
-}
-
-.navLinkText {
   font-family: var(--font-family);
   font-weight: 400;
   font-size: 16px;
@@ -31,9 +28,15 @@
 
   @media (min-width: 1440px) {
     font-size: 18px;
-    color: var(--color-white);
   }
 }
+
 .homePageStyles {
   background: var(--opacity-transparent);
+}
+
+.navLink.homePageStyles {
+  @media (min-width: 1440px) {
+    color: var(--color-white);
+  }
 }

@@ -105,11 +105,9 @@ export default function Header() {
               href="/"
               aria-label="Домашня сторінка"
             >
-              <svg className={css.logoIcon} width="auto" height="auto">
+              <svg className={css.logoIcon} width={156} height={40}>
                 <use
-                  href={
-                    isHomePage ? '/sprite.svg#icon-logo-home' : '/logo.svg'
-                  }
+                  href={isHomePage ? '/sprite.svg#icon-logo-home' : '/logo.svg'}
                   aria-hidden="true"
                 />
               </svg>
@@ -118,10 +116,7 @@ export default function Header() {
             <div className={clsx(css.authHidden, isAuth && css.hidden)}>
               <div className={css.menuControls}>
                 <div
-                  className={clsx(
-                    css.storyPublicBtn,
-                    isAuth && css.displayOff,
-                  )}
+                  className={clsx(css.storyPublicBtn, isAuth && css.displayOff)}
                 >
                   <Button
                     semanticVariant="link"
@@ -138,25 +133,17 @@ export default function Header() {
                   styleVariant="custom"
                   styleCustomName="menu"
                   buttonType="button"
-                  ariaLabel={
-                    isMenuOpen ? 'Закрити меню' : 'Відкрити меню'
-                  }
+                  ariaLabel={isMenuOpen ? 'Закрити меню' : 'Відкрити меню'}
                   isHomePage={isHomePage}
                   handler={toggleMenuOpen}
                 >
                   {isMenuOpen ? (
                     <svg className={css.menuIcon} width="24" height="24">
-                      <use
-                        href="/sprite.svg#icon-close"
-                        aria-hidden="true"
-                      />
+                      <use href="/sprite.svg#icon-close" aria-hidden="true" />
                     </svg>
                   ) : (
                     <svg className={css.menuIcon} width="24" height="24">
-                      <use
-                        href="/sprite.svg#icon-menu"
-                        aria-hidden="true"
-                      />
+                      <use href="/sprite.svg#icon-menu" aria-hidden="true" />
                     </svg>
                   )}
                 </Button>
@@ -170,10 +157,7 @@ export default function Header() {
                   )}
                   aria-label="Сторінки"
                 >
-                  <NavigationList
-                    navItems={navLinks}
-                    isHomePage={isHomePage}
-                  />
+                  <NavigationList navItems={navLinks} isHomePage={isHomePage} />
                 </nav>
 
                 <div
@@ -229,17 +213,13 @@ export default function Header() {
                 >
                   <Image
                     className={css.userPhoto}
-                    src={
-                      user?.avatarUrl || '/images/placeholderImage.webp'
-                    }
+                    src={user?.avatarUrl || '/images/placeholderImage.webp'}
                     width={32}
                     height={32}
                     alt="Фото профілю"
                   />
 
-                  <p className={css.userName}>
-                    {user?.name || "Ім'я"}
-                  </p>
+                  <p className={css.userName}>{user?.name || "Ім'я"}</p>
 
                   <span className={css.divider} />
 
@@ -252,10 +232,7 @@ export default function Header() {
                     handler={handleLogout}
                   >
                     <svg className={css.logoutIcon} width="24" height="24">
-                      <use
-                        href="/sprite.svg#icon-logout"
-                        aria-hidden="true"
-                      />
+                      <use href="/sprite.svg#icon-logout" aria-hidden="true" />
                     </svg>
                   </Button>
                 </div>
