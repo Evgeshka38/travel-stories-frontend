@@ -105,30 +105,43 @@ export default function TravellersStoriesItem({
             >
               Переглянути статтю
             </Link>
-            {/* todo: if edit - Link */}
             {/* todo: use universal button */}
-            <button
-              className={clsx(css.button, css.buttonSquare)}
-              type="button"
-              title="Додати в збережені історії"
-              aria-label="Додати в збережені історії"
-              name="Додати в збережені історії"
-              onClick={() => handleButtonSquareIconClick()}
-            >
-              <svg
-                className={css.buttonSquareIcon}
-                width="24"
-                height="24"
-                aria-hidden="true"
-                focusable="false"
+            {variant === 'save' && (
+              <button
+                className={clsx(css.button, css.buttonSquare)}
+                type="button"
+                title="Додати в збережені історії"
+                aria-label="Додати в збережені історії"
+                name="Додати в збережені історії"
+                onClick={() => handleButtonSquareIconClick()}
               >
-                {variant === 'edit' ? (
-                  <use href={'/sprite.svg#icon-edit'} />
-                ) : (
+                <svg
+                  className={css.buttonSquareIcon}
+                  width="24"
+                  height="24"
+                  aria-hidden="true"
+                  focusable="false"
+                >
                   <use href={'/sprite.svg#icon-bookmark'} />
-                )}
-              </svg>
-            </button>
+                </svg>
+              </button>
+            )}
+            {variant === 'edit' && (
+              <Link
+                href={`/stories/${id}/edit`}
+                className={clsx(css.button, css.buttonSquare)}
+              >
+                <svg
+                  className={css.buttonSquareIcon}
+                  width="24"
+                  height="24"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <use href={'/sprite.svg#icon-edit'} />
+                </svg>
+              </Link>
+            )}
           </div>
         </div>
       </article>
