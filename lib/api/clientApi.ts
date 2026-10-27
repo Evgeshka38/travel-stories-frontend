@@ -138,12 +138,30 @@ export async function getStories(
 
   return data;
 }
+
 export async function getSavedStories(
   page = 1,
   perPage = 12,
 ): Promise<GetPopularStoriesResponse> {
   const { data } = await nextApi.get<GetPopularStoriesResponse>(
     '/stories/saved',
+    {
+      params: {
+        page,
+        perPage,
+      },
+    },
+  );
+
+  return data;
+}
+
+export async function getOwnStories(
+  page = 1,
+  perPage = 12,
+): Promise<GetPopularStoriesResponse> {
+  const { data } = await nextApi.get<GetPopularStoriesResponse>(
+    '/stories/own',
     {
       params: {
         page,
