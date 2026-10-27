@@ -3,7 +3,7 @@
 import css from './Header.module.css';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
@@ -27,6 +27,14 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  // useEffect(() => {
+  //   document.body.style.overflow = isMenuOpen ? 'hidden' : '';
+
+  //   return () => {
+  //     document.body.style.overflow = '';
+  //   };
+  // }, [isMenuOpen]);
 
   const publicNavLinks: NavLink[] = [
     {
