@@ -1,4 +1,7 @@
-import { GetPopularStoriesResponse } from '../types/stories';
+import {
+  AddRemoveStoryToFormFavoritesResponse,
+  GetPopularStoriesResponse,
+} from '../types/stories';
 import { nextApi } from './api';
 
 export interface RegisterRequest {
