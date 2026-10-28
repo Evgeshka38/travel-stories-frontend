@@ -15,7 +15,11 @@ export default function TravellerPageClient({ travellerId }: Props) {
       <h1>{`Traveller profile: ${travellerId}`}</h1>
       <TravellerInfo />
       <TravellersStories stories={[]} variant="save" />
-      <MessageNoStories />
+      <MessageNoStories 
+         text="Цей користувач ще не публікував історій"
+         buttonText="До історій"
+         href="/stories"
+  />
     </div>
   );
 }

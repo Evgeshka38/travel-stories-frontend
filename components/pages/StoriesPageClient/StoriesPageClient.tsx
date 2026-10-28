@@ -55,7 +55,11 @@ export default function StoriesPageClient() {
         )}
 
         {!isLoading && !isError && stories.length === 0 && (
-          <MessageNoStories />
+          <MessageNoStories 
+            text="Історій поки немає. Станьте першим, хто поділиться своєю!"
+            buttonText="Назад до історій"
+            href="/stories"
+  />
         )}
 
         {stories.length > 0 && (
