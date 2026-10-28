@@ -1,5 +1,17 @@
 import css from './Loader.module.css';
 
-export default function Loader() {
-  return <div className={css.loader} role="status" aria-label="Завантаження" />;
+interface LoaderProps {
+  height?: number;
+  width?: number;
+}
+
+export default function Loader({ height, width }: LoaderProps) {
+  return (
+    <div
+      className={css.loader}
+      style={{ height: height, width: width }}
+      role="status"
+      aria-label="Завантаження"
+    />
+  );
 }
