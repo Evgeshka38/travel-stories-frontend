@@ -13,7 +13,7 @@ import {
   addStoryToFavorites,
   removeStoryToFavorites,
 } from '@/lib/api/clientApi';
-import { useFavoriteStoriesStore } from '@/lib/store/favouriteStoriesIdsStore';
+import { useFavoriteStoriesStore } from '@/lib/store/favoriteStoriesIdsStore';
 
 type Props = {
   id: string;
