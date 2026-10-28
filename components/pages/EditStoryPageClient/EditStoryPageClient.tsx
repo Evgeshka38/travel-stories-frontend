@@ -1,7 +1,7 @@
 'use client';
 
 import css from './EditStoryPageClient.module.css';
-import AddStoryForm from '@/components/common/AddStoryForm/AddStoryForm';
+import EditStoryForm from './EditStoryForm/EditStoryForm';
 
 type Props = {
   storyId: string;
@@ -10,8 +10,8 @@ type Props = {
 export default function EditStoryPageClient({ storyId }: Props) {
   return (
     <div className={css.container}>
-      <h1>{`Edit story: ${storyId}`}</h1>
-      <AddStoryForm />
+      {/* <h1>{`Edit story: ${storyId}`}</h1> */}
+      <EditStoryForm />
     </div>
   );
 }
