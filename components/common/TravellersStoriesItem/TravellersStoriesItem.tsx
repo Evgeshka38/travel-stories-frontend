@@ -196,6 +196,7 @@ export default function TravellersStoriesItem({
               <Link
                 href={`/stories/${id}/edit`}
                 className={clsx(css.button, css.buttonSquare)}
+                aria-label="Редагувати історію"
               >
                 <svg
                   className={css.buttonSquareIcon}
