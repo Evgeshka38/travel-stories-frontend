@@ -3,6 +3,7 @@ import {
   GetPopularStoriesResponse,
 } from '../types/stories';
 import { nextApi } from './api';
+import { Story } from '@/lib/types/stories';
 
 export interface RegisterRequest {
   name: string;
@@ -62,6 +63,14 @@ interface UsersResponse {
   };
 }
 
+export interface OwnStoriesData {
+  stories: Story[];
+  page: number;
+  perPage: number;
+  totalItems: number;
+  hasNextPage: boolean;
+}
+
 export async function register(
   registerData: RegisterRequest,
 ): Promise<void> {
@@ -114,6 +123,17 @@ export async function logout(): Promise<void> {
   await nextApi.post('/auth/logout');
 }
 
+export async function getOwnStories(
+  page = 1,
+  perPage = 12,
+): Promise<OwnStoriesData> {
+  const { data } = await nextApi.get('/stories/own', {
+    params: { page, perPage },
+  });
+
+  return data.data;
+}
+
 export async function getPopularStories(
   page = 1,
   perPage = 3,
@@ -127,6 +147,22 @@ export async function getPopularStories(
       },
     },
   );
+
+  return data;
+}
+
+export async function getStories(
+  page = 1,
+  perPage = 9,
+  category?: string | null,
+): Promise<GetPopularStoriesResponse> {
+  const { data } = await nextApi.get<GetPopularStoriesResponse>('/stories', {
+    params: {
+      page,
+      perPage,
+      ...(category ? { category } : {}),
+    },
+  });
 
   return data;
 }

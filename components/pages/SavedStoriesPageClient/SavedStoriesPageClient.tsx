@@ -6,7 +6,7 @@ export default function SavedStoriesPageClient() {
   return (
     <div className={css.container}>
       <h2 style={{ color: 'red' }}>SavedStoriesPageClient</h2>
-      <TravellersStories />
+      <TravellersStories stories={[]} variant="save" />
     </div>
   );
 }

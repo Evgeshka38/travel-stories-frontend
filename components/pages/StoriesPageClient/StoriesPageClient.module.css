@@ -1,0 +1,58 @@
+.section {
+  width: 100%;
+  padding: 32px 20px 64px;
+}
+
+.container {
+  width: 100%;
+  max-width: 335px;
+  margin: 0 auto;
+
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.title {
+  font-family: var(--second-family);
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  text-align: center;
+  color: var(--color-scheme-1-text);
+}
+
+.message {
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .section {
+    padding: 48px 32px 64px;
+  }
+
+  .container {
+    max-width: 704px;
+    gap: 32px;
+  }
+
+  .title {
+    font-size: 44px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .section {
+    padding: 64px 64px 72px;
+  }
+
+  .container {
+    max-width: 1312px;
+    gap: 40px;
+  }
+
+  .title {
+    font-size: 52px;
+  }
+}

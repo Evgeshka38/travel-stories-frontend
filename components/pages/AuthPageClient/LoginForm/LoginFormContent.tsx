@@ -25,7 +25,7 @@ const loginSchema = Yup.object().shape({
     .required('Обов’язкове поле'),
   password: Yup.string()
     .min(8, 'Пароль має бути від 8 символів')
-    .max(64, 'Занадто довгий пароль')
+    .max(128, 'Занадто довгий пароль')
     .required('Обов’язкове поле'),
 });
 
@@ -98,14 +98,14 @@ export default function LoginFormContent() {
           validationSchema={loginSchema}
           onSubmit={handleSubmit}
         >
-          <Form className={css.form}>
+          <Form className={css.form} noValidate>
             <SessionDraft storageKey="login-draft" fields={draftFields} />
 
             <label className={css.label}>
               <span className={css.labelTitle}>Пошта*</span>
               <Field
                 className={css.input}
-                type="email"
+                type="text"
                 name="email"
                 placeholder="hello@podorozhnyky.ua"
               />

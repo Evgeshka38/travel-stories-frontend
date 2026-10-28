@@ -1,0 +1,25 @@
+.page {
+  flex: 1;
+  background-color: #f7f9ff;
+}
+
+.main {
+  width: calc(100% - 40px);
+  max-width: 1312px;
+  margin: 0 auto;
+  padding: 48px 0 80px;
+}
+
+@media (min-width: 768px) {
+  .main {
+    width: calc(100% - 64px);
+    padding-top: 64px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .main {
+    width: calc(100% - 128px);
+    padding-top: 80px;
+  }
+}
