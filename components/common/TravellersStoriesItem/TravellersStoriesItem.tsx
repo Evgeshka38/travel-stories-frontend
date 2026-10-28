@@ -93,7 +93,8 @@ export default function TravellersStoriesItem({
       return;
     }
 
-    const isSaved = true; // todo: check from store
+    const isSaved = favoriteStoriesIds.includes(id);
+
     if (isSaved) {
       toast('Видалення історії зі збережених');
       removeMutation.mutate();
