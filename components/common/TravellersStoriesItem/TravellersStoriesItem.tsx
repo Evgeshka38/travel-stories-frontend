@@ -10,6 +10,7 @@ import { useState } from 'react';
 import AuthNavModal from '../modals/AuthNavModal/AuthNavModal';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { addStoryToFavorites } from '@/lib/api/clientApi';
+import { useFavoriteStoriesStore } from '@/lib/store/favouriteStoriesIdsStore';
 
 type Props = {
   id: string;
@@ -41,6 +42,13 @@ export default function TravellersStoriesItem({
   variant,
 }: Props) {
   const queryClient = useQueryClient();
+
+  const favoriteStoriesIds = useFavoriteStoriesStore(
+    (store) => store.favoriteStoriesIds,
+  );
+  const setFavoriteStoriesIds = useFavoriteStoriesStore(
+    (store) => store.setFavoriteStoriesIds,
+  );
 
   const { data: currentUser } = useCurrentUser();
   const [isAuthNavModalShown, setAuthNavModalShown] = useState<boolean>(false);
