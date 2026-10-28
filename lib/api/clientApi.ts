@@ -127,8 +127,8 @@ export async function getStories(
   page = 1,
   perPage = 12,
   category?: string | null,
-): Promise<GetPopularStoriesResponse> {
-  const { data } = await nextApi.get<GetPopularStoriesResponse>('/stories', {
+): Promise<GetPopularStoriesResponse> { // todo add real response
+  const { data } = await nextApi.get<GetPopularStoriesResponse>('/stories', { // todo add real response
     params: {
       page,
       perPage,
@@ -142,8 +142,8 @@ export async function getStories(
 export async function getSavedStories(
   page = 1,
   perPage = 12,
-): Promise<GetPopularStoriesResponse> {
-  const { data } = await nextApi.get<GetPopularStoriesResponse>(
+): Promise<GetPopularStoriesResponse> { // todo add real response
+  const { data } = await nextApi.get<GetPopularStoriesResponse>( // todo add real response
     '/stories/saved',
     {
       params: {
@@ -156,11 +156,11 @@ export async function getSavedStories(
   return data;
 }
 
-export async function getOwnStories(
+export async function getOwnStories( 
   page = 1,
   perPage = 12,
-): Promise<GetPopularStoriesResponse> {
-  const { data } = await nextApi.get<GetPopularStoriesResponse>(
+): Promise<GetPopularStoriesResponse> { // todo add real response
+  const { data } = await nextApi.get<GetPopularStoriesResponse>( // todo add real response
     '/stories/own',
     {
       params: {
@@ -173,10 +173,10 @@ export async function getOwnStories(
   return data;
 }
 
-export async function addFavoriteStory(storyId: string): Promise<void> {
+export async function addFavoriteStory(storyId: string): Promise<void> { // todo add real response
   await nextApi.patch(`/stories/favorite/add/${storyId}`);
 }
 
-export async function removeFavoriteStory(storyId: string): Promise<void> {
+export async function removeFavoriteStory(storyId: string): Promise<void> { // todo add real response
   await nextApi.patch(`/stories/favorite/remove/${storyId}`);
 }
