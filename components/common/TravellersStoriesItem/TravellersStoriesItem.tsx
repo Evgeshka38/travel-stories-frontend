@@ -59,16 +59,14 @@ export default function TravellersStoriesItem({
   });
 
   function handleButtonSquareIconClick() {
-    const canSave = !!currentUser;
-
-    // todo api req
-    if (canSave) {
-      toast('Збереження історії');
-      saveMutation.mutate();
-    } else {
-      toast.error('you need to log in');
+    if (!currentUser) {
+      toast.error('Увійди в акаунт, щоб зберігати історії');
       setAuthNavModalShown(true);
+      return;
     }
+
+    toast('Збереження історії');
+    saveMutation.mutate();
   }
 
   return (
@@ -128,7 +126,6 @@ export default function TravellersStoriesItem({
               <button
                 className={clsx(css.button, css.buttonSquare)}
                 type="button"
-                // todo: add loader
                 disabled={saveMutation.isPending}
                 title="Додати в збережені історії"
                 aria-label="Додати в збережені історії"
