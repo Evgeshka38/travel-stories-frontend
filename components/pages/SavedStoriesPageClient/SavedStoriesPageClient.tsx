@@ -3,6 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { getSavedStories } from '@/lib/api/clientApi';
 import TravellersStories from '@/components/common/TravellersStories/TravellersStories';
+import MessageNoStories from '@/components/common/MessageNoStories/MessageNoStories';
 import css from './SavedStoriesPageClient.module.css';
 
 export default function SavedStoriesPageClient() {
@@ -13,21 +14,31 @@ export default function SavedStoriesPageClient() {
 
   if (isLoading) {
     return (
-      <div className={css.container}>Завантаження збережених історій...</div>
+      <section className={css.container}>
+        <p className={css.message}>Завантаження збережених історій...</p>
+      </section>
     );
   }
 
   if (isError) {
     return (
-      <div className={css.container}>
-        Не вдалося завантажити збережені історії.
-      </div>
+      <section className={css.container}>
+        <p className={css.message}>Не вдалося завантажити збережені історії.</p>
+      </section>
     );
   }
 
+  const stories = data?.data.stories ?? [];
+
   return (
-    <div className={css.container}>
-      <TravellersStories stories={data?.data.stories ?? []} />
-    </div>
+    <section className={css.container}>
+      <div className={css.content}>
+        {stories.length > 0 ? (
+          <TravellersStories stories={stories} />
+        ) : (
+          <MessageNoStories />
+        )}
+      </div>
+    </section>
   );
 }
