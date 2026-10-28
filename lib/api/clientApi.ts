@@ -127,3 +127,19 @@ export async function getPopularStories(
 
   return data;
 }
+
+export async function getStories(
+  page = 1,
+  perPage = 9,
+  category?: string | null,
+): Promise<GetPopularStoriesResponse> {
+  const { data } = await nextApi.get<GetPopularStoriesResponse>('/stories', {
+    params: {
+      page,
+      perPage,
+      ...(category ? { category } : {}),
+    },
+  });
+
+  return data;
+}
