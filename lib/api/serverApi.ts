@@ -92,3 +92,25 @@ export async function getPopularStoriesServer(
 
   return data;
 }
+
+export async function getSavedStoriesServer(
+  page = 1,
+  perPage = 12,
+): Promise<GetPopularStoriesResponse> {
+  const cookieStore = await cookies();
+
+  const { data } = await serverApi.get<GetPopularStoriesResponse>(
+    '/stories/saved',
+    {
+      params: {
+        page,
+        perPage,
+      },
+      headers: {
+        Cookie: cookieStore.toString(),
+      },
+    },
+  );
+
+  return data;
+}

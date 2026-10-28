@@ -1,15 +1,19 @@
-import { Metadata } from 'next';
-import css from './SavedStoriesPage.module.css';
-import SavedStoriesPageClient from '@/components/pages/SavedStoriesPageClient/SavedStoriesPageClient';
+export default async function SavedStoriesPage() {
+  const queryClient = new QueryClient();
 
-export const metadata: Metadata = {
-  title: 'SavedStoriesPage',
-};
-export default function SavedStoriesPage() {
+  await queryClient
+    .prefetchQuery({
+      queryKey: ['savedStories', 1, 12],
+      queryFn: () => getSavedStoriesServer(1, 12),
+    })
+    .catch(() => undefined);
+
   return (
     <div className={css.page}>
       <main className={css.main}>
-        <SavedStoriesPageClient />
+        <HydrationBoundary state={dehydrate(queryClient)}>
+          <SavedStoriesPageClient />
+        </HydrationBoundary>
       </main>
     </div>
   );
