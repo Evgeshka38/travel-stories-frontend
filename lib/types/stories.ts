@@ -14,7 +14,7 @@ export interface PopularStory {
   };
   date: string;
   favoriteCount: number;
-};
+}
 
 export interface GetPopularStoriesResponse {
   status: number;
@@ -26,7 +26,45 @@ export interface GetPopularStoriesResponse {
     totalItems: number;
     hasNextPage: boolean;
   };
-};
+}
+
+export interface AddStoryToFavoritesRequest {
+  id: string;
+}
+
+export interface RemoveStoryFromFavoritesRequest {
+  id: string;
+}
+
+export interface AddRemoveStoryToFormFavoritesResponse {
+  status: number;
+  message: string;
+  data: {
+    user: {
+      _id: string;
+      name: string;
+      email: string;
+      avatarUrl: string;
+      description: string;
+      articlesAmount: number;
+      favorites: string[];
+      createdAt: string;
+      updatedAt: string;
+    };
+    story: {
+      _id: string;
+      img: string;
+      title: string;
+      article: string;
+      category: string;
+      ownerId: string;
+      date: string;
+      favoriteCount: number;
+      createdAt: string;
+      updatedAt: string;
+    };
+  };
+}
 
 export interface Story {
   _id: string;

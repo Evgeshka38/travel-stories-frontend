@@ -1,4 +1,7 @@
-import { GetPopularStoriesResponse } from '../types/stories';
+import {
+  AddRemoveStoryToFormFavoritesResponse,
+  GetPopularStoriesResponse,
+} from '../types/stories';
 import { nextApi } from './api';
 import { Story } from '@/lib/types/stories';
 
@@ -161,5 +164,23 @@ export async function getStories(
     },
   });
 
+  return data;
+}
+
+export async function addStoryToFavorites(
+  id: string,
+): Promise<AddRemoveStoryToFormFavoritesResponse> {
+  const { data } = await nextApi.patch<AddRemoveStoryToFormFavoritesResponse>(
+    `/stories/favorite/add/${id}`,
+  );
+  return data;
+}
+
+export async function removeStoryToFavorites(
+  id: string,
+): Promise<AddRemoveStoryToFormFavoritesResponse> {
+  const { data } = await nextApi.patch<AddRemoveStoryToFormFavoritesResponse>(
+    `/stories/favorite/remove/${id}`,
+  );
   return data;
 }
