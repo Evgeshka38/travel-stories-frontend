@@ -8,6 +8,8 @@ import { useCurrentUser } from '@/hooks/useCurrentUser';
 import toast from 'react-hot-toast';
 import { useState } from 'react';
 import AuthNavModal from '../modals/AuthNavModal/AuthNavModal';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { addStoryToFavorites } from '@/lib/api/clientApi';
 
 type Props = {
   id: string;
@@ -38,15 +40,31 @@ export default function TravellersStoriesItem({
   favoriteCount,
   variant,
 }: Props) {
+  const queryClient = useQueryClient();
+
   const { data: currentUser } = useCurrentUser();
   const [isAuthNavModalShown, setAuthNavModalShown] = useState<boolean>(false);
+
+  const saveMutation = useMutation({
+    mutationFn: () => addStoryToFavorites(id),
+    onSuccess: async () => {
+      toast.success('Історію збережено!');
+      await queryClient.invalidateQueries({
+        queryKey: ['savedStories'],
+      });
+    },
+    onError: () => {
+      toast.error('Не вдалося зберегти історію');
+    },
+  });
 
   function handleButtonSquareIconClick() {
     const canSave = !!currentUser;
 
     // todo api req
     if (canSave) {
-      toast.success('saving');
+      toast('Збереження історії');
+      saveMutation.mutate();
     } else {
       toast.error('you need to log in');
       setAuthNavModalShown(true);
@@ -110,6 +128,8 @@ export default function TravellersStoriesItem({
               <button
                 className={clsx(css.button, css.buttonSquare)}
                 type="button"
+                // todo: add loader
+                disabled={saveMutation.isPending}
                 title="Додати в збережені історії"
                 aria-label="Додати в збережені історії"
                 name="Додати в збережені історії"
