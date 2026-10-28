@@ -9,7 +9,10 @@ import toast from 'react-hot-toast';
 import { useState } from 'react';
 import AuthNavModal from '../modals/AuthNavModal/AuthNavModal';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { addStoryToFavorites } from '@/lib/api/clientApi';
+import {
+  addStoryToFavorites,
+  removeStoryToFavorites,
+} from '@/lib/api/clientApi';
 import { useFavoriteStoriesStore } from '@/lib/store/favouriteStoriesIdsStore';
 
 type Props = {
@@ -68,10 +71,32 @@ export default function TravellersStoriesItem({
     },
   });
 
+  const removeMutation = useMutation({
+    mutationFn: () => removeStoryToFavorites(id),
+    onSuccess: async (data, variables, onMutateResult, context) => {
+      // docs: https://tanstack.com/query/latest/docs/framework/react/guides/mutations#mutation-side-effects
+      setFavoriteStoriesIds(data.data.user.favorites);
+      toast.success('Історію видалено зі збережених!');
+      await queryClient.invalidateQueries({
+        queryKey: ['savedStories'],
+      });
+    },
+    onError: () => {
+      toast.error('Не вдалося видалити історію зі збережених');
+    },
+  });
+
   function handleButtonSquareIconClick() {
     if (!currentUser) {
       toast.error('Увійди в акаунт, щоб зберігати історії');
       setAuthNavModalShown(true);
+      return;
+    }
+
+    const isSaved = true; // todo: check from store
+    if (isSaved) {
+      toast('Видалення історії зі збережених');
+      removeMutation.mutate();
       return;
     }
 
@@ -136,7 +161,7 @@ export default function TravellersStoriesItem({
               <button
                 className={clsx(css.button, css.buttonSquare)}
                 type="button"
-                disabled={saveMutation.isPending}
+                disabled={saveMutation.isPending || removeMutation.isPending}
                 title="Додати в збережені історії"
                 aria-label="Додати в збережені історії"
                 name="Додати в збережені історії"
