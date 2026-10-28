@@ -39,6 +39,7 @@ export interface RemoveStoryFromFavoritesRequest {
 export interface AddRemoveStoryToFormFavoritesResponse {
   status: number;
   message: string;
+  // data is null if response code is not 2**
   data: {
     user: {
       _id: string;
@@ -63,7 +64,7 @@ export interface AddRemoveStoryToFormFavoritesResponse {
       createdAt: string;
       updatedAt: string;
     };
-  };
+  } | null;
 }
 
 export interface Story {

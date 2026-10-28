@@ -60,7 +60,9 @@ export default function TravellersStoriesItem({
     mutationFn: () => addStoryToFavorites(id),
     onSuccess: async (data, variables, onMutateResult, context) => {
       // docs: https://tanstack.com/query/latest/docs/framework/react/guides/mutations#mutation-side-effects
-      setFavoriteStoriesIds(data.data.user.favorites);
+      if (data.data) {
+        setFavoriteStoriesIds(data.data.user.favorites);
+      }
       toast.success('Історію збережено!');
       await queryClient.invalidateQueries({
         queryKey: ['savedStories'],
@@ -75,7 +77,9 @@ export default function TravellersStoriesItem({
     mutationFn: () => removeStoryFromFavorites(id),
     onSuccess: async (data, variables, onMutateResult, context) => {
       // docs: https://tanstack.com/query/latest/docs/framework/react/guides/mutations#mutation-side-effects
-      setFavoriteStoriesIds(data.data.user.favorites);
+      if (data.data) {
+        setFavoriteStoriesIds(data.data.user.favorites);
+      }
       toast.success('Історію видалено зі збережених!');
       await queryClient.invalidateQueries({
         queryKey: ['savedStories'],
