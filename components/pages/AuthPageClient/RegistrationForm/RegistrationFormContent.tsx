@@ -1,0 +1,208 @@
+'use client';
+
+import css from './RegistrationForm.module.css';
+import * as Yup from 'yup';
+import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { register } from '@/lib/api/clientApi';
+import toast from 'react-hot-toast';
+import axios from 'axios';
+import SessionDraft from '@/components/common/SessionDraft/SessionDraft';
+
+interface RegisterValues {
+  name: string;
+  email: string;
+  password: string;
+}
+
+interface RegisterDraft {
+  name?: unknown;
+  email?: unknown;
+}
+
+const registerSchema = Yup.object().shape({
+  name: Yup.string()
+    .min(2, 'Занадто коротке імʼя')
+    .max(32, 'Занадто довге імʼя')
+    .required('Обов’язкове поле'),
+  email: Yup.string()
+    .email('Некоректний email')
+    .max(64, 'Занадто довгий email')
+    .required('Обов’язкове поле'),
+  password: Yup.string()
+    .min(8, 'Пароль має бути від 8 символів')
+    .max(64, 'Занадто довгий пароль')
+    .required('Обов’язкове поле'),
+});
+
+const defaultValues: RegisterValues = {
+  name: '',
+  email: '',
+  password: '',
+};
+
+const draftFields = ['name', 'email'];
+
+function getInitialValues(): RegisterValues {
+  const savedDraft = sessionStorage.getItem('register-draft');
+
+  if (!savedDraft) {
+    return { ...defaultValues };
+  }
+
+  try {
+    const parsed: unknown = JSON.parse(savedDraft);
+
+    if (
+      typeof parsed === 'object' &&
+      parsed !== null &&
+      !Array.isArray(parsed)
+    ) {
+      const draft = parsed as RegisterDraft;
+
+      return {
+        ...defaultValues,
+        name: typeof draft.name === 'string' ? draft.name : '',
+        email: typeof draft.email === 'string' ? draft.email : '',
+        password: '',
+      };
+    }
+  } catch {
+    sessionStorage.removeItem('register-draft');
+  }
+
+  return { ...defaultValues };
+}
+
+export default function RegistrationFormContent() {
+  const router = useRouter();
+  const [initialValues] = useState<RegisterValues>(getInitialValues);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleSubmit = async (
+    values: RegisterValues,
+    actions: FormikHelpers<RegisterValues>,
+  ) => {
+    setIsLoading(true);
+
+    try {
+      await register(values);
+      sessionStorage.removeItem('register-draft');
+      toast.success('Реєстрація успішна!');
+      actions.resetForm();
+      router.push('/');
+      router.refresh();
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const message = error.response?.data?.message;
+
+        toast.error(
+          typeof message === 'string'
+            ? message
+            : 'Не вдалося зареєструватися. Спробуйте ще раз.',
+        );
+      } else {
+        toast.error('Сталася непередбачувана помилка.');
+      }
+    } finally {
+      setIsLoading(false);
+      actions.setSubmitting(false);
+    }
+  };
+
+  return (
+    <section className={css.section}>
+      <div className={css.container}>
+        <h1 className={css.title}>Реєстрація</h1>
+        <p className={css.subtitle}>
+          Раді вас бачити у спільноті мандрівників!
+        </p>
+
+        <Formik
+          initialValues={initialValues}
+          validationSchema={registerSchema}
+          onSubmit={handleSubmit}
+          validateOnMount={false}
+        >
+          <Form className={css.form}>
+            <SessionDraft storageKey="register-draft" fields={draftFields} />
+
+            <label className={css.label}>
+              <span className={css.labelTitle}>Ім&#39;я та Прізвище*</span>
+              <Field
+                className={css.input}
+                type="text"
+                name="name"
+                placeholder="Ваше ім'я та прізвище"
+              />
+              <ErrorMessage
+                name="name"
+                component="span"
+                className={css.error}
+              />
+            </label>
+
+            <label className={css.label}>
+              <span className={css.labelTitle}>Пошта*</span>
+              <Field
+                className={css.input}
+                type="email"
+                name="email"
+                placeholder="hello@podorozhnyky.ua"
+              />
+              <ErrorMessage
+                name="email"
+                component="span"
+                className={css.error}
+              />
+            </label>
+
+            <label className={css.label}>
+              <span className={css.labelTitle}>Пароль*</span>
+              <div className={css.passwordWrapper}>
+                <Field
+                  className={css.input}
+                  type={showPassword ? 'text' : 'password'}
+                  name="password"
+                  placeholder="********"
+                />
+
+                <button
+                  type="button"
+                  className={css.passwordToggle}
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  aria-label={
+                    showPassword ? 'Приховати пароль' : 'Показати пароль'
+                  }
+                >
+                  <svg className={css.icon}>
+                    <use
+                      href={`/sprite.svg#${
+                        showPassword ? 'icon-eyeCross' : 'icon-eye'
+                      }`}
+                    />
+                  </svg>
+                </button>
+              </div>
+              <ErrorMessage
+                name="password"
+                component="span"
+                className={css.error}
+              />
+            </label>
+
+            <button
+              type="submit"
+              className={css.submitBtn}
+              disabled={isLoading}
+            >
+              {isLoading ? 'Реєстрація...' : 'Зареєструватись'}
+            </button>
+          </Form>
+        </Formik>
+      </div>
+    </section>
+  );
+}

@@ -1,3 +1,4 @@
+import { GetPopularStoriesResponse } from '../types/stories';
 import { nextApi } from './api';
 
 export interface RegisterRequest {
@@ -18,10 +19,12 @@ export interface CurrentUser {
   description?: string;
   articlesAmount?: number;
 }
+
 export interface Category {
   _id: string;
   name: string;
 }
+
 export interface CreateStoryRequest {
   title: string;
   category: string;
@@ -39,12 +42,26 @@ export interface CreatedStory {
   date: string;
 }
 
-export interface Category {
+export interface Traveller {
   _id: string;
   name: string;
+  avatarUrl: string;
+  articlesAmount: number;
+  description: string;
 }
 
-export async function register(registerData: RegisterRequest): Promise<void> {
+interface UsersResponse {
+  status: number;
+  message: string;
+  data: {
+    users: Traveller[];
+    total: number;
+  };
+}
+
+export async function register(
+  registerData: RegisterRequest,
+): Promise<void> {
   await nextApi.post('/auth/register', registerData);
 }
 
@@ -60,8 +77,10 @@ export async function getCurrentUser(): Promise<CurrentUser | null> {
 
 export async function getCategories(): Promise<Category[]> {
   const { data } = await nextApi.get('/categories');
+
   return data.data;
 }
+
 export async function createStory(
   storyData: CreateStoryRequest,
 ): Promise<CreatedStory> {
@@ -77,6 +96,34 @@ export async function createStory(
   return data.data;
 }
 
+export async function getUsers(
+  page = 1,
+  limit = 4,
+): Promise<Traveller[]> {
+  const { data } = await nextApi.get<UsersResponse>('/users', {
+    params: { page, limit },
+  });
+
+  return data.data.users;
+}
+
 export async function logout(): Promise<void> {
   await nextApi.post('/auth/logout');
+}
+
+export async function getPopularStories(
+  page = 1,
+  perPage = 3,
+): Promise<GetPopularStoriesResponse> {
+  const { data } = await nextApi.get<GetPopularStoriesResponse>(
+    '/stories/popular',
+    {
+      params: {
+        page,
+        perPage,
+      },
+    },
+  );
+
+  return data;
 }
