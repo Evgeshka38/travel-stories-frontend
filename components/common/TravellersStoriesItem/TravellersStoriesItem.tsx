@@ -15,6 +15,7 @@ import {
 } from '@/lib/api/clientApi';
 import { useFavoriteStoriesStore } from '@/lib/store/favoriteStoriesIdsStore';
 import Loader from '../Loader/Loader';
+import type { QueryKey } from '@tanstack/react-query';
 
 type Props = {
   id: string;
@@ -31,6 +32,8 @@ type Props = {
   favoriteCount: number;
 
   variant: 'save' | 'edit';
+
+  queryKey: QueryKey;
 };
 
 export default function TravellersStoriesItem({
@@ -44,6 +47,7 @@ export default function TravellersStoriesItem({
   date,
   favoriteCount,
   variant,
+  queryKey,
 }: Props) {
   const queryClient = useQueryClient();
 
@@ -68,7 +72,7 @@ export default function TravellersStoriesItem({
       }
       toast.success('Історію збережено!');
       await queryClient.invalidateQueries({
-        queryKey: ['savedStories'],
+        queryKey: queryKey,
       });
     },
     onError: () => {
@@ -85,7 +89,7 @@ export default function TravellersStoriesItem({
       }
       toast.success('Історію видалено зі збережених!');
       await queryClient.invalidateQueries({
-        queryKey: ['savedStories'],
+        queryKey: queryKey,
       });
     },
     onError: () => {
