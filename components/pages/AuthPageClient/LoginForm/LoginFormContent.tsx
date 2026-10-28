@@ -8,6 +8,8 @@ import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { login } from '@/lib/api/clientApi';
 import SessionDraft from '@/components/common/SessionDraft/SessionDraft';
+import { useQueryClient } from '@tanstack/react-query';
+import { getCurrentUser } from '@/lib/api/clientApi';
 
 interface LoginValues {
   email: string;
@@ -66,6 +68,7 @@ export default function LoginFormContent() {
   const [initialValues] = useState<LoginValues>(getInitialValues);
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const queryClient = useQueryClient();
 
   const handleSubmit = async (
     values: LoginValues,
@@ -75,6 +78,12 @@ export default function LoginFormContent() {
 
     try {
       await login(values);
+
+      await queryClient.query({
+        queryKey: ['currentUser'],
+        queryFn: getCurrentUser,
+        retry: false,
+      });
       sessionStorage.removeItem('login-draft');
       toast.success('Ви успішно увійшли!');
       router.push('/');
