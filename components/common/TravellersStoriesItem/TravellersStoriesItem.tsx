@@ -174,8 +174,7 @@ export default function TravellersStoriesItem({
                 onClick={() => handleButtonSquareIconClick()}
               >
                 {saveMutation.isPending || removeMutation.isPending ? (
-                  // todo: loader set with height
-                  <Loader />
+                  <Loader width={22} height={22} />
                 ) : (
                   <svg
                     className={css.buttonSquareIcon}
