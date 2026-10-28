@@ -54,7 +54,7 @@ export default async function RootLayout({
           <HydrationBoundary state={dehydrate(queryClient)}>
             <Header />
 
-            {children}
+            <div className="page-content">{children}</div>
 
             <AppFooter />
             <Toaster position="top-right" />
