@@ -15,7 +15,6 @@ import Loader from '../Loader/Loader';
 interface CreateStoryValues {
   title: string;
   category: string;
-  description: string;
   content: string;
   cover: File | null;
 }
@@ -23,27 +22,32 @@ interface CreateStoryValues {
 const defaultValues: CreateStoryValues = {
   title: '',
   category: '',
-  description: '',
   content: '',
   cover: null,
 };
 interface StoryDraft {
   title?: unknown;
   category?: unknown;
-  description?: unknown;
   content?: unknown;
 }
 
 const createStorySchema = Yup.object({
-  cover: Yup.mixed<File>().required("Обов'язкове поле"),
-  title: Yup.string().required("Обов'язкове поле"),
-  category: Yup.string().required('Оберіть категорію'),
-  description: Yup.string()
-    .min(10, 'Мінімум 10 символів')
-    .max(100, 'Максимум 100 символів')
+  cover: Yup.mixed<File>()
+    .required("Обов'язкове поле")
+    .test(
+      'fileSize',
+      'Максимальний розмір файлу — 2 МБ',
+      (file) => !file || file.size <= 2 * 1024 * 1024,
+    ),
+  title: Yup.string()
+    .max(80, 'Максимум 80 символів')
+    .trim()
     .required("Обов'язкове поле"),
+  category: Yup.string().required('Оберіть категорію'),
   content: Yup.string()
+    .trim()
     .min(10, 'Мінімум 10 символів')
+    .max(2500, 'Максимум 2500 символів')
     .required("Обов'язкове поле"),
 });
 
@@ -68,8 +72,6 @@ function getInitialValues(): CreateStoryValues {
         ...defaultValues,
         title: typeof draft.title === 'string' ? draft.title : '',
         category: typeof draft.category === 'string' ? draft.category : '',
-        description:
-          typeof draft.description === 'string' ? draft.description : '',
         content: typeof draft.content === 'string' ? draft.content : '',
         cover: null,
       };
@@ -81,7 +83,7 @@ function getInitialValues(): CreateStoryValues {
   return { ...defaultValues };
 }
 
-const draftFields = ['title', 'category', 'description', 'content'];
+const draftFields = ['title', 'category', 'content'];
 
 export default function AddStoryFormContent() {
   const router = useRouter();
@@ -170,7 +172,6 @@ export default function AddStoryFormContent() {
               isSubmitting ||
               !values.title.trim() ||
               !values.category ||
-              !values.description.trim() ||
               !values.content.trim() ||
               !values.cover;
             return (
@@ -297,36 +298,6 @@ export default function AddStoryFormContent() {
                     <span className={css.errorMessage}>
                       {touched.category && errors.category
                         ? errors.category
-                        : ''}
-                    </span>
-                  </div>
-
-                  <div
-                    className={`${css.field} ${css.fieldDescription} ${
-                      touched.description && errors.description
-                        ? css.hasError
-                        : ''
-                    }`}
-                  >
-                    <label htmlFor="description" className={css.formLabel}>
-                      Короткий опис
-                    </label>
-
-                    <Field
-                      as="textarea"
-                      className={css.description}
-                      id="description"
-                      name="description"
-                      maxLength={100}
-                      placeholder="Введіть короткий опис історії"
-                    />
-
-                    <p className={css.charsLeft}>
-                      Лишилось символів: {100 - values.description.length}
-                    </p>
-                    <span className={css.errorMessage}>
-                      {touched.description && errors.description
-                        ? errors.description
                         : ''}
                     </span>
                   </div>

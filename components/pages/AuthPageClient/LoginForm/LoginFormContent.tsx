@@ -8,6 +8,8 @@ import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { login } from '@/lib/api/clientApi';
 import SessionDraft from '@/components/common/SessionDraft/SessionDraft';
+import { useQueryClient } from '@tanstack/react-query';
+import { getCurrentUser } from '@/lib/api/clientApi';
 
 interface LoginValues {
   email: string;
@@ -25,7 +27,7 @@ const loginSchema = Yup.object().shape({
     .required('Обов’язкове поле'),
   password: Yup.string()
     .min(8, 'Пароль має бути від 8 символів')
-    .max(64, 'Занадто довгий пароль')
+    .max(128, 'Занадто довгий пароль')
     .required('Обов’язкове поле'),
 });
 
@@ -66,6 +68,7 @@ export default function LoginFormContent() {
   const [initialValues] = useState<LoginValues>(getInitialValues);
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const queryClient = useQueryClient();
 
   const handleSubmit = async (
     values: LoginValues,
@@ -75,6 +78,12 @@ export default function LoginFormContent() {
 
     try {
       await login(values);
+
+      await queryClient.query({
+        queryKey: ['currentUser'],
+        queryFn: getCurrentUser,
+        retry: false,
+      });
       sessionStorage.removeItem('login-draft');
       toast.success('Ви успішно увійшли!');
       router.push('/');
@@ -98,14 +107,14 @@ export default function LoginFormContent() {
           validationSchema={loginSchema}
           onSubmit={handleSubmit}
         >
-          <Form className={css.form}>
+          <Form className={css.form} noValidate>
             <SessionDraft storageKey="login-draft" fields={draftFields} />
 
             <label className={css.label}>
               <span className={css.labelTitle}>Пошта*</span>
               <Field
                 className={css.input}
-                type="email"
+                type="text"
                 name="email"
                 placeholder="hello@podorozhnyky.ua"
               />
