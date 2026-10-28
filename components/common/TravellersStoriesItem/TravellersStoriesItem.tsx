@@ -11,7 +11,7 @@ import AuthNavModal from '../modals/AuthNavModal/AuthNavModal';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   addStoryToFavorites,
-  removeStoryToFavorites,
+  removeStoryFromFavorites,
 } from '@/lib/api/clientApi';
 import { useFavoriteStoriesStore } from '@/lib/store/favoriteStoriesIdsStore';
 
@@ -72,7 +72,7 @@ export default function TravellersStoriesItem({
   });
 
   const removeMutation = useMutation({
-    mutationFn: () => removeStoryToFavorites(id),
+    mutationFn: () => removeStoryFromFavorites(id),
     onSuccess: async (data, variables, onMutateResult, context) => {
       // docs: https://tanstack.com/query/latest/docs/framework/react/guides/mutations#mutation-side-effects
       setFavoriteStoriesIds(data.data.user.favorites);

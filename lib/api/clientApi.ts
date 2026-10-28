@@ -176,7 +176,7 @@ export async function addStoryToFavorites(
   return data;
 }
 
-export async function removeStoryToFavorites(
+export async function removeStoryFromFavorites(
   id: string,
 ): Promise<AddRemoveStoryToFormFavoritesResponse> {
   const { data } = await nextApi.patch<AddRemoveStoryToFormFavoritesResponse>(
