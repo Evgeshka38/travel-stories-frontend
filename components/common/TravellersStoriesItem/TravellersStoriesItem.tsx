@@ -14,6 +14,7 @@ import {
   removeStoryFromFavorites,
 } from '@/lib/api/clientApi';
 import { useFavoriteStoriesStore } from '@/lib/store/favoriteStoriesIdsStore';
+import Loader from '../Loader/Loader';
 
 type Props = {
   id: string;
@@ -172,15 +173,20 @@ export default function TravellersStoriesItem({
                 name="Додати в збережені історії"
                 onClick={() => handleButtonSquareIconClick()}
               >
-                <svg
-                  className={css.buttonSquareIcon}
-                  width="24"
-                  height="24"
-                  aria-hidden="true"
-                  focusable="false"
-                >
-                  <use href={'/sprite.svg#icon-bookmark'} />
-                </svg>
+                {saveMutation.isPending || removeMutation.isPending ? (
+                  // todo: loader set with height
+                  <Loader />
+                ) : (
+                  <svg
+                    className={css.buttonSquareIcon}
+                    width="24"
+                    height="24"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <use href={'/sprite.svg#icon-bookmark'} />
+                  </svg>
+                )}
               </button>
             )}
             {variant === 'edit' && (
