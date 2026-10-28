@@ -54,6 +54,8 @@ export default function TravellersStoriesItem({
     (store) => store.setFavoriteStoriesIds,
   );
 
+  const isSaved = favoriteStoriesIds.includes(id);
+
   const { data: currentUser } = useCurrentUser();
   const [isAuthNavModalShown, setAuthNavModalShown] = useState<boolean>(false);
 
@@ -97,8 +99,6 @@ export default function TravellersStoriesItem({
       setAuthNavModalShown(true);
       return;
     }
-
-    const isSaved = favoriteStoriesIds.includes(id);
 
     if (isSaved) {
       toast('Видалення історії зі збережених');
@@ -165,7 +165,11 @@ export default function TravellersStoriesItem({
             {/* todo: use universal button */}
             {variant === 'save' && (
               <button
-                className={clsx(css.button, css.buttonSquare)}
+                className={clsx(
+                  css.button,
+                  css.buttonSquare,
+                  isSaved && css.buttonSaved,
+                )}
                 type="button"
                 disabled={saveMutation.isPending || removeMutation.isPending}
                 title="Додати в збережені історії"
