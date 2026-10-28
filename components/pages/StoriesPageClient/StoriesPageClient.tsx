@@ -1,26 +1,77 @@
 'use client';
 
 import { useState } from 'react';
+import { useInfiniteQuery } from '@tanstack/react-query';
 
-import TravellersStories from '@/components/common/TravellersStories/TravellersStories';
 import CategoriesList from '@/components/common/CategoriesList/CategoriesList';
+import TravellersStories from '@/components/common/TravellersStories/TravellersStories';
+import PageToggle from '@/components/common/PageToggle/PageToggle';
+import MessageNoStories from '@/components/common/MessageNoStories/MessageNoStories';
+import { getStories } from '@/lib/api/clientApi';
 
 import css from './StoriesPageClient.module.css';
+
+const PER_PAGE = 9;
 
 export default function StoriesPageClient() {
   const [selectedCategory, setSelectedCategory] =
     useState<string | null>(null);
 
+  const {
+    data,
+    isLoading,
+    isError,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
+    queryKey: ['stories', selectedCategory],
+    queryFn: ({ pageParam }) =>
+      getStories(pageParam, PER_PAGE, selectedCategory),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) =>
+      lastPage.data.hasNextPage
+        ? lastPage.data.page + 1
+        : undefined,
+  });
+
+  const stories =
+    data?.pages.flatMap((page) => page.data.stories) ?? [];
+
   return (
-    <div className={css.container}>
-      <h1>Історії Мандрівників</h1>
+    <section className={css.section}>
+      <div className={css.container}>
+        <h1 className={css.title}>Історії Мандрівників</h1>
 
-      <CategoriesList
-        selectedCategory={selectedCategory}
-        onSelect={setSelectedCategory}
-      />
+        <CategoriesList
+          selectedCategory={selectedCategory}
+          onSelect={setSelectedCategory}
+        />
 
-      <TravellersStories stories={[]} variant="save" />
-    </div>
+        {isLoading && <p className={css.message}>Завантаження...</p>}
+
+        {isError && (
+          <p className={css.message}>Не вдалося завантажити історії.</p>
+        )}
+
+        {!isLoading && !isError && stories.length === 0 && (
+          <MessageNoStories />
+        )}
+
+        {stories.length > 0 && (
+          <TravellersStories
+            stories={stories}
+            variant="save"
+          />
+        )}
+
+        {hasNextPage && (
+          <PageToggle
+            onClick={() => fetchNextPage()}
+            isLoading={isFetchingNextPage}
+          />
+        )}
+      </div>
+    </section>
   );
 }

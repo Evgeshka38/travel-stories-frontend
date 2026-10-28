@@ -1,9 +1,24 @@
 import css from './PageToggle.module.css';
 
-export default function PageToggle() {
+interface PageToggleProps {
+  onClick?: () => void;
+  isLoading?: boolean;
+}
+
+export default function PageToggle({
+  onClick,
+  isLoading = false,
+}: PageToggleProps) {
   return (
     <div className={css.container}>
-      <h2>PageToggle</h2>
+      <button
+        type="button"
+        className={css.button}
+        onClick={onClick}
+        disabled={isLoading || !onClick}
+      >
+        {isLoading ? 'Завантаження...' : 'Показати ще'}
+      </button>
     </div>
   );
 }

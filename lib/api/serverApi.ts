@@ -92,3 +92,19 @@ export async function getPopularStoriesServer(
 
   return data;
 }
+
+export async function getStoriesServer(
+  page = 1,
+  perPage = 9,
+  category?: string | null,
+): Promise<GetPopularStoriesResponse> {
+  const { data } = await serverApi.get<GetPopularStoriesResponse>('/stories', {
+    params: {
+      page,
+      perPage,
+      ...(category ? { category } : {}),
+    },
+  });
+
+  return data;
+}
