@@ -65,13 +65,13 @@ export default function TravellersStoriesItem({
 
   const saveMutation = useMutation({
     mutationFn: () => addStoryToFavorites(id),
-    onSuccess: async (data, variables, onMutateResult, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       // docs: https://tanstack.com/query/latest/docs/framework/react/guides/mutations#mutation-side-effects
       if (data.data) {
         setFavoriteStoriesIds(data.data.user.favorites);
       }
       toast.success('Історію збережено!');
-      await queryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: queryKey,
       });
     },
@@ -82,13 +82,13 @@ export default function TravellersStoriesItem({
 
   const removeMutation = useMutation({
     mutationFn: () => removeStoryFromFavorites(id),
-    onSuccess: async (data, variables, onMutateResult, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       // docs: https://tanstack.com/query/latest/docs/framework/react/guides/mutations#mutation-side-effects
       if (data.data) {
         setFavoriteStoriesIds(data.data.user.favorites);
       }
       toast.success('Історію видалено зі збережених!');
-      await queryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: queryKey,
       });
     },
