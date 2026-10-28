@@ -22,17 +22,14 @@ interface RegisterDraft {
 }
 
 const registerSchema = Yup.object().shape({
-  name: Yup.string()
-    .min(2, 'Занадто коротке імʼя')
-    .max(32, 'Занадто довге імʼя')
-    .required('Обов’язкове поле'),
+  name: Yup.string().max(32, 'Занадто довге імʼя').required('Обов’язкове поле'),
   email: Yup.string()
     .email('Некоректний email')
     .max(64, 'Занадто довгий email')
     .required('Обов’язкове поле'),
   password: Yup.string()
     .min(8, 'Пароль має бути від 8 символів')
-    .max(64, 'Занадто довгий пароль')
+    .max(128, 'Занадто довгий пароль')
     .required('Обов’язкове поле'),
 });
 
@@ -126,7 +123,7 @@ export default function RegistrationFormContent() {
           onSubmit={handleSubmit}
           validateOnMount={false}
         >
-          <Form className={css.form}>
+          <Form className={css.form} noValidate>
             <SessionDraft storageKey="register-draft" fields={draftFields} />
 
             <label className={css.label}>
@@ -148,7 +145,7 @@ export default function RegistrationFormContent() {
               <span className={css.labelTitle}>Пошта*</span>
               <Field
                 className={css.input}
-                type="email"
+                type="text"
                 name="email"
                 placeholder="hello@podorozhnyky.ua"
               />
