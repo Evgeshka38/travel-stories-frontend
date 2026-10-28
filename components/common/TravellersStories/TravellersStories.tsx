@@ -4,10 +4,12 @@ import type { PopularStory } from '@/lib/types/stories';
 import css from './TravellersStories.module.css';
 
 type Props = {
-  stories: PopularStory[];
+  stories?: PopularStory[];
 };
 
-export default function TravellersStories({ stories }: Props) {
+export default function TravellersStories({
+  stories = [],
+}: Props) {
   return (
     <ul className={css.list}>
       {stories.map((story) => (
