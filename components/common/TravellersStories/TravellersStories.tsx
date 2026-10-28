@@ -4,9 +4,10 @@ import { Story } from '@/lib/types/stories';
 
 type Props = {
   stories: Story[];
+  variant: 'save' | 'edit';
 };
 
-export default function TravellersStories({ stories }: Props) {
+export default function TravellersStories({ stories, variant }: Props) {
   return (
      <ul className={css.list}>
       {stories.map(story => (
@@ -21,6 +22,7 @@ export default function TravellersStories({ stories }: Props) {
             ownerName={story.ownerId.name}
             date={story.date}
             favoriteCount={story.favoriteCount}
+            variant={variant}
           />
         </li>
       ))}

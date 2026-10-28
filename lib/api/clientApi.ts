@@ -1,3 +1,4 @@
+import { GetPopularStoriesResponse } from '../types/stories';
 import { nextApi } from './api';
 import { Story } from '@/lib/types/stories';
 
@@ -119,6 +120,7 @@ export async function logout(): Promise<void> {
   await nextApi.post('/auth/logout');
 }
 
+
 export async function getOwnStories(
   page = 1,
   perPage = 12,
@@ -129,3 +131,21 @@ export async function getOwnStories(
 
   return data.data;
 }
+
+export async function getPopularStories(
+  page = 1,
+  perPage = 3,
+): Promise<GetPopularStoriesResponse> {
+  const { data } = await nextApi.get<GetPopularStoriesResponse>(
+    '/stories/popular',
+    {
+      params: {
+        page,
+        perPage,
+      },
+    },
+  );
+
+  return data;
+}
+

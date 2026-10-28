@@ -20,7 +20,7 @@ export default function StoriesPageClient() {
         onSelect={setSelectedCategory}
       />
 
-      <TravellersStories />
+      <TravellersStories stories={[]} variant="save" />
     </div>
   );
 }
