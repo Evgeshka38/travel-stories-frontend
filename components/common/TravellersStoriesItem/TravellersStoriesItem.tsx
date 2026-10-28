@@ -55,7 +55,9 @@ export default function TravellersStoriesItem({
 
   const saveMutation = useMutation({
     mutationFn: () => addStoryToFavorites(id),
-    onSuccess: async () => {
+    onSuccess: async (data, variables, onMutateResult, context) => {
+      // docs: https://tanstack.com/query/latest/docs/framework/react/guides/mutations#mutation-side-effects
+      setFavoriteStoriesIds(data.data.user.favorites);
       toast.success('Історію збережено!');
       await queryClient.invalidateQueries({
         queryKey: ['savedStories'],
