@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
-// import TravellersList from '@/components/common/TravellersList/TravellersList';
+import TravellersList from '@/components/common/TravellersList/TravellersList';
 import { getTravellers } from '@/lib/api/travellersApi';
 import css from './TravellersPageClient.module.css';
 
@@ -59,7 +59,7 @@ export default function TravellersPageClient() {
         <p>Не вдалося завантажити мандрівників.</p>
       ) : (
         <>
-          {/* <TravellersList travellers={data?.travellers ?? []} /> */}
+          <TravellersList travellers={data?.travellers ?? []} />
 
           {hasNextPage && (
             <button
