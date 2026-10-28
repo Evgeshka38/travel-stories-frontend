@@ -135,7 +135,7 @@ export async function addStoryToFavorites(
   id: string,
 ): Promise<AddRemoveStoryToFormFavoritesResponse> {
   const { data } = await nextApi.patch<AddRemoveStoryToFormFavoritesResponse>(
-    '/api/stories/favorite/add/' + id,
+    `/stories/favorite/add/${id}`,
   );
   return data;
 }
@@ -144,7 +144,7 @@ export async function removeStoryToFavorites(
   id: string,
 ): Promise<AddRemoveStoryToFormFavoritesResponse> {
   const { data } = await nextApi.patch<AddRemoveStoryToFormFavoritesResponse>(
-    '/api/stories/favorite/remove/' + id,
+    `/stories/favorite/remove/${id}`,
   );
   return data;
 }
