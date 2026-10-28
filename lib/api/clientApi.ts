@@ -68,9 +68,7 @@ export interface OwnStoriesData {
   hasNextPage: boolean;
 }
 
-export async function register(
-  registerData: RegisterRequest,
-): Promise<void> {
+export async function register(registerData: RegisterRequest): Promise<void> {
   await nextApi.post('/auth/register', registerData);
 }
 
@@ -105,10 +103,7 @@ export async function createStory(
   return data.data;
 }
 
-export async function getUsers(
-  page = 1,
-  limit = 4,
-): Promise<Traveller[]> {
+export async function getUsers(page = 1, limit = 4): Promise<Traveller[]> {
   const { data } = await nextApi.get<UsersResponse>('/users', {
     params: { page, limit },
   });
@@ -162,4 +157,27 @@ export async function getStories(
   });
 
   return data;
+}
+
+interface updateUserData {
+  name?: string;
+  email?: string;
+  description?: string;
+}
+
+export async function updateUser(data: updateUserData) {
+  console.log('Request data:', data);
+
+  const response = await nextApi.patch('/users', data);
+  console.log('Response:', response.data);
+
+  return response.data;
+}
+
+export async function updateUserAvatar(file: File) {
+  const formData = new FormData();
+  formData.append('avatar', file);
+  const response = await nextApi.patch('/users/avatar', formData);
+
+  return response.data;
 }
