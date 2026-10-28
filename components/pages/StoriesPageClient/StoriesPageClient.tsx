@@ -59,7 +59,10 @@ export default function StoriesPageClient() {
         )}
 
         {stories.length > 0 && (
-          <TravellersStories stories={stories} />
+          <TravellersStories
+            stories={stories}
+            variant="save"
+          />
         )}
 
         {hasNextPage && (

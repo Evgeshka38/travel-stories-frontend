@@ -5,10 +5,12 @@ import css from './TravellersStories.module.css';
 
 type Props = {
   stories?: PopularStory[];
+  variant?: 'save' | 'edit';
 };
 
 export default function TravellersStories({
   stories = [],
+  variant = 'save',
 }: Props) {
   return (
     <ul className={css.list}>
@@ -24,7 +26,7 @@ export default function TravellersStories({
             ownerName={story.ownerId?.name ?? 'Невідомий автор'}
             date={story.date}
             favoriteCount={story.favoriteCount}
-            variant="save"
+            variant={variant}
           />
         </li>
       ))}
