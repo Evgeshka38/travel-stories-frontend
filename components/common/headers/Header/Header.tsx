@@ -3,7 +3,7 @@
 import css from './Header.module.css';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
@@ -27,6 +27,30 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  useEffect(() => {
+    if (isMenuOpen) document.documentElement.style.overflow = 'hidden';
+
+    return () => {
+      document.documentElement.style.overflow = '';
+    };
+  }, [isMenuOpen]);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(min-width: 1440px)');
+
+    const handleChange = (event: MediaQueryListEvent) => {
+      if (event.matches) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    mediaQuery.addEventListener('change', handleChange);
+
+    return () => {
+      mediaQuery.removeEventListener('change', handleChange);
+    };
+  }, []);
 
   const publicNavLinks: NavLink[] = [
     {
@@ -60,6 +84,7 @@ export default function Header() {
   const toggleMenuOpen = () => {
     setIsMenuOpen((prev) => !prev);
   };
+  const menuClose = () => setIsMenuOpen(false);
 
   const handleLogout = () => {
     setIsMenuOpen(false);
@@ -98,7 +123,14 @@ export default function Header() {
   return (
     <>
       <div className={clsx(css.absoluteWrapper, isHomePage && css.absolute)}>
-        <div className={clsx(css.container, isHomePage && css.homePageStyles)}>
+        <div
+          className={clsx(
+            css.container,
+            !isMenuOpen && isHomePage && css.homePageStyles,
+            isMenuOpen && css.menuOpen,
+            isAuth && css.auth,
+          )}
+        >
           <header className={css.header}>
             <Link
               className={css.logoLink}
@@ -107,7 +139,11 @@ export default function Header() {
             >
               <svg className={css.logoIcon} width={156} height={40}>
                 <use
-                  href={isHomePage ? '/sprite.svg#icon-logo-home' : '/logo.svg'}
+                  href={
+                    !isMenuOpen && isHomePage
+                      ? '/sprite.svg#icon-logo-home'
+                      : '/logo.svg'
+                  }
                   aria-hidden="true"
                 />
               </svg>
@@ -135,6 +171,7 @@ export default function Header() {
                   buttonType="button"
                   ariaLabel={isMenuOpen ? 'Закрити меню' : 'Відкрити меню'}
                   isHomePage={isHomePage}
+                  isMenuOpen={isMenuOpen}
                   handler={toggleMenuOpen}
                 >
                   {isMenuOpen ? (
@@ -157,13 +194,18 @@ export default function Header() {
                   )}
                   aria-label="Сторінки"
                 >
-                  <NavigationList navItems={navLinks} isHomePage={isHomePage} />
+                  <NavigationList
+                    navItems={navLinks}
+                    isHomePage={isHomePage}
+                    onClick={menuClose}
+                  />
                 </nav>
 
                 <div
                   className={clsx(
                     css.authControls,
                     isAuthenticated && css.displayOff,
+                    isHomePage && css.homePageStyles,
                   )}
                 >
                   <Button
@@ -173,6 +215,7 @@ export default function Header() {
                     linkRoute="/auth/login"
                     ariaLabel="Увійти в застосунок"
                     isHomePage={isHomePage}
+                    isMenuOpen={isMenuOpen}
                   >
                     Вхід
                   </Button>
@@ -184,6 +227,7 @@ export default function Header() {
                     linkRoute="/auth/register"
                     ariaLabel="Реєстрація"
                     isHomePage={isHomePage}
+                    isMenuOpen={isMenuOpen}
                   >
                     Реєстрація
                   </Button>
@@ -230,6 +274,8 @@ export default function Header() {
                     buttonType="button"
                     ariaLabel="Вихід з профілю"
                     handler={handleLogout}
+                    isHomePage={isHomePage}
+                    isMenuOpen={isMenuOpen}
                   >
                     <svg className={css.logoutIcon} width="24" height="24">
                       <use href="/sprite.svg#icon-logout" aria-hidden="true" />
