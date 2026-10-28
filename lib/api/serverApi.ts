@@ -1,6 +1,8 @@
 import { cookies } from 'next/headers';
 import { serverApi } from './api';
 import { GetPopularStoriesResponse } from '@/lib/types/stories';
+import type { OwnStoriesData } from './clientApi';
+
 
 export interface ServerCurrentUser {
   _id: string;
@@ -107,4 +109,20 @@ export async function getStoriesServer(
   });
 
   return data;
+}
+
+export async function getOwnStoriesServer(
+  page = 1,
+  perPage = 12,
+): Promise<OwnStoriesData> {
+  const cookieStore = await cookies();
+
+  const { data } = await serverApi.get('/stories/own', {
+    params: { page, perPage },
+    headers: {
+      Cookie: cookieStore.toString(),
+    },
+  });
+
+  return data.data;
 }
