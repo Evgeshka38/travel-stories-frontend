@@ -62,6 +62,7 @@ export default function StoriesPageClient() {
           <TravellersStories
             stories={stories}
             variant="save"
+            queryKey={['stories', selectedCategory]}
           />
         )}
 
