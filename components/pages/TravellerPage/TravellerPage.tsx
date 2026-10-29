@@ -14,7 +14,7 @@ export default function TravellerPageClient({ travellerId }: Props) {
     <div className={css.container}>
       <h1>{`Traveller profile: ${travellerId}`}</h1>
       <TravellerInfo />
-      <TravellersStories stories={[]} variant="save" />
+      <TravellersStories stories={[]} variant="save" queryKey={[]} />
       <MessageNoStories />
     </div>
   );
