@@ -17,7 +17,7 @@ export default function OwnStoriesPageClient() {
     queryKey: ['ownStories'],
     queryFn: ({ pageParam }) => getOwnStories(pageParam),
     initialPageParam: 1,
-    getNextPageParam: lastPage =>
+    getNextPageParam: (lastPage) =>
       lastPage.hasNextPage ? lastPage.page + 1 : undefined,
   });
 
@@ -25,13 +25,17 @@ export default function OwnStoriesPageClient() {
 
   if (isError) return <p>Не вдалося завантажити історії</p>;
 
-  const stories = data?.pages.flatMap(page => page.stories) ?? [];
+  const stories = data?.pages.flatMap((page) => page.stories) ?? [];
 
   if (stories.length === 0) return <p>У вас поки немає історій</p>;
 
   return (
     <div className={css.container}>
-      <TravellersStories stories={stories} variant="edit" />
+      <TravellersStories
+        stories={stories}
+        variant="edit"
+        queryKey={['ownStories']}
+      />
 
       {hasNextPage && (
         <button

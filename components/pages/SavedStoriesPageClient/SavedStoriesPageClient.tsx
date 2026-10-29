@@ -2,9 +2,11 @@
 
 import { useInfiniteQuery } from '@tanstack/react-query';
 import TravellersStories from '@/components/common/TravellersStories/TravellersStories';
+import MessageNoStories from '@/components/common/MessageNoStories/MessageNoStories';
 import { getSavedStories } from '@/lib/api/clientApi';
 import css from './SavedStoriesPageClient.module.css';
 import Link from 'next/link';
+import Loader from '@/components/common/Loader/Loader';
 
 export default function SavedStoriesPageClient() {
   const {
@@ -25,7 +27,7 @@ export default function SavedStoriesPageClient() {
   if (isPending) {
     return (
       <div className={css.container}>
-        <p className={css.message}>Завантаження збережених історій...</p>
+        <Loader />
       </div>
     );
   }
@@ -33,7 +35,9 @@ export default function SavedStoriesPageClient() {
   if (isError) {
     return (
       <div className={css.container}>
-        <p className={css.message}>Не вдалося завантажити збережені історії.</p>
+        <p className={css.message}>
+          Не вдалося завантажити збережені історії.
+        </p>
       </div>
     );
   }
@@ -43,22 +47,18 @@ export default function SavedStoriesPageClient() {
   if (stories.length === 0) {
     return (
       <div className={css.container}>
-        <div className={css.emptyState}>
-          <p className={css.message}>
-            У вас ще немає збережених історій, мерщій збережіть вашу першу
-            історію!
-          </p>
-
-          <Link href="/stories" className={css.loadMore}>
-            До історій
-          </Link>
-        </div>
+        <MessageNoStories />
       </div>
     );
   }
+
   return (
     <div className={css.container}>
-      <TravellersStories stories={stories} variant="save" />
+      <TravellersStories
+        stories={stories}
+        variant="save"
+        queryKey={['savedStories']}
+      />
 
       {hasNextPage && (
         <button

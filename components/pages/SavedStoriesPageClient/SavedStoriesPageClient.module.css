@@ -36,10 +36,10 @@
   min-height: 48px;
   margin: 0;
   padding: 12px 24px;
-  border: 1px solid #4169e1;
+  border: 1px solid var(--color-royal-blue);
   border-radius: 8px;
-  background-color: #4169e1;
-  color: #fff;
+  background-color: var(--color-royal-blue);
+  color: var(--color-white);
   text-decoration: none;
   font-size: 18px;
   font-weight: 500;
@@ -57,13 +57,13 @@
 
 .loadMore:not(:disabled):hover,
 .loadMore:not(:disabled):focus-visible {
-  background-color: #e8eeff;
-  color: #000;
+  background-color: var(--color-royal-blue-lighter);
+  color: var(--color-neutral-darkest);
 }
 
 .loadMore:not(:disabled):active {
-  background-color: #7a96ea;
-  color: #000;
+  background-color: var(--color-royal-blue-light);
+  color: var(--color-neutral-darkest);
 }
 
 .loadMore:hover,
@@ -92,5 +92,8 @@
   }
   .message {
     font-size: 26px;
+  }
+  .loadMore {
+    width: max-content;
   }
 }

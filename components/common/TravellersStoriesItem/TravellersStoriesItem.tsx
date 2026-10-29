@@ -24,6 +24,7 @@ type Props = {
   favoriteCount: number;
 
   variant: 'save' | 'edit';
+  queryKey: string[];
 };
 
 export default function TravellersStoriesItem({
@@ -37,6 +38,7 @@ export default function TravellersStoriesItem({
   date,
   favoriteCount,
   variant,
+  queryKey,
 }: Props) {
   const { data: currentUser } = useCurrentUser();
   const [isAuthNavModalShown, setAuthNavModalShown] = useState<boolean>(false);

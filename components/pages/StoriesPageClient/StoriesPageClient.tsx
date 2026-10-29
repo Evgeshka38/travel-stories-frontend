@@ -14,8 +14,7 @@ import css from './StoriesPageClient.module.css';
 const PER_PAGE = 9;
 
 export default function StoriesPageClient() {
-  const [selectedCategory, setSelectedCategory] =
-    useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const {
     data,
@@ -30,13 +29,10 @@ export default function StoriesPageClient() {
       getStories(pageParam, PER_PAGE, selectedCategory),
     initialPageParam: 1,
     getNextPageParam: (lastPage) =>
-      lastPage.data.hasNextPage
-        ? lastPage.data.page + 1
-        : undefined,
+      lastPage.data.hasNextPage ? lastPage.data.page + 1 : undefined,
   });
 
-  const stories =
-    data?.pages.flatMap((page) => page.data.stories) ?? [];
+  const stories = data?.pages.flatMap((page) => page.data.stories) ?? [];
 
   return (
     <section className={css.section}>
@@ -54,14 +50,13 @@ export default function StoriesPageClient() {
           <p className={css.message}>Не вдалося завантажити історії.</p>
         )}
 
-        {!isLoading && !isError && stories.length === 0 && (
-          <MessageNoStories />
-        )}
+        {!isLoading && !isError && stories.length === 0 && <MessageNoStories />}
 
         {stories.length > 0 && (
           <TravellersStories
             stories={stories}
             variant="save"
+            queryKey={['stories', selectedCategory]}
           />
         )}
 
