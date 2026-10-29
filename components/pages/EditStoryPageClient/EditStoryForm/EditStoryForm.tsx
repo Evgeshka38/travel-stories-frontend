@@ -7,19 +7,19 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import type { ChangeEvent } from 'react';
-import { createStory, getCategories, type Category } from '@/lib/api/clientApi';
+import { editStory, getCategories, type Category } from '@/lib/api/clientApi';
 import toast from 'react-hot-toast';
-import SessionDraft from '../../common/SessionDraft/SessionDraft';
-import Loader from '../Loader/Loader';
+import Loader from '@/components/common/Loader/Loader';
+import SessionDraft from '@/components/common/SessionDraft/SessionDraft';
 
-interface CreateStoryValues {
+interface EditStoryValues {
   title: string;
   category: string;
   content: string;
   cover: File | null;
 }
 
-const defaultValues: CreateStoryValues = {
+const defaultValues: EditStoryValues = {
   title: '',
   category: '',
   content: '',
@@ -31,7 +31,7 @@ interface StoryDraft {
   content?: unknown;
 }
 
-const createStorySchema = Yup.object({
+const editStorySchema = Yup.object({
   cover: Yup.mixed<File>()
     .required("Обов'язкове поле")
     .test(
@@ -51,7 +51,7 @@ const createStorySchema = Yup.object({
     .required("Обов'язкове поле"),
 });
 
-function getInitialValues(): CreateStoryValues {
+function getInitialValues(): EditStoryValues {
   const savedDraft = sessionStorage.getItem('add-story-draft');
 
   if (!savedDraft) {
@@ -85,14 +85,14 @@ function getInitialValues(): CreateStoryValues {
 
 const draftFields = ['title', 'category', 'content'];
 
-export default function EditStoryForm() {
+export default function EditStoryForm(storyId: string) {
   const router = useRouter();
   const [coverPreview, setCoverPreview] = useState('');
   const [categories, setCategories] = useState<Category[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isOpenCategory, setIsOpenCategory] = useState(false);
 
-  const [initialValues] = useState<CreateStoryValues>(getInitialValues);
+  const [initialValues] = useState<EditStoryValues>(getInitialValues);
   const [isLoadingCategories, setIsLoadingCategories] = useState(true);
 
   useEffect(() => {
@@ -117,7 +117,7 @@ export default function EditStoryForm() {
     fetchCategories();
   }, []);
 
-  const handleSubmit = async (values: CreateStoryValues) => {
+  const handleSubmit = async (values: EditStoryValues) => {
     if (!values.cover) {
       toast.error('Завантажте обкладинку історії');
       return;
@@ -126,18 +126,19 @@ export default function EditStoryForm() {
     setIsSubmitting(true);
 
     try {
-      const story = await createStory({
+      const story = await editStory({
         title: values.title,
         category: values.category,
         article: values.content,
         cover: values.cover,
+        id: storyId,
       });
 
       sessionStorage.removeItem('add-story-draft');
-      toast.success('Історію успішно створено');
+      toast.success('Історію успішно відредаговано');
       router.push(`/stories/${story._id}`);
     } catch (error) {
-      console.error('Не вдалося створити історію:', error);
+      console.error('Не вдалося відредагувати історію:', error);
       toast.error('Помилка збереження');
     } finally {
       setIsSubmitting(false);
@@ -145,16 +146,16 @@ export default function EditStoryForm() {
   };
 
   return (
-    <section className={`${css.section} ${css.createStory}`}>
+    <section className={`${css.section} ${css.editStory}`}>
       <div className={css.container}>
-        <h1 className={css.sectionTitle}>Створити нову історію</h1>
+        <h1 className={css.sectionTitle}>Редагувати історію</h1>
         <label className={css.formLabel} htmlFor="cover-upload">
           Обкладинка статті
         </label>
 
         <Formik
           initialValues={initialValues}
-          validationSchema={createStorySchema}
+          validationSchema={editStorySchema}
           onSubmit={handleSubmit}
         >
           {({
