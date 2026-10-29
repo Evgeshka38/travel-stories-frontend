@@ -164,10 +164,9 @@ export async function getStories(
   return data;
 }
 
-export async function getTravellerStories(
-  travellerId: string, page = 1, limit = 6) {
-  const { data } = await nextApi.get(`/users/${travellerId}/stories`, {
+export async function getTravellerProfile(travellerId: string, page = 1, limit = 6) {
+  const { data } = await nextApi.get(`/users/${travellerId}`, {
     params: { page, limit },
   });
-  return data.data;
+  return data.data; 
 }
