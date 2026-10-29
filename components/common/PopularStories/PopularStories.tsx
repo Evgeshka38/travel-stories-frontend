@@ -28,6 +28,7 @@ export default function PopularStories() {
                 date={story.date}
                 favoriteCount={story.favoriteCount}
                 variant="save"
+                queryKey={['popularStories', 1, 4]}
               />
             </li>
           ))}

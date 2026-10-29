@@ -1,0 +1,140 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: rgba(0, 0, 0, 0.25);
+}
+
+.modal {
+  position: relative;
+  width: 100%;
+  max-width: 335px;
+  padding: 64px 20px 20px;
+  border-radius: 24px;
+  background-color: var(--color-scheme-2-background);
+  text-align: center;
+}
+
+.closeButton {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #000;
+}
+
+.closeButton:hover,
+.closeButton:focus-visible {
+  color: var(--color-royal-blue);
+}
+
+.title {
+  margin-bottom: 16px;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.text {
+  margin-bottom: 32px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 48px;
+  padding: 6px 12px;
+  border: 1px solid;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.login {
+  border-color: var(--opacity-neutral-darkest-15);
+  background-color: var(--opacity-neutral-darkest-5);
+  color: #000;
+}
+
+.login:hover,
+.login:focus-visible {
+  border-color: var(--color-royal-blue);
+  background-color: var(--color-royal-blue-lighter);
+}
+
+.register {
+  border-color: var(--color-royal-blue);
+  background-color: var(--color-royal-blue);
+  color: #fff;
+}
+
+.register:hover,
+.register:focus-visible {
+  background-color: var(--color-royal-blue-dark);
+}
+
+@media (min-width: 768px) {
+  .modal {
+    max-width: 704px;
+    padding: 64px 32px;
+  }
+
+  .title {
+    font-size: 32px;
+  }
+
+  .buttons {
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .link {
+    max-width: 203px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .modal {
+    max-width: 768px;
+    min-height: 400px;
+    padding: 64px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .title {
+    max-width: 560px;
+    margin-right: auto;
+    margin-left: auto;
+    font-size: 48px;
+  }
+
+  .text {
+    font-size: 20px;
+  }
+}

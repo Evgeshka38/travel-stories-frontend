@@ -30,13 +30,15 @@ export default function TravellerPageClient({ travellerId, initialData }: Props)
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  const queryKey = ['traveller-profile', travellerId, limit];
+
   const {
     data,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery({
-    queryKey: ['traveller-profile', travellerId, limit],
+    queryKey,
     queryFn: ({ pageParam = 1 }) => getTravellerProfile(travellerId, pageParam, limit),
     initialPageParam: 1,
     initialData: initialData ? { pages: [initialData], pageParams: [1] } : undefined,
@@ -56,14 +58,12 @@ export default function TravellerPageClient({ travellerId, initialData }: Props)
 
   return (
     <>
-      {}
       <section className={css.headerSection}>
         <div className={css.container}>
           <TravellerInfo traveller={traveller} />
         </div>
       </section>
 
-      {}
       <section className={css.blogSection}>
         <div className={css.container}>
           <h1 className={css.sectionTitle}>Історії Мандрівника</h1>
@@ -71,7 +71,12 @@ export default function TravellerPageClient({ travellerId, initialData }: Props)
           {hasStories ? (
             <>
               <div className={css.content}>
-                <TravellersStories stories={stories} variant="save" traveller={traveller} />
+                <TravellersStories
+                  stories={stories}
+                  variant="save"
+                  traveller={traveller}
+                  queryKey={queryKey}
+                />
               </div>
 
               {hasNextPage && (
@@ -86,7 +91,11 @@ export default function TravellerPageClient({ travellerId, initialData }: Props)
               )}
             </>
           ) : (
-            <MessageNoStories />
+            <MessageNoStories
+  text="Цей користувач ще не публікував історій"
+  buttonText="До історій"
+  href="/stories"
+/>
           )}
         </div>
       </section>
