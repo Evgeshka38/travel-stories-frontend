@@ -142,7 +142,7 @@ export default function StructurePageClient() {
       route: '/profile',
       components: [
         { componentName: 'TravellerInfo' },
-        { componentName: 'PageToggle' },
+        { componentName: 'LoadMoreButton' },
       ],
       innerPages: [
         {
