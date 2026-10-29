@@ -1,6 +1,7 @@
 import { GetPopularStoriesResponse } from '../types/stories';
 import { nextApi } from './api';
 import { Story } from '@/lib/types/stories';
+import type { PaginatedStoriesData } from '@/lib/types/stories';
 
 export interface RegisterRequest {
   name: string;
@@ -155,6 +156,20 @@ export async function getOwnStories(
   const { data } = await nextApi.get('/stories/own', {
     params: { page, perPage },
   });
+
+  return data.data;
+}
+
+export async function getSavedStories(
+  page = 1,
+  perPage = 12,
+): Promise<PaginatedStoriesData> {
+  const { data } = await nextApi.get<{ data: PaginatedStoriesData }>(
+    '/stories/saved',
+    {
+      params: { page, perPage },
+    },
+  );
 
   return data.data;
 }
