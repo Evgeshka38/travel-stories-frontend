@@ -31,7 +31,11 @@ export default function OwnStoriesPageClient() {
 
   return (
     <div className={css.container}>
-      <TravellersStories stories={stories} variant="edit" />
+      <TravellersStories
+        stories={stories}
+        variant="edit"
+        queryKey={['ownStories']}
+      />
 
       {hasNextPage && (
         <button
