@@ -49,7 +49,7 @@ export default async function RootLayout({
       }),
     queryClient
       .query({
-        queryKey: ['currentUserInfo'],
+        queryKey: ['userMe'],
         queryFn: () => getUsersMe(),
 
       })

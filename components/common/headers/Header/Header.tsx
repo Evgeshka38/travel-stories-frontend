@@ -105,7 +105,7 @@ export default function Header() {
       await logout();
 
       queryClient.setQueryData(['currentUser'], null);
-      queryClient.setQueryData(['currentUserInfo'], null);
+      queryClient.setQueryData(['userMe'], null);
       clearFavoriteStoriesIds();
 
       setIsLogoutModalOpen(false);

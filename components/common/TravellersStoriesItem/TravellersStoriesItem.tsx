@@ -65,7 +65,7 @@ export default function TravellersStoriesItem({
   const [isAuthNavModalShown, setAuthNavModalShown] = useState<boolean>(false);
 
   const userMeQuery = useQuery({
-    queryKey: ['currentUserInfo'],
+    queryKey: ['userMe'],
     queryFn: () => getUsersMe(),
     retry: 0,
   });
@@ -92,7 +92,7 @@ export default function TravellersStoriesItem({
           queryKey: queryKey,
         }),
         queryClient.invalidateQueries({
-          queryKey: ['currentUserInfo'],
+          queryKey: ['userMe'],
         }),
       ]);
     },
@@ -114,7 +114,7 @@ export default function TravellersStoriesItem({
           queryKey: queryKey,
         }),
         queryClient.invalidateQueries({
-          queryKey: ['currentUserInfo'],
+          queryKey: ['userMe'],
         }),
       ]);
     },
