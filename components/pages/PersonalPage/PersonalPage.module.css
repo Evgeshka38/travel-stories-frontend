@@ -2,13 +2,18 @@
   max-width: 375px;
   padding: 24px 20px 83px;
   margin: 0 auto;
+  margin-bottom: 83px;
   @media screen and (min-width: 768px) {
-    padding: 0 32px;
+    padding: 0 62px;
+    max-width: 768px;
+    margin-bottom: 159px;
   }
   @media screen and (min-width: 1440px) {
-    padding: 0 64px;
+    display: flex;
     align-items: flex-start;
+    padding-top: 64px;
     width: 1440px;
+    margin-bottom: 97px;
   }
 }
 
@@ -21,10 +26,20 @@
   font-family: 'Inter', sans-serif;
   font-weight: 700;
   font-size: 28px;
-  line-height: 1.2;
+  line-height: 34px;
   letter-spacing: -0.01em;
   text-align: center;
   color: #000;
+  @media screen and (min-width: 768px) {
+    font-size: 44px;
+    line-height: 53px;
+  }
+  @media screen and (min-width: 1440px) {
+    font-size: 52px;
+
+    line-height: 62px;
+    color: #000;
+  }
 }
 .textAvatar {
   font-family: 'Nunito Sans', sans-serif;
@@ -33,6 +48,10 @@
   line-height: 1.5;
   color: #000;
   margin-bottom: 8px;
+
+  @media screen and (min-width: 1440px) {
+    font-size: 18px;
+  }
 }
 .avatar {
   width: 117px;
@@ -44,6 +63,7 @@
   display: flex;
   gap: 24px;
   align-items: center;
+  max-width: 644px;
 }
 .downloadBtn {
   display: flex;
@@ -63,6 +83,9 @@
   font-size: 16px;
   line-height: 1.5;
   color: #000;
+  @media screen and (min-width: 1440px) {
+    max-width: 181px;
+  }
 }
 .textarea {
   display: flex;
@@ -77,7 +100,19 @@
   height: 120px;
   background: rgba(255, 255, 255, 0);
   resize: none;
+  transition:
+    border-color 250ms cubic-bezier(0.4, 0, 0.2, 1),
+    color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:focus {
+    border-color: #4169e1;
+    outline: none;
+  }
+  @media screen and (min-width: 768px) {
+    max-width: 644px;
+  }
 }
+
 .counter {
   font-family: 'Nunito Sans', sans-serif;
   font-weight: 400;
@@ -85,6 +120,9 @@
   line-height: 1.5;
   color: #000;
   margin-bottom: 48px;
+  @media screen and (min-width: 1440px) {
+    font-size: 16px;
+  }
 }
 
 .buttonForm {
@@ -105,6 +143,9 @@
   font-size: 16px;
   line-height: 1.5;
   color: #fff;
+  @media screen and (min-width: 768px) {
+    max-width: 644px;
+  }
 }
 .buttonForm:disabled {
   opacity: 0.3;
@@ -114,4 +155,12 @@
 .label {
   display: block;
   margin-bottom: 8px;
+  font-family: 'Nunito Sans', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #000;
+  @media screen and (min-width: 1440px) {
+    font-size: 18px;
+  }
 }

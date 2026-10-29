@@ -2,8 +2,13 @@
 import React, { useRef, useState } from 'react';
 import css from './PersonalPage.module.css';
 import Image from 'next/image';
-import { updateUser, updateUserAvatar } from '@/lib/api/clientApi';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+  getCurrentUser,
+  getUsers,
+  updateUser,
+  updateUserAvatar,
+} from '@/lib/api/clientApi';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
 interface UpdateDataFile {
@@ -24,6 +29,12 @@ export default function PersonalPage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const queryClient = useQueryClient();
   //!function///
+
+  const { data: user } = useQuery({
+    queryKey: ['user'],
+    queryFn: getCurrentUser,
+    retry: false,
+  });
 
   const updateProfileMutation = useMutation({
     mutationFn: async ({ description, avatarFile }: UpdateDataFile) => {
@@ -83,6 +94,8 @@ export default function PersonalPage() {
     reader.readAsDataURL(file);
   };
 
+  const currentAvatar = preview ?? user?.avatarUrl ?? null;
+
   return (
     <div className={css.container}>
       <div className={css.personalPageWrapper}>
@@ -91,11 +104,11 @@ export default function PersonalPage() {
         <div className={css.avatarContainer}>
           <p className={css.textAvatar}>Аватар</p>
           <div className={css.personalPageChange}>
-            {preview ? (
+            {currentAvatar ? (
               <Image
                 width={117}
                 height={117}
-                src={preview}
+                src={currentAvatar}
                 alt="Ваше фото"
                 className={css.avatar}
               />
@@ -137,10 +150,10 @@ export default function PersonalPage() {
           </p>
           <button
             className={css.buttonForm}
-            disabled={about.trim().length === 0}
+            disabled={about.trim().length === 0 && !avatarFile}
             type="submit"
           >
-            Зберегти
+            {updateProfileMutation.isPending ? 'Зберігається...' : 'Зберегти'}
           </button>
         </form>
       </div>
