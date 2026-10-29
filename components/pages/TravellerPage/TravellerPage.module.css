@@ -42,22 +42,37 @@
 }
 
 .loadMoreButton {
-  display: block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
-  max-width: 200px;
+  max-width: 335px;
+  height: 48px;
   margin: 32px auto 0 auto;
-  padding: 12px 24px;
-  background-color: #f3f3f3;
-  color: #111111;
-  font-weight: 600;
-  border: none;
+  background-color: rgba(65, 105, 225, 1);
+  color: rgba(255, 255, 255, 1);
+  font-weight: 500;
+  font-size: 16px;
+  border: 1px solid rgba(65, 105, 225, 1);
   border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
 }
 
-.loadMoreButton:hover:not(:disabled) {
-  background-color: #e2e2e2;
+.loadMoreButton:hover:not(:disabled),
+.loadMoreButton:focus:not(:disabled) {
+  background-color: rgba(232, 238, 255, 1);
+  border: 1px solid rgba(65, 105, 225, 1);
+  color: rgba(0, 0, 0, 1);
+}
+
+.loadMoreButton:active:not(:disabled) {
+  background-color: rgba(122, 150, 234, 1);
+  border: 1px solid rgba(65, 105, 225, 1);
+  color: rgba(0, 0, 0, 1);
 }
 
 .loadMoreButton:disabled {
@@ -96,6 +111,21 @@
   .sectionTitle {
     font-size: 28px;
   }
+  .loadMoreButton {
+    width: 123px;
+    height: 48px;
+    max-width: 220px;
+    padding-top: 6px;
+    padding-right: 12px;
+    padding-bottom: 6px;
+    padding-left: 12px;
+    gap: 8px;
+    opacity: 1;
+    border-radius: 8px;
+    border-width: 1px;
+    font-size: 16px;
+    white-space: nowrap;
+  }
 }
 
 @media screen and (min-width: 1440px) {
@@ -124,5 +154,18 @@
     gap: 40px;
     opacity: 1;
     margin: 0 auto;
+  }
+  .loadMoreButton {
+    width: 135px;
+    height: 48px;
+    padding-top: 6px;
+    padding-right: 12px;
+    padding-bottom: 6px;
+    padding-left: 12px;
+    gap: 8px;
+    opacity: 1;
+    border-radius: 8px;
+    border-width: 1px;
+    font-size: 18px;
   }
 }
