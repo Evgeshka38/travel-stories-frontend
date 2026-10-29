@@ -68,7 +68,10 @@ export default function Header() {
   ];
 
   const isHomePage = pathname === '/';
-  const isAuth = pathname === '/auth/register' || pathname === '/auth/login';
+  const isAuth =
+    pathname === '/auth/register' ||
+    pathname === '/auth/login' ||
+    pathname === '/edit';
   const isAuthenticated = Boolean(user);
 
   const navLinks: NavLink[] = isAuthenticated

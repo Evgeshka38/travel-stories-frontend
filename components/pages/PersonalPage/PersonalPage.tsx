@@ -4,7 +4,6 @@ import css from './PersonalPage.module.css';
 import Image from 'next/image';
 import {
   getCurrentUser,
-  getUsers,
   updateUser,
   updateUserAvatar,
 } from '@/lib/api/clientApi';
@@ -17,18 +16,15 @@ interface UpdateDataFile {
 }
 
 export default function PersonalPage() {
-  //*state///
   const [about, setAbout] = useState('');
   const [error, setError] = useState('');
   const [preview, setPreview] = useState<string | null>(null);
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
 
-  //?change///
   const router = useRouter();
   const maxLength = 150;
   const fileInputRef = useRef<HTMLInputElement>(null);
   const queryClient = useQueryClient();
-  //!function///
 
   const { data: user } = useQuery({
     queryKey: ['user'],
@@ -47,7 +43,7 @@ export default function PersonalPage() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user'] });
-      router.push('/');
+      router.push('/profile/saved');
     },
   });
 
@@ -67,8 +63,6 @@ export default function PersonalPage() {
   const handleAboutChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setAbout(event.target.value);
   };
-
-  //!--avatar
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

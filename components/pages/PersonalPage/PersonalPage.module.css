@@ -2,18 +2,17 @@
   max-width: 375px;
   padding: 24px 20px 83px;
   margin: 0 auto;
-  margin-bottom: 83px;
   @media screen and (min-width: 768px) {
     padding: 0 62px;
     max-width: 768px;
-    margin-bottom: 159px;
+    padding-bottom: 167px;
   }
   @media screen and (min-width: 1440px) {
     display: flex;
     align-items: flex-start;
     padding-top: 64px;
     width: 1440px;
-    margin-bottom: 97px;
+    padding-bottom: 97px;
   }
 }
 
@@ -22,8 +21,9 @@
   flex-direction: column;
   gap: 24px;
 }
+
 .title {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-nunito-sans);
   font-weight: 700;
   font-size: 28px;
   line-height: 34px;
@@ -42,7 +42,8 @@
   }
 }
 .textAvatar {
-  font-family: 'Nunito Sans', sans-serif;
+  font-family: var(--font-nunito-sans);
+
   font-weight: 400;
   font-size: 16px;
   line-height: 1.5;
@@ -78,13 +79,14 @@
   width: 100%;
   height: 32px;
   background: rgba(0, 0, 0, 0.05);
-  font-family: 'Nunito Sans', sans-serif;
+  font-family: var(--font-nunito-sans);
   font-weight: 500;
   font-size: 16px;
   line-height: 1.5;
   color: #000;
   @media screen and (min-width: 1440px) {
     max-width: 181px;
+    font-size: 18px;
   }
 }
 .textarea {
@@ -114,7 +116,8 @@
 }
 
 .counter {
-  font-family: 'Nunito Sans', sans-serif;
+  font-family: var(--font-nunito-sans);
+
   font-weight: 400;
   font-size: 12px;
   line-height: 1.5;
@@ -138,7 +141,8 @@
   width: 100%;
   height: 44px;
   background: #4169e1; /* opacity: 0.3; */
-  font-family: 'Nunito Sans', sans-serif;
+  font-family: var(--font-nunito-sans);
+
   font-weight: 500;
   font-size: 16px;
   line-height: 1.5;
@@ -155,7 +159,8 @@
 .label {
   display: block;
   margin-bottom: 8px;
-  font-family: 'Nunito Sans', sans-serif;
+  font-family: var(--font-nunito-sans);
+
   font-weight: 400;
   font-size: 16px;
   line-height: 1.5;
