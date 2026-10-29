@@ -4,6 +4,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import TravellersStories from '@/components/common/TravellersStories/TravellersStories';
 import { getSavedStories } from '@/lib/api/clientApi';
 import css from './SavedStoriesPageClient.module.css';
+import Link from 'next/link';
 
 export default function SavedStoriesPageClient() {
   const {
@@ -24,7 +25,7 @@ export default function SavedStoriesPageClient() {
   if (isPending) {
     return (
       <div className={css.container}>
-        <p>Завантаження збережених історій...</p>
+        <p className={css.message}>Завантаження збережених історій...</p>
       </div>
     );
   }
@@ -32,21 +33,36 @@ export default function SavedStoriesPageClient() {
   if (isError) {
     return (
       <div className={css.container}>
-        <p>Не вдалося завантажити збережені історії.</p>
+        <p className={css.message}>Не вдалося завантажити збережені історії.</p>
       </div>
     );
   }
 
   const stories = data.pages.flatMap((page) => page.stories);
 
+  /*   if (stories.length === 0) {
+    return (
+      <div className={css.container}>
+        <p className={css.message}>У вас поки немає збережених історій.</p>
+      </div>
+    );
+  } */
   if (stories.length === 0) {
     return (
       <div className={css.container}>
-        <p>У вас поки немає збережених історій.</p>
+        <div className={css.emptyState}>
+          <p className={css.message}>
+            У вас ще немає збережених історій, мерщій збережіть вашу першу
+            історію!
+          </p>
+
+          <Link href="/stories" className={css.loadMore}>
+            До історій
+          </Link>
+        </div>
       </div>
     );
   }
-
   return (
     <div className={css.container}>
       <TravellersStories stories={stories} variant="save" />
@@ -54,6 +70,7 @@ export default function SavedStoriesPageClient() {
       {hasNextPage && (
         <button
           type="button"
+          className={css.loadMore}
           onClick={() => fetchNextPage()}
           disabled={isFetchingNextPage}
         >
