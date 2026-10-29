@@ -55,13 +55,18 @@ export default function StoriesPageClient() {
         )}
 
         {!isLoading && !isError && stories.length === 0 && (
-          <MessageNoStories />
+          <MessageNoStories 
+            text="Історій поки немає. Станьте першим, хто поділиться своєю!"
+            buttonText="Назад до історій"
+            href="/stories/create"
+  />
         )}
 
         {stories.length > 0 && (
           <TravellersStories
             stories={stories}
             variant="save"
+            queryKey={['stories', selectedCategory]}
           />
         )}
 

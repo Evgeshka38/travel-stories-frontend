@@ -8,6 +8,14 @@ import { useCurrentUser } from '@/hooks/useCurrentUser';
 import toast from 'react-hot-toast';
 import { useState } from 'react';
 import AuthNavModal from '../modals/AuthNavModal/AuthNavModal';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+  addStoryToFavorites,
+  removeStoryFromFavorites,
+} from '@/lib/api/clientApi';
+import { useFavoriteStoriesStore } from '@/lib/store/favoriteStoriesIdsStore';
+import Loader from '../Loader/Loader';
+import type { QueryKey } from '@tanstack/react-query';
 
 type Props = {
   id: string;
@@ -24,6 +32,8 @@ type Props = {
   favoriteCount: number;
 
   variant: 'save' | 'edit';
+
+  queryKey: QueryKey;
 };
 
 export default function TravellersStoriesItem({
@@ -37,20 +47,71 @@ export default function TravellersStoriesItem({
   date,
   favoriteCount,
   variant,
+  queryKey,
 }: Props) {
+  const queryClient = useQueryClient();
+
+  const favoriteStoriesIds = useFavoriteStoriesStore(
+    (store) => store.favoriteStoriesIds,
+  );
+  const setFavoriteStoriesIds = useFavoriteStoriesStore(
+    (store) => store.setFavoriteStoriesIds,
+  );
+
+  const isSaved = favoriteStoriesIds.includes(id);
+
   const { data: currentUser } = useCurrentUser();
   const [isAuthNavModalShown, setAuthNavModalShown] = useState<boolean>(false);
 
-  function handleButtonSquareIconClick() {
-    const canSave = !!currentUser;
+  const saveMutation = useMutation({
+    mutationFn: () => addStoryToFavorites(id),
+    onSuccess: (data) => {
+      // docs: https://tanstack.com/query/latest/docs/framework/react/guides/mutations#mutation-side-effects
+      if (data.data) {
+        setFavoriteStoriesIds(data.data.user.favorites);
+      }
+      toast.success('Історію збережено!');
+      queryClient.invalidateQueries({
+        queryKey: queryKey,
+      });
+    },
+    onError: () => {
+      toast.error('Не вдалося зберегти історію');
+    },
+  });
 
-    // todo api req
-    if (canSave) {
-      toast.success('saving');
-    } else {
-      toast.error('you need to log in');
+  const removeMutation = useMutation({
+    mutationFn: () => removeStoryFromFavorites(id),
+    onSuccess: (data) => {
+      // docs: https://tanstack.com/query/latest/docs/framework/react/guides/mutations#mutation-side-effects
+      if (data.data) {
+        setFavoriteStoriesIds(data.data.user.favorites);
+      }
+      toast.success('Історію видалено зі збережених!');
+      queryClient.invalidateQueries({
+        queryKey: queryKey,
+      });
+    },
+    onError: () => {
+      toast.error('Не вдалося видалити історію зі збережених');
+    },
+  });
+
+  function handleButtonSquareIconClick() {
+    if (!currentUser) {
+      toast.error('Увійди в акаунт, щоб зберігати історії');
       setAuthNavModalShown(true);
+      return;
     }
+
+    if (isSaved) {
+      toast('Видалення історії зі збережених');
+      removeMutation.mutate();
+      return;
+    }
+
+    toast('Збереження історії');
+    saveMutation.mutate();
   }
 
   return (
@@ -108,28 +169,38 @@ export default function TravellersStoriesItem({
             {/* todo: use universal button */}
             {variant === 'save' && (
               <button
-                className={clsx(css.button, css.buttonSquare)}
+                className={clsx(
+                  css.button,
+                  css.buttonSquare,
+                  isSaved && css.buttonSaved,
+                )}
                 type="button"
+                disabled={saveMutation.isPending || removeMutation.isPending}
                 title="Додати в збережені історії"
                 aria-label="Додати в збережені історії"
                 name="Додати в збережені історії"
                 onClick={() => handleButtonSquareIconClick()}
               >
-                <svg
-                  className={css.buttonSquareIcon}
-                  width="24"
-                  height="24"
-                  aria-hidden="true"
-                  focusable="false"
-                >
-                  <use href={'/sprite.svg#icon-bookmark'} />
-                </svg>
+                {saveMutation.isPending || removeMutation.isPending ? (
+                  <Loader width={22} height={22} />
+                ) : (
+                  <svg
+                    className={css.buttonSquareIcon}
+                    width="24"
+                    height="24"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <use href={'/sprite.svg#icon-bookmark'} />
+                  </svg>
+                )}
               </button>
             )}
             {variant === 'edit' && (
               <Link
                 href={`/stories/${id}/edit`}
                 className={clsx(css.button, css.buttonSquare)}
+                aria-label="Редагувати історію"
               >
                 <svg
                   className={css.buttonSquareIcon}

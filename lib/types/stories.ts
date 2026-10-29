@@ -54,6 +54,51 @@ export interface PaginatedStoriesData {
   hasNextPage: boolean;
 }
 
+export interface GetStoryByIdResponse {
+  status: number;
+  message: string;
+  data: Story;
+}
+
+export interface AddStoryToFavoritesRequest {
+  id: string;
+}
+
+export interface RemoveStoryFromFavoritesRequest {
+  id: string;
+}
+
+export interface AddRemoveStoryToFormFavoritesResponse {
+  status: number;
+  message: string;
+  // data is null if response code is not 2**
+  data: {
+    user: {
+      _id: string;
+      name: string;
+      email: string;
+      avatarUrl: string;
+      description: string;
+      articlesAmount: number;
+      favorites: string[];
+      createdAt: string;
+      updatedAt: string;
+    };
+    story: {
+      _id: string;
+      img: string;
+      title: string;
+      article: string;
+      category: string;
+      ownerId: string;
+      date: string;
+      favoriteCount: number;
+      createdAt: string;
+      updatedAt: string;
+    };
+  } | null;
+}
+
 export interface AddStoryFormUniversalValues {
   title: string;
   category: string;

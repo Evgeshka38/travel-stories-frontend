@@ -1,7 +1,11 @@
-import { GetPopularStoriesResponse } from '../types/stories';
 import { nextApi } from './api';
 import { Story } from '@/lib/types/stories';
-import type { PaginatedStoriesData } from '@/lib/types/stories';
+import type {
+  AddRemoveStoryToFormFavoritesResponse,
+  GetPopularStoriesResponse,
+  GetStoryByIdResponse,
+  PaginatedStoriesData,
+} from '@/lib/types/stories';
 
 export interface RegisterRequest {
   name: string;
@@ -202,5 +206,31 @@ export async function getStories(
     },
   });
 
+  return data;
+}
+
+export async function getStoryById(storyId: string): Promise<Story> {
+  const { data } = await nextApi.get<GetStoryByIdResponse>(
+    `/stories/${storyId}`,
+  );
+
+  return data.data;
+}
+
+export async function addStoryToFavorites(
+  id: string,
+): Promise<AddRemoveStoryToFormFavoritesResponse> {
+  const { data } = await nextApi.patch<AddRemoveStoryToFormFavoritesResponse>(
+    `/stories/favorite/add/${id}`,
+  );
+  return data;
+}
+
+export async function removeStoryFromFavorites(
+  id: string,
+): Promise<AddRemoveStoryToFormFavoritesResponse> {
+  const { data } = await nextApi.patch<AddRemoveStoryToFormFavoritesResponse>(
+    `/stories/favorite/remove/${id}`,
+  );
   return data;
 }

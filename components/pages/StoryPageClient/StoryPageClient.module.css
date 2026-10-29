@@ -1,0 +1,11 @@
+.popular {
+  padding: 64px 20px;
+
+  @media only screen and (min-width: 768px) {
+    padding: 64px 32px;
+  }
+
+  @media only screen and (min-width: 1440px) {
+    padding: 72px 64px;
+  }
+}
