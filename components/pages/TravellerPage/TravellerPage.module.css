@@ -33,8 +33,7 @@
   font-size: 24px;
   font-weight: 700;
   line-height: 1.2;
-  margin-bottom: 24px;
-  color: #111111;
+  color: #000000;
 }
 
 .content {
@@ -137,6 +136,9 @@
     padding-left: 32px;
     gap: 16px;
     opacity: 1;
+  }
+  .sectionTitle {
+    font-size: 52px;
   }
   .blogSection {
     width: 100%;

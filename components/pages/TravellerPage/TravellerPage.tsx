@@ -66,7 +66,7 @@ export default function TravellerPageClient({ travellerId, initialData }: Props)
       {}
       <section className={css.blogSection}>
         <div className={css.container}>
-          <h2 className={css.sectionTitle}>Історії Мандрівника</h2>
+          <h1 className={css.sectionTitle}>Історії Мандрівника</h1>
 
           {hasStories ? (
             <>
