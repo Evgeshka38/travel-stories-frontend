@@ -67,6 +67,7 @@ export default function TravellersStoriesItem({
   const userMeQuery = useQuery({
     queryKey: ['currentUserInfo'],
     queryFn: () => getUsersMe(),
+    retry: 0,
   });
   useEffect(() => {
     // useQuery has no onSuccess so im doing a work around
