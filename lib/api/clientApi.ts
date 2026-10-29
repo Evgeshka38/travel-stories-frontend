@@ -73,6 +73,15 @@ export interface OwnStoriesData {
   hasNextPage: boolean;
 }
 
+export interface TravellerProfileResponse {
+  traveller: Traveller;
+  stories: Story[];
+  page: number;
+  perPage: number;
+  totalItems: number;
+  hasNextPage: boolean;
+}
+
 export async function register(registerData: RegisterRequest): Promise<void> {
   await nextApi.post('/auth/register', registerData);
 }
@@ -178,7 +187,11 @@ export async function getStories(
   return data;
 }
 
-export async function getTravellerProfile(travellerId: string, page = 1, limit = 6) {
+export async function getTravellerProfile(
+  travellerId: string, 
+  page = 1, 
+  limit = 6
+): Promise<TravellerProfileResponse> {
   const { data } = await nextApi.get(`/users/${travellerId}`, {
     params: { page, limit },
   });
