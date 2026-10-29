@@ -49,7 +49,11 @@ export default function SavedStoriesPageClient() {
 
   return (
     <div className={css.container}>
-      <TravellersStories stories={stories} variant="save" />
+      <TravellersStories
+        stories={stories}
+        variant="save"
+        queryKey={['savedStories']}
+      />
 
       {hasNextPage && (
         <button
