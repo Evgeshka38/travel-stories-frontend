@@ -1,8 +1,8 @@
 .container {
   display: flex;
   flex-direction: column;
-  width: 311;
-  height: 353;
+  width: 311px;
+  height: 353px;
   max-width: 1280;
   gap: 16px;
   opacity: 1;
@@ -17,14 +17,14 @@
 }
 
 .text_content {
-  width: 311;
-  height: 130;
+  width: 311px;
+  height: 130px;
   gap: 8px;
   opacity: 1;
 }
 .name {
-  width: 311;
-  height: 26;
+  width: 311px;
+  height: 26px;
   opacity: 1;
 
   font-family: Inter;
@@ -36,8 +36,8 @@
 }
 
 .description {
-  width: 311;
-  height: 96;
+  width: 311px;
+  height: 96px;
   opacity: 1;
   font-family: Nunito Sans;
   font-weight: 400;
@@ -53,14 +53,14 @@
     flex-direction: row;
     align-items: center;
     text-align: left;
-    width: 704;
-    height: 199;
+    width: 704px;
+    height: 199px;
     gap: 24px;
   }
   .text_content {
     align-items: flex-start;
-    width: 481;
-    height: 74;
+    width: 481px;
+    height: 74px;
   }
   .name {
     height: 26px;
@@ -73,8 +73,8 @@
   }
 
   .description {
-    width: 481;
-    height: 48;
+    width: 481px;
+    height: 48px;
     opacity: 1;
     font-family: Nunito Sans;
     font-weight: 400;
@@ -87,14 +87,14 @@
 
 @media screen and (min-width: 1440px) {
   .text_content {
-    width: 367;
-    height: 150;
+    width: 367px;
+    height: 150px;
     opacity: 1;
   }
 
   .name {
-    width: 367;
-    height: 42;
+    width: 367px;
+    height: 42px;
     opacity: 1;
     font-family: Inter;
     font-weight: 700;
@@ -104,8 +104,8 @@
   }
 
   .description {
-    width: 367;
-    height: 108;
+    width: 367px;
+    height: 108px;
     opacity: 1;
     font-family: Nunito Sans;
     font-weight: 400;
