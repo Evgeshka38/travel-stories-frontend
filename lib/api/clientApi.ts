@@ -1,9 +1,11 @@
-import {
-  AddRemoveStoryToFormFavoritesResponse,
-  GetPopularStoriesResponse,
-} from '../types/stories';
 import { nextApi } from './api';
 import { Story } from '@/lib/types/stories';
+import type {
+  AddRemoveStoryToFormFavoritesResponse,
+  GetPopularStoriesResponse,
+  GetStoryByIdResponse,
+  PaginatedStoriesData,
+} from '@/lib/types/stories';
 
 export interface RegisterRequest {
   name: string;
@@ -71,9 +73,7 @@ export interface OwnStoriesData {
   hasNextPage: boolean;
 }
 
-export async function register(
-  registerData: RegisterRequest,
-): Promise<void> {
+export async function register(registerData: RegisterRequest): Promise<void> {
   await nextApi.post('/auth/register', registerData);
 }
 
@@ -108,10 +108,7 @@ export async function createStory(
   return data.data;
 }
 
-export async function getUsers(
-  page = 1,
-  limit = 4,
-): Promise<Traveller[]> {
+export async function getUsers(page = 1, limit = 4): Promise<Traveller[]> {
   const { data } = await nextApi.get<UsersResponse>('/users', {
     params: { page, limit },
   });
@@ -130,6 +127,20 @@ export async function getOwnStories(
   const { data } = await nextApi.get('/stories/own', {
     params: { page, perPage },
   });
+
+  return data.data;
+}
+
+export async function getSavedStories(
+  page = 1,
+  perPage = 12,
+): Promise<PaginatedStoriesData> {
+  const { data } = await nextApi.get<{ data: PaginatedStoriesData }>(
+    '/stories/saved',
+    {
+      params: { page, perPage },
+    },
+  );
 
   return data.data;
 }
@@ -165,6 +176,14 @@ export async function getStories(
   });
 
   return data;
+}
+
+export async function getStoryById(storyId: string): Promise<Story> {
+  const { data } = await nextApi.get<GetStoryByIdResponse>(
+    `/stories/${storyId}`,
+  );
+
+  return data.data;
 }
 
 export async function addStoryToFavorites(

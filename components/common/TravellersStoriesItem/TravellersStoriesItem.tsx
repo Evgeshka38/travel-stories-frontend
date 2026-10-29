@@ -216,7 +216,9 @@ export default function TravellersStoriesItem({
           </div>
         </div>
       </article>
-      {isAuthNavModalShown && <AuthNavModal />}
+      {isAuthNavModalShown && (
+        <AuthNavModal onClose={() => setAuthNavModalShown(false)} />
+      )}
     </>
   );
 }

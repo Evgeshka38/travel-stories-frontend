@@ -84,3 +84,17 @@ export interface Story {
   date: string;
   favoriteCount: number;
 }
+
+export interface PaginatedStoriesData {
+  stories: Story[];
+  page: number;
+  perPage: number;
+  totalItems: number;
+  hasNextPage: boolean;
+}
+
+export interface GetStoryByIdResponse {
+  status: number;
+  message: string;
+  data: Story;
+}
