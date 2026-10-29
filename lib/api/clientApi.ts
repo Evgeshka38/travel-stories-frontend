@@ -86,12 +86,6 @@ export interface OwnStoriesData {
   totalItems: number;
   hasNextPage: boolean;
 }
-//!!!!!!!!!
-export interface GetStoryByIdResponse {
-  status: number;
-  message: string;
-  data: Story;
-}
 
 export async function register(registerData: RegisterRequest): Promise<void> {
   await nextApi.post('/auth/register', registerData);
@@ -209,12 +203,4 @@ export async function getStories(
   });
 
   return data;
-}
-//!!!!!!!!!!!!
-export async function getStoryById(storyId: string): Promise<Story> {
-  const { data } = await nextApi.get<GetStoryByIdResponse>(
-    `/stories/${storyId}`,
-  );
-
-  return data.data;
 }
