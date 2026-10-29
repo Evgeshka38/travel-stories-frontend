@@ -58,7 +58,7 @@ export default function StoriesPageClient() {
           <MessageNoStories 
             text="Історій поки немає. Станьте першим, хто поділиться своєю!"
             buttonText="Назад до історій"
-            href="/stories"
+            href="/stories/create"
   />
         )}
 

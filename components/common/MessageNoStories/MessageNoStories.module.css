@@ -2,6 +2,7 @@
   width: 100%;
   max-width: 335px;
   padding: 20px;
+  margin-inline: auto;
   border-radius: 24px;
   background-color: var(--color-scheme-2-foreground);
 }
@@ -49,6 +50,7 @@
 @media (min-width: 768px) {
   .container {
     max-width: 533px;
+    margin-inline: 0;
     padding: 40px 32px;
   }
 }

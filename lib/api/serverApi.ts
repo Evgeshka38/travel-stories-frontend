@@ -2,6 +2,7 @@ import { cookies } from 'next/headers';
 import { serverApi } from './api';
 import { GetPopularStoriesResponse } from '@/lib/types/stories';
 import type { OwnStoriesData } from './clientApi';
+import type { PaginatedStoriesData } from '@/lib/types/stories';
 
 
 export interface ServerCurrentUser {
@@ -126,3 +127,25 @@ export async function getOwnStoriesServer(
 
   return data.data;
 }
+
+export async function getSavedStoriesServer(
+  page = 1,
+  perPage = 12,
+): Promise<PaginatedStoriesData> {
+  const cookieStore = await cookies();
+
+  const { data } = await serverApi.get<{
+    data: PaginatedStoriesData;
+  }>('/stories/saved', {
+
+    params: { page, perPage },
+    headers: {
+      Cookie: cookieStore.toString(),
+    },
+  });
+
+  return data.data;
+
+}
+
+
