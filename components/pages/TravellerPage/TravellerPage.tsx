@@ -13,13 +13,20 @@ export default function TravellerPageClient({ travellerId }: Props) {
   return (
     <div className={css.container}>
       <h1>{`Traveller profile: ${travellerId}`}</h1>
+
       <TravellerInfo />
-      <TravellersStories stories={[]} variant="save" />
-      <MessageNoStories 
-         text="Цей користувач ще не публікував історій"
-         buttonText="До історій"
-         href="/stories"
-  />
+
+      <TravellersStories
+        stories={[]}
+        variant="save"
+        queryKey={['traveller', travellerId]}
+      />
+
+      <MessageNoStories
+        text="Цей користувач ще не публікував історій"
+        buttonText="До історій"
+        href="/stories"
+      />
     </div>
   );
 }

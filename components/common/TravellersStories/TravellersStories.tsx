@@ -2,15 +2,18 @@ import TravellersStoriesItem from '@/components/common/TravellersStoriesItem/Tra
 import type { PopularStory } from '@/lib/types/stories';
 
 import css from './TravellersStories.module.css';
+import { QueryKey } from '@tanstack/react-query';
 
 type Props = {
   stories?: PopularStory[];
   variant?: 'save' | 'edit';
+  queryKey: QueryKey;
 };
 
 export default function TravellersStories({
   stories = [],
   variant = 'save',
+  queryKey,
 }: Props) {
   return (
     <ul className={css.list}>
@@ -27,6 +30,7 @@ export default function TravellersStories({
             date={story.date}
             favoriteCount={story.favoriteCount}
             variant={variant}
+            queryKey={queryKey}
           />
         </li>
       ))}
