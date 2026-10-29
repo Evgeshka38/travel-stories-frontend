@@ -118,6 +118,8 @@
     opacity: 1;
   }
   .container {
+    width: 100%;
+
     max-width: 1312px;
     gap: 40px;
     opacity: 1;
