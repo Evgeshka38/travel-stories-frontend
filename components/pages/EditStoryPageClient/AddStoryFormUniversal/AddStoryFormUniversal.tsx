@@ -1,99 +1,105 @@
 'use client';
 
 import css from './EditStoryForm.module.css';
-import * as Yup from 'yup';
+
 import { Formik, Form, Field } from 'formik';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import type { ChangeEvent } from 'react';
-import { editStory, getCategories, type Category } from '@/lib/api/clientApi';
+import { type Category } from '@/lib/api/clientApi';
 import toast from 'react-hot-toast';
-import Loader from '@/components/common/Loader/Loader';
 import SessionDraft from '@/components/common/SessionDraft/SessionDraft';
+import { AddStoryFormUniversalValues, Story } from '@/lib/types/stories';
+import { Schema } from 'yup';
 
-interface EditStoryValues {
-  title: string;
-  category: string;
-  content: string;
-  cover: File | null;
-}
+// interface AddStoryFormUniversalValues {
+//   title: string;
+//   category: string;
+//   content: string;
+//   cover: File | string | null;
+// }
 
-const defaultValues: EditStoryValues = {
+const defaultValues: AddStoryFormUniversalValues = {
   title: '',
   category: '',
   content: '',
   cover: null,
 };
+
 interface StoryDraft {
   title?: unknown;
   category?: unknown;
   content?: unknown;
 }
 
-const editStorySchema = Yup.object({
-  cover: Yup.mixed<File>()
-    .required("Обов'язкове поле")
-    .test(
-      'fileSize',
-      'Максимальний розмір файлу — 2 МБ',
-      (file) => !file || file.size <= 2 * 1024 * 1024,
-    ),
-  title: Yup.string()
-    .max(80, 'Максимум 80 символів')
-    .trim()
-    .required("Обов'язкове поле"),
-  category: Yup.string().required('Оберіть категорію'),
-  content: Yup.string()
-    .trim()
-    .min(10, 'Мінімум 10 символів')
-    .max(2500, 'Максимум 2500 символів')
-    .required("Обов'язкове поле"),
-});
+interface EditStoryFormProps {
+  editingStory?: Story;
+  categories: Category[];
+  editStorySchema: Schema;
+  onSubmit: (values: AddStoryFormUniversalValues) => Promise<Story>;
+}
 
-function getInitialValues(): EditStoryValues {
+function getInitialValues(story?: Story): AddStoryFormUniversalValues {
   const savedDraft = sessionStorage.getItem('add-story-draft');
 
-  if (!savedDraft) {
+  if (!savedDraft && !story) {
     return { ...defaultValues };
   }
+  if (savedDraft) {
+    try {
+      const parsed: unknown = JSON.parse(savedDraft);
 
-  try {
-    const parsed: unknown = JSON.parse(savedDraft);
+      if (
+        typeof parsed === 'object' &&
+        parsed !== null &&
+        !Array.isArray(parsed)
+      ) {
+        const draft = parsed as StoryDraft;
 
-    if (
-      typeof parsed === 'object' &&
-      parsed !== null &&
-      !Array.isArray(parsed)
-    ) {
-      const draft = parsed as StoryDraft;
-
-      return {
-        ...defaultValues,
-        title: typeof draft.title === 'string' ? draft.title : '',
-        category: typeof draft.category === 'string' ? draft.category : '',
-        content: typeof draft.content === 'string' ? draft.content : '',
-        cover: null,
-      };
+        return {
+          ...defaultValues,
+          title: typeof draft.title === 'string' ? draft.title : '',
+          category: typeof draft.category === 'string' ? draft.category : '',
+          content: typeof draft.content === 'string' ? draft.content : '',
+          cover: null,
+        };
+      }
+    } catch {
+      sessionStorage.removeItem('add-story-draft');
     }
-  } catch {
-    sessionStorage.removeItem('add-story-draft');
-  }
 
-  return { ...defaultValues };
+    return { ...defaultValues };
+  }
+  if (story)
+    return {
+      title: story.title,
+      category: story.category._id,
+      content: story.article,
+      cover: null,
+    };
+  return defaultValues;
 }
 
 const draftFields = ['title', 'category', 'content'];
 
-export default function EditStoryForm(storyId: string) {
+export default function EditStoryForm({
+  editingStory,
+  categories,
+  onSubmit,
+  editStorySchema,
+}: EditStoryFormProps) {
   const router = useRouter();
-  const [coverPreview, setCoverPreview] = useState('');
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [coverPreview, setCoverPreview] = useState<string>(
+    editingStory ? editingStory.img : '',
+  );
+  // const [categories, setCategories] = useState<Category[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isOpenCategory, setIsOpenCategory] = useState(false);
 
-  const [initialValues] = useState<EditStoryValues>(getInitialValues);
-  const [isLoadingCategories, setIsLoadingCategories] = useState(true);
+  const [initialValues] =
+    useState<AddStoryFormUniversalValues>(getInitialValues);
+  // const [isLoadingCategories, setIsLoadingCategories] = useState(true);
 
   useEffect(() => {
     return () => {
@@ -101,45 +107,61 @@ export default function EditStoryForm(storyId: string) {
     };
   }, [coverPreview]);
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const categories = await getCategories();
-        setCategories(categories);
-      } catch (error) {
-        console.error('Не вдалося завантажити категорії:', error);
-        toast.error('Не вдалося завантажити категорії');
-      } finally {
-        setIsLoadingCategories(false);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchCategories = async () => {
+  //     try {
+  //       const categories = await getCategories();
+  //       setCategories(categories);
+  //     } catch (error) {
+  //       console.error('Не вдалося завантажити категорії:', error);
+  //       toast.error('Не вдалося завантажити категорії');
+  //     } finally {
+  //       setIsLoadingCategories(false);
+  //     }
+  //   };
 
-    fetchCategories();
-  }, []);
+  //   fetchCategories();
+  // }, []);
 
-  const handleSubmit = async (values: EditStoryValues) => {
-    if (!values.cover) {
-      toast.error('Завантажте обкладинку історії');
-      return;
-    }
+  const handleSubmit = async (values: AddStoryFormUniversalValues) => {
+    // if (!values.cover) {
+    //   toast.error('Завантажте обкладинку історії');
+    //   return;
+    // }
 
     setIsSubmitting(true);
 
     try {
-      const story = await editStory({
-        title: values.title,
-        category: values.category,
-        article: values.content,
-        cover: values.cover,
-        id: storyId,
-      });
+      const story = await onSubmit(values);
+
+      // try {
+      //   const story = await editStory({
+      //     title: values.title,
+      //     category: values.category,
+      //     article: values.content,
+      //     cover: values.cover,
+      //     id: ,
+      //   });
 
       sessionStorage.removeItem('add-story-draft');
-      toast.success('Історію успішно відредаговано');
+      toast.success(
+        editingStory
+          ? 'Історію успішно відредаговано'
+          : 'Історію успішно створено',
+      );
       router.push(`/stories/${story._id}`);
     } catch (error) {
-      console.error('Не вдалося відредагувати історію:', error);
-      toast.error('Помилка збереження');
+      console.error(
+        editingStory
+          ? 'Не вдалося відредагувати історію:'
+          : 'Не вдалося створити історію:',
+        error,
+      );
+      toast.error(
+        editingStory
+          ? 'Помилка збереження історії'
+          : 'Помилка створення історії ',
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -169,12 +191,17 @@ export default function EditStoryForm(storyId: string) {
             const selectedCategory = categories.find(
               (category) => category._id === values.category,
             );
-            const isSaveDisabled =
-              isSubmitting ||
-              !values.title.trim() ||
-              !values.category ||
-              !values.content.trim() ||
-              !values.cover;
+            const isSaveDisabled = editingStory
+              ? isSubmitting ||
+                (!values.title.trim() &&
+                  !values.category &&
+                  !values.content.trim() &&
+                  !values.cover)
+              : isSubmitting ||
+                !values.title.trim() ||
+                !values.category ||
+                !values.content.trim() ||
+                !values.cover;
             return (
               <Form className={css.storyForm}>
                 <SessionDraft
@@ -252,7 +279,7 @@ export default function EditStoryForm(storyId: string) {
                     <button
                       type="button"
                       className={css.isOpenCategory}
-                      disabled={isLoadingCategories}
+                      // disabled={isLoadingCategories}
                       onClick={() => {
                         setFieldTouched('category', true);
                         setIsOpenCategory((prev) => !prev);
@@ -264,13 +291,7 @@ export default function EditStoryForm(storyId: string) {
                       }
                     >
                       <span className={css.categoryButtonContent}>
-                        {isLoadingCategories ? (
-                          <Loader />
-                        ) : selectedCategory ? (
-                          selectedCategory.name
-                        ) : (
-                          'Категорія'
-                        )}
+                        {selectedCategory ? selectedCategory.name : 'Категорія'}
                       </span>
 
                       <svg

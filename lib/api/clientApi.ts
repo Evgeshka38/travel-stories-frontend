@@ -35,10 +35,10 @@ export interface CreateStoryRequest {
 }
 
 export interface EditStoryRequest {
-  title: string;
-  category: string;
-  article: string;
-  cover: File;
+  title?: string;
+  category?: string;
+  article?: string;
+  cover?: File;
   id: string;
 }
 
@@ -86,6 +86,12 @@ export interface OwnStoriesData {
   totalItems: number;
   hasNextPage: boolean;
 }
+//!!!!!!!!!
+export interface GetStoryByIdResponse {
+  status: number;
+  message: string;
+  data: Story;
+}
 
 export async function register(registerData: RegisterRequest): Promise<void> {
   await nextApi.post('/auth/register', registerData);
@@ -122,15 +128,13 @@ export async function createStory(
   return data.data;
 }
 
-export async function editStory(
-  storyData: EditStoryRequest,
-): Promise<EditedStory> {
+export async function editStory(storyData: EditStoryRequest): Promise<Story> {
   const formData = new FormData();
 
-  formData.append('cover', storyData.cover);
-  formData.append('title', storyData.title);
-  formData.append('category', storyData.category);
-  formData.append('article', storyData.article);
+  if (storyData.cover) formData.append('cover', storyData.cover);
+  if (storyData.title) formData.append('title', storyData.title);
+  if (storyData.category) formData.append('category', storyData.category);
+  if (storyData.article) formData.append('article', storyData.article);
 
   const { data } = await nextApi.patch(`/stories${storyData.id}`, formData);
 
@@ -205,4 +209,12 @@ export async function getStories(
   });
 
   return data;
+}
+//!!!!!!!!!!!!
+export async function getStoryById(storyId: string): Promise<Story> {
+  const { data } = await nextApi.get<GetStoryByIdResponse>(
+    `/stories/${storyId}`,
+  );
+
+  return data.data;
 }

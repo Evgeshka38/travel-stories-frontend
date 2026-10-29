@@ -53,3 +53,10 @@ export interface PaginatedStoriesData {
   totalItems: number;
   hasNextPage: boolean;
 }
+
+export interface AddStoryFormUniversalValues {
+  title: string;
+  category: string;
+  content: string;
+  cover: File | null;
+}
