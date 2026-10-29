@@ -40,13 +40,6 @@ export default function SavedStoriesPageClient() {
 
   const stories = data.pages.flatMap((page) => page.stories);
 
-  /*   if (stories.length === 0) {
-    return (
-      <div className={css.container}>
-        <p className={css.message}>У вас поки немає збережених історій.</p>
-      </div>
-    );
-  } */
   if (stories.length === 0) {
     return (
       <div className={css.container}>
