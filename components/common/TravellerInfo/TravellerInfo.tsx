@@ -11,7 +11,7 @@ type Traveller = {
 };
 
 type Props = {
-  traveller: Traveller;
+  traveller?: Traveller;
 };
 
 export default function TravellerInfo({ traveller }: Props) {
