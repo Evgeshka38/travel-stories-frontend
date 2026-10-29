@@ -12,7 +12,9 @@ export default function StoryPageClient({ storyId }: Props) {
   return (
     <div className={css.container}>
       <StoryDetails storyId={storyId} />
-      <PopularStories />
+      <section className={css.popular}>
+        <PopularStories />
+      </section>
     </div>
   );
 }

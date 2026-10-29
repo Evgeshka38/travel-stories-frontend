@@ -1,6 +1,11 @@
 import { GetPopularStoriesResponse } from '../types/stories';
 import { nextApi } from './api';
 import { Story } from '@/lib/types/stories';
+import type {
+  AddRemoveStoryToFormFavoritesResponse,
+  GetStoryByIdResponse,
+  PaginatedStoriesData,
+} from '@/lib/types/stories';
 
 export interface RegisterRequest {
   name: string;
@@ -126,6 +131,20 @@ export async function getOwnStories(
   return data.data;
 }
 
+export async function getSavedStories(
+  page = 1,
+  perPage = 12,
+): Promise<PaginatedStoriesData> {
+  const { data } = await nextApi.get<{ data: PaginatedStoriesData }>(
+    '/stories/saved',
+    {
+      params: { page, perPage },
+    },
+  );
+
+  return data.data;
+}
+
 export async function getPopularStories(
   page = 1,
   perPage = 3,
@@ -180,4 +199,20 @@ export async function updateUserAvatar(file: File) {
   const response = await nextApi.patch('/users/avatar', formData);
 
   return response.data;
+}
+export async function getStoryById(storyId: string): Promise<Story> {
+  const { data } = await nextApi.get<GetStoryByIdResponse>(
+    `/stories/${storyId}`,
+  );
+
+  return data.data;
+}
+
+export async function addStoryToFavorites(
+  id: string,
+): Promise<AddRemoveStoryToFormFavoritesResponse> {
+  const { data } = await nextApi.patch<AddRemoveStoryToFormFavoritesResponse>(
+    `/stories/favorite/add/${id}`,
+  );
+  return data;
 }

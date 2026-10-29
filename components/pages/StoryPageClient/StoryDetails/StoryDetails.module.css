@@ -1,0 +1,220 @@
+.section {
+  width: 100%;
+  max-width: 375px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+
+  @media only screen and (min-width: 768px) {
+    max-width: 768px;
+  }
+
+  @media only screen and (min-width: 1440px) {
+    max-width: 1440px;
+  }
+}
+.title {
+  margin-bottom: 32px;
+  font-family: var(--second-family);
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--color-scheme-1-text);
+
+  @media only screen and (min-width: 768px) {
+    font-size: 48px;
+  }
+
+  @media only screen and (min-width: 1440px) {
+    max-width: 900px;
+    font-size: 56px;
+  }
+}
+.loaderWrapper {
+  display: flex;
+  justify-content: center;
+  padding: 80px 0;
+}
+
+.error {
+  padding: 40px 0;
+  text-align: center;
+  color: var(--color-red);
+}
+.meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 16px;
+
+  @media only screen and (min-width: 768px) {
+    flex-direction: row;
+    align-items: center;
+    gap: 48px;
+  }
+}
+.metaItem {
+  display: flex;
+  gap: 8px;
+  font-family: var(--font-family);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--color-scheme-1-text);
+
+  @media only screen and (min-width: 1440px) {
+    font-size: 18px;
+  }
+}
+.metaLabel {
+  font-weight: 700;
+}
+.category {
+  padding: 4px 10px;
+  border: 1px solid rgba(255, 255, 255, 0);
+  border-radius: 6px;
+  background-color: var(--color-neutral-lightest);
+  font-family: var(--font-family);
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--color-scheme-1-text);
+  @media only screen and (min-width: 768px) {
+    margin-left: auto;
+  }
+  @media only screen and (min-width: 1440px) {
+    font-size: 16px;
+  }
+}
+.image {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border-radius: 24px;
+
+  @media only screen and (min-width: 1440px) {
+    border-radius: 24px;
+  }
+}
+.content1 {
+  display: flex;
+  flex-direction: column;
+  padding: 32px 20px;
+
+  @media only screen and (min-width: 768px) {
+    padding: 32px;
+  }
+
+  @media only screen and (min-width: 1440px) {
+    padding: 48px 64px;
+  }
+}
+.content2 {
+  display: flex;
+  flex-direction: column;
+  padding: 32px 20px;
+  gap: 24px;
+
+  @media only screen and (min-width: 768px) {
+    padding: 32px;
+  }
+
+  @media only screen and (min-width: 1440px) {
+    padding: 48px 64px;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+}
+.article {
+  font-family: var(--font-family);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--color-scheme-1-text);
+  white-space: pre-line;
+  @media only screen and (min-width: 1440px) {
+    flex: 1;
+    max-width: 865px;
+    font-size: 18px;
+  }
+}
+.saveBox {
+  padding: 32px 20px;
+  border: 0px solid rgba(0, 0, 0, 0.15);
+  border-radius: 24px;
+  background-color: var(--color-neutral-lightest);
+
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  @media only screen and (min-width: 768px) {
+    max-width: 418px;
+    padding: 32px;
+  }
+
+  @media only screen and (min-width: 1440px) {
+    flex-shrink: 0;
+    width: 418px;
+  }
+}
+.saveTitle {
+  font-family: var(--second-family);
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  color: var(--color-scheme-1-text);
+
+  @media only screen and (min-width: 1440px) {
+    font-size: 26px;
+  }
+}
+.saveText {
+  font-family: var(--font-family);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--color-scheme-1-text);
+  @media only screen and (min-width: 1440px) {
+    font-size: 18px;
+  }
+}
+.saveButton {
+  width: 100%;
+  height: 48px;
+  border: 1px solid var(--color-royal-blue);
+  border-radius: 8px;
+  background-color: var(--color-royal-blue);
+
+  font-family: var(--font-family);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--color-white);
+  @media only screen and (min-width: 1440px) {
+    font-size: 18px;
+  }
+
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+
+  &:hover,
+  &:focus {
+    background-color: var(--color-royal-blue-lighter);
+    color: var(--color-neutral-darkest);
+  }
+
+  &:active {
+    background-color: var(--color-royal-blue-light);
+    color: var(--color-neutral-darkest);
+  }
+
+  &:disabled {
+    cursor: default;
+    background-color: var(--color-royal-blue-light);
+    border-color: var(--color-royal-blue-light);
+  }
+}
