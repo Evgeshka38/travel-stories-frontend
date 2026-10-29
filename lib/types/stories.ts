@@ -14,7 +14,7 @@ export interface PopularStory {
   };
   date: string;
   favoriteCount: number;
-};
+}
 
 export interface GetPopularStoriesResponse {
   status: number;
@@ -26,7 +26,7 @@ export interface GetPopularStoriesResponse {
     totalItems: number;
     hasNextPage: boolean;
   };
-};
+}
 
 export interface Story {
   _id: string;
@@ -44,4 +44,12 @@ export interface Story {
   };
   date: string;
   favoriteCount: number;
+}
+
+export interface PaginatedStoriesData {
+  stories: Story[];
+  page: number;
+  perPage: number;
+  totalItems: number;
+  hasNextPage: boolean;
 }
