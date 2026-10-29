@@ -141,7 +141,6 @@ export default function TravellersStoriesItem({
 
   return (
     <>
-      {/* <pre>{JSON.stringify(currentUserInfoQuery.data, null, 2)}</pre> */}
       <article className={css.container}>
         <Image
           className={css.image}
