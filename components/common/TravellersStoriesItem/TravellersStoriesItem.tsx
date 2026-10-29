@@ -65,7 +65,7 @@ export default function TravellersStoriesItem({
 
   const saveMutation = useMutation({
     mutationFn: () => addStoryToFavorites(id),
-    onSuccess: (data, variables, onMutateResult, context) => {
+    onSuccess: (data) => {
       // docs: https://tanstack.com/query/latest/docs/framework/react/guides/mutations#mutation-side-effects
       if (data.data) {
         setFavoriteStoriesIds(data.data.user.favorites);
@@ -82,7 +82,7 @@ export default function TravellersStoriesItem({
 
   const removeMutation = useMutation({
     mutationFn: () => removeStoryFromFavorites(id),
-    onSuccess: (data, variables, onMutateResult, context) => {
+    onSuccess: (data) => {
       // docs: https://tanstack.com/query/latest/docs/framework/react/guides/mutations#mutation-side-effects
       if (data.data) {
         setFavoriteStoriesIds(data.data.user.favorites);
