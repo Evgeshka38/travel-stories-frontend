@@ -1,8 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { getTravellerProfile } from '@/lib/api/clientApi';
+import { getTravellerProfile, TravellerProfileResponse } from '@/lib/api/clientApi';
 import css from './TravellerPage.module.css';
 import TravellerInfo from '@/components/common/TravellerInfo/TravellerInfo';
 import TravellersStories from '@/components/common/TravellersStories/TravellersStories';
@@ -10,27 +9,13 @@ import MessageNoStories from '@/components/common/MessageNoStories/MessageNoStor
 
 type Props = {
   travellerId: string;
-  initialData: any;
+  initialData: TravellerProfileResponse;
 };
 
+const LIMIT = 6;
+
 export default function TravellerPageClient({ travellerId, initialData }: Props) {
-  const [limit, setLimit] = useState<number>(6);
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 1440) {
-        setLimit(4);
-      } else {
-        setLimit(6);
-      }
-    };
-
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  const queryKey = ['traveller-profile', travellerId, limit];
+  const queryKey = ['traveller-profile', travellerId];
 
   const {
     data,
@@ -39,16 +24,16 @@ export default function TravellerPageClient({ travellerId, initialData }: Props)
     isFetchingNextPage,
   } = useInfiniteQuery({
     queryKey,
-    queryFn: ({ pageParam = 1 }) => getTravellerProfile(travellerId, pageParam, limit),
+    queryFn: ({ pageParam = 1 }) => getTravellerProfile(travellerId, pageParam, LIMIT),
     initialPageParam: 1,
     initialData: initialData ? { pages: [initialData], pageParams: [1] } : undefined,
-    getNextPageParam: (lastPage: any) => {
+    getNextPageParam: (lastPage: TravellerProfileResponse) => {
       const nextPage = lastPage.page + 1;
       return lastPage.hasNextPage ? nextPage : undefined;
     },
     select: (result) => ({
       traveller: result.pages[0]?.traveller,
-      stories: result.pages.flatMap((page: any) => page.stories),
+      stories: result.pages.flatMap((page) => page.stories),
     }),
   });
 
@@ -92,10 +77,10 @@ export default function TravellerPageClient({ travellerId, initialData }: Props)
             </>
           ) : (
             <MessageNoStories
-  text="Цей користувач ще не публікував історій"
-  buttonText="До історій"
-  href="/stories"
-/>
+              text="Цей користувач ще не публікував історій"
+              buttonText="До історій"
+              href="/stories"
+            />
           )}
         </div>
       </section>
