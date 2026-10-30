@@ -9,6 +9,8 @@ import {
 } from '@/lib/api/clientApi';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
+import { isAxiosError } from 'axios';
+import toast from 'react-hot-toast';
 
 interface UpdateDataFile {
   description: string;
@@ -16,8 +18,7 @@ interface UpdateDataFile {
 }
 
 export default function PersonalPage() {
-  const [about, setAbout] = useState('');
-  const [error, setError] = useState('');
+  const [about, setAbout] = useState<string | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
 
@@ -27,31 +28,50 @@ export default function PersonalPage() {
   const queryClient = useQueryClient();
 
   const { data: user } = useQuery({
-    queryKey: ['user'],
+    queryKey: ['currentUser'],
     queryFn: getCurrentUser,
     retry: false,
   });
 
+  const validTypeImg = ['image/jpeg', 'image/png', 'image/webp'];
+  const avatarMaxSize = 512000;
+
+  const currentAvatar = preview ?? user?.avatarUrl ?? null;
+
   const updateProfileMutation = useMutation({
     mutationFn: async ({ description, avatarFile }: UpdateDataFile) => {
-      if (about.trim()) {
-        await updateUser({ description: about.trim() });
+      if (description !== (user?.description ?? '')) {
+        await updateUser({ description });
       }
       if (avatarFile) {
         await updateUserAvatar(avatarFile);
       }
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['user'] });
+      queryClient.invalidateQueries({ queryKey: ['currentUser'] });
+      toast.success('Профіль оновлено');
       router.push('/profile/saved');
     },
+    onError: (error) => {
+      const message = isAxiosError(error)
+        ? error.response?.data?.message
+        : undefined;
+      toast.error(
+        typeof message === 'string'
+          ? message
+          : 'Не вдалось оновити профіль спробуйте ще раз ',
+      );
+    },
   });
+
+  const aboutValue = about ?? user?.description ?? '';
+  const isDescriptionChange = aboutValue.trim() !== (user?.description ?? '');
 
   const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     updateProfileMutation.mutate({
-      description: about,
+      description: aboutValue.trim(),
       avatarFile,
     });
   };
@@ -66,29 +86,29 @@ export default function PersonalPage() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-
     if (!file) return;
-
-    if (file) {
-      if (!file.type.startsWith('image/')) {
-        setError('Лише фото');
-        return;
-      }
-      if (file.size > 5 * 1024 * 1024) {
-        setError('Занадто великий файл');
-        return;
-      }
-      setError('');
-      setAvatarFile(file);
+    if (!validTypeImg.includes(file.type)) {
+      toast.error('Дозволені лише формати JPEG, PNG та WebP');
+      e.target.value = '';
+      setAvatarFile(null);
+      setPreview(null);
+      return;
     }
+    if (file.size > avatarMaxSize) {
+      toast.error('Розмір файлу не має перевищувати 500 KiB (512000 bytes)');
+      e.target.value = '';
+      setAvatarFile(null);
+      setPreview(null);
+      return;
+    }
+    setAvatarFile(file);
+
     const reader = new FileReader();
-    reader.onloadend = () => {
+    reader.onload = () => {
       setPreview(reader.result as string);
     };
     reader.readAsDataURL(file);
   };
-
-  const currentAvatar = preview ?? user?.avatarUrl ?? null;
 
   return (
     <div className={css.container}>
@@ -115,7 +135,7 @@ export default function PersonalPage() {
               type="file"
               ref={fileInputRef}
               onChange={handleChange}
-              accept="image/*"
+              accept="image/jpeg,image/png,image/webp"
               style={{ display: 'none' }}
             />
             <button
@@ -135,16 +155,19 @@ export default function PersonalPage() {
             id="about"
             className={css.textarea}
             placeholder="Розкажіть більше про вас"
-            value={about}
+            value={aboutValue}
             maxLength={maxLength}
             onChange={handleAboutChange}
           />
           <p className={css.counter}>
-            Лишилось символів:{maxLength - about.length}
+            Лишилось символів:{maxLength - aboutValue.length}
           </p>
           <button
             className={css.buttonForm}
-            disabled={about.trim().length === 0 && !avatarFile}
+            disabled={
+              (!isDescriptionChange && !avatarFile) ||
+              updateProfileMutation.isPending
+            }
             type="submit"
           >
             {updateProfileMutation.isPending ? 'Зберігається...' : 'Зберегти'}

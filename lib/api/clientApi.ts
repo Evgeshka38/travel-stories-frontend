@@ -188,7 +188,6 @@ export async function updateUser(data: updateUserData) {
   console.log('Request data:', data);
 
   const response = await nextApi.patch('/users', data);
-  console.log('Response:', response.data);
 
   return response.data;
 }
