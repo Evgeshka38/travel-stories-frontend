@@ -27,7 +27,7 @@ export default function TravellerInfo({ traveller }: Props) {
         className={css.avatar}
       />
       <div className={css.text_content}>
-        <h2 className={css.name}>{traveller.name}</h2>
+        <h1 className={css.name}>{traveller.name}</h1>
         <p className={css.description}>{traveller.description}</p>
       </div>
     </div>
