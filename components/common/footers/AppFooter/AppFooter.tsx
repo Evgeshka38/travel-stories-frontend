@@ -10,7 +10,7 @@ export default function AppFooter() {
   const isAuthPage =
     pathname === '/auth/login' ||
     pathname === '/auth/register' ||
-    pathname === '/edit';
+    pathname === '/profile/edit';
 
   return isAuthPage ? <AuthFooter /> : <Footer />;
 }

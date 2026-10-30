@@ -71,7 +71,7 @@ export default function Header() {
   const isAuth =
     pathname === '/auth/register' ||
     pathname === '/auth/login' ||
-    pathname === '/edit';
+    pathname === '/profile/edit';
   const isAuthenticated = Boolean(user);
 
   const navLinks: NavLink[] = isAuthenticated
