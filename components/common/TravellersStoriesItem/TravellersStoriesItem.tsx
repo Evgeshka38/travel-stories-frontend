@@ -86,7 +86,6 @@ export default function TravellersStoriesItem({
         setFavoriteStoriesIds(data.data.user.favorites);
       }
 
-      toast.success('Історію збережено!');
       await Promise.all([
         queryClient.invalidateQueries({
           queryKey: queryKey,
@@ -108,7 +107,6 @@ export default function TravellersStoriesItem({
       if (data.data) {
         setFavoriteStoriesIds(data.data.user.favorites);
       }
-      toast.success('Історію видалено зі збережених!');
       await Promise.all([
         queryClient.invalidateQueries({
           queryKey: queryKey,
@@ -125,18 +123,15 @@ export default function TravellersStoriesItem({
 
   function handleButtonSquareIconClick() {
     if (!currentUser) {
-      toast.error('Увійди в акаунт, щоб зберігати історії');
       setAuthNavModalShown(true);
       return;
     }
 
     if (isSaved) {
-      toast('Видалення історії зі збережених');
       removeMutation.mutate();
       return;
     }
 
-    toast('Збереження історії');
     saveMutation.mutate();
   }
 
