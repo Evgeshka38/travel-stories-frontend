@@ -1,12 +1,14 @@
 'use client';
 
 import { useInfiniteQuery } from '@tanstack/react-query';
+
 import TravellersStories from '@/components/common/TravellersStories/TravellersStories';
 import MessageNoStories from '@/components/common/MessageNoStories/MessageNoStories';
-import { getSavedStories } from '@/lib/api/clientApi';
-import css from './SavedStoriesPageClient.module.css';
-import Link from 'next/link';
 import Loader from '@/components/common/Loader/Loader';
+
+import { getSavedStories } from '@/lib/api/clientApi';
+
+import css from './SavedStoriesPageClient.module.css';
 
 export default function SavedStoriesPageClient() {
   const {
@@ -47,7 +49,11 @@ export default function SavedStoriesPageClient() {
   if (stories.length === 0) {
     return (
       <div className={css.container}>
-        <MessageNoStories />
+        <MessageNoStories
+          text="У вас поки немає збережених історій."
+          buttonText="До історій"
+          href="/stories"
+        />
       </div>
     );
   }
