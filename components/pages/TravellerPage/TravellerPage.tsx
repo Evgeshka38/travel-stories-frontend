@@ -1,7 +1,8 @@
 'use client';
 
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { getTravellerProfile, TravellerProfileResponse } from '@/lib/api/clientApi';
+import { getTravellerProfile } from '@/lib/api/clientApi';
+import { TravellerProfileResponse } from '@/lib/types/stories';
 import css from './TravellerPage.module.css';
 import TravellerInfo from '@/components/common/TravellerInfo/TravellerInfo';
 import TravellersStories from '@/components/common/TravellersStories/TravellersStories';
@@ -9,7 +10,7 @@ import MessageNoStories from '@/components/common/MessageNoStories/MessageNoStor
 
 type Props = {
   travellerId: string;
-  initialData: TravellerProfileResponse;
+  initialData: TravellerProfileResponse | null;
 };
 
 const LIMIT = 6;
