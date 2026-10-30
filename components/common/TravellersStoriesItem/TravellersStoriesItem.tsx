@@ -6,11 +6,12 @@ import { formatDateFromApi } from '@/lib/util/formatUtils';
 import placeholderImage from '@/public/images/placeholderImage.webp';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 import toast from 'react-hot-toast';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AuthNavModal from '../modals/AuthNavModal/AuthNavModal';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   addStoryToFavorites,
+  getUsersMe,
   removeStoryFromFavorites,
 } from '@/lib/api/clientApi';
 import { useFavoriteStoriesStore } from '@/lib/store/favoriteStoriesIdsStore';
@@ -63,17 +64,37 @@ export default function TravellersStoriesItem({
   const { data: currentUser } = useCurrentUser();
   const [isAuthNavModalShown, setAuthNavModalShown] = useState<boolean>(false);
 
+  const userMeQuery = useQuery({
+    queryKey: ['userMe'],
+    queryFn: () => getUsersMe(),
+    retry: 0,
+  });
+  useEffect(() => {
+    // useQuery has no onSuccess so im doing a work around
+    const ids = userMeQuery.data?.data?.favorites;
+    if (ids) {
+      // todo: somehow modify the data inside queryKey directly and remove useFavoriteStoriesStore
+      setFavoriteStoriesIds(ids);
+    }
+  }, [userMeQuery, setFavoriteStoriesIds]);
+
   const saveMutation = useMutation({
     mutationFn: () => addStoryToFavorites(id),
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       // docs: https://tanstack.com/query/latest/docs/framework/react/guides/mutations#mutation-side-effects
       if (data.data) {
         setFavoriteStoriesIds(data.data.user.favorites);
       }
+
       toast.success('Історію збережено!');
-      queryClient.invalidateQueries({
-        queryKey: queryKey,
-      });
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: queryKey,
+        }),
+        queryClient.invalidateQueries({
+          queryKey: ['userMe'],
+        }),
+      ]);
     },
     onError: () => {
       toast.error('Не вдалося зберегти історію');
@@ -82,15 +103,20 @@ export default function TravellersStoriesItem({
 
   const removeMutation = useMutation({
     mutationFn: () => removeStoryFromFavorites(id),
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       // docs: https://tanstack.com/query/latest/docs/framework/react/guides/mutations#mutation-side-effects
       if (data.data) {
         setFavoriteStoriesIds(data.data.user.favorites);
       }
       toast.success('Історію видалено зі збережених!');
-      queryClient.invalidateQueries({
-        queryKey: queryKey,
-      });
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: queryKey,
+        }),
+        queryClient.invalidateQueries({
+          queryKey: ['userMe'],
+        }),
+      ]);
     },
     onError: () => {
       toast.error('Не вдалося видалити історію зі збережених');
@@ -175,13 +201,19 @@ export default function TravellersStoriesItem({
                   isSaved && css.buttonSaved,
                 )}
                 type="button"
-                disabled={saveMutation.isPending || removeMutation.isPending}
+                disabled={
+                  saveMutation.isPending ||
+                  removeMutation.isPending ||
+                  userMeQuery.isPending
+                }
                 title="Додати в збережені історії"
                 aria-label="Додати в збережені історії"
                 name="Додати в збережені історії"
                 onClick={() => handleButtonSquareIconClick()}
               >
-                {saveMutation.isPending || removeMutation.isPending ? (
+                {saveMutation.isPending ||
+                removeMutation.isPending ||
+                userMeQuery.isPending ? (
                   <Loader width={22} height={22} />
                 ) : (
                   <svg
