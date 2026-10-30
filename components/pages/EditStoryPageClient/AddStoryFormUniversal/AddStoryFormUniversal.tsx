@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import type { ChangeEvent } from 'react';
-import { type Category } from '@/lib/api/clientApi';
+import { CreatedStory, type Category } from '@/lib/api/clientApi';
 import toast from 'react-hot-toast';
 import SessionDraft from '@/components/common/SessionDraft/SessionDraft';
 import { AddStoryFormUniversalValues, Story } from '@/lib/types/stories';
@@ -30,7 +30,9 @@ interface EditStoryFormProps {
   editingStory?: Story;
   categories: Category[];
   editStorySchema: Schema;
-  onSubmit: (values: AddStoryFormUniversalValues) => Promise<Story>;
+  onSubmit: (
+    values: AddStoryFormUniversalValues,
+  ) => Promise<Story | CreatedStory>;
 }
 
 function getInitialValues(story?: Story): AddStoryFormUniversalValues {
@@ -42,6 +44,9 @@ function getInitialValues(story?: Story): AddStoryFormUniversalValues {
       cover: null,
     };
 
+  if (typeof window === 'undefined') {
+    return { ...defaultValues };
+  }
   const savedDraft = sessionStorage.getItem('add-story-draft');
 
   if (!savedDraft) {
