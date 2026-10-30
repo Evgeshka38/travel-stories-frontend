@@ -19,8 +19,8 @@ export default async function EditStoryPage({ params }: EditStoryPageProps) {
     getCategories().catch(() => null), //! replace on Server's analog
   ]);
 
-  if (!story) throw Error;
-  if (!categories) throw Error;
+  if (!story) throw new Error();
+  if (!categories) throw new Error();
 
   return (
     <div className={css.page}>

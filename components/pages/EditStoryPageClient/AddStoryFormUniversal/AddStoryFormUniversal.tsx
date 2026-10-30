@@ -99,7 +99,7 @@ export default function AddStoryFormUniversal({
   }, [coverPreview]);
 
   const handleSubmit = async (values: AddStoryFormUniversalValues) => {
-    if (!values.cover) {
+    if (!editingStory && !values.cover) {
       toast.error('Завантажте обкладинку історії');
       return;
     }
