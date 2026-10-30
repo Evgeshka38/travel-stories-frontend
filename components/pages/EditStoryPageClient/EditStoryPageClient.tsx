@@ -18,6 +18,8 @@ export default function EditStoryPageClient({
 }: EditStoryPageClientProps) {
   const editStorySchema = Yup.object({
     cover: Yup.mixed<File>()
+      .nullable()
+      .notRequired()
       .test(
         'fileSize',
         'Максимальний розмір файлу — 2 МБ',
