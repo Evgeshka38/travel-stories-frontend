@@ -5,6 +5,8 @@ import type { OwnStoriesData } from './clientApi';
 import type { PaginatedStoriesData } from '@/lib/types/stories';
 import { Story } from '@/lib/types/stories';
 
+import type { getUsersMeResponse } from '@/lib/types/users';
+
 export interface ServerCurrentUser {
   _id: string;
   name: string;
@@ -77,6 +79,11 @@ export async function getUsersServer(
   });
 
   return data.data.users;
+}
+
+export async function getUsersMe(): Promise<getUsersMeResponse> {
+  const { data } = await serverApi.get<getUsersMeResponse>('/users/me');
+  return data;
 }
 
 export async function getPopularStoriesServer(

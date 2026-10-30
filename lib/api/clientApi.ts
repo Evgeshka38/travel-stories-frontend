@@ -6,6 +6,7 @@ import type {
   GetStoryByIdResponse,
   PaginatedStoriesData,
 } from '@/lib/types/stories';
+import type { getUsersMeResponse } from '@/lib/types/users';
 
 export interface RegisterRequest {
   name: string;
@@ -106,6 +107,11 @@ export async function getUsers(page = 1, limit = 4): Promise<Traveller[]> {
   });
 
   return data.data.users;
+}
+
+export async function getUsersMe(): Promise<getUsersMeResponse> {
+  const { data } = await nextApi.get<getUsersMeResponse>('/users/me');
+  return data;
 }
 
 export async function logout(): Promise<void> {
