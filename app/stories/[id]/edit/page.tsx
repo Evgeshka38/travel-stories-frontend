@@ -19,10 +19,13 @@ export default async function EditStoryPage({ params }: EditStoryPageProps) {
     getCategories().catch(() => null), //! replace on Server's analog
   ]);
 
+  if (!story) throw Error;
+  if (!categories) throw Error;
+
   return (
     <div className={css.page}>
       <main className={css.main}>
-        <EditStoryPageClient story={story!} categories={categories!} />
+        <EditStoryPageClient story={story} categories={categories!} />
       </main>
     </div>
   );
