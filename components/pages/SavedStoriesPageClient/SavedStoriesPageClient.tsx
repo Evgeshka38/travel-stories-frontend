@@ -5,7 +5,7 @@ import TravellersStories from '@/components/common/TravellersStories/TravellersS
 import MessageNoStories from '@/components/common/MessageNoStories/MessageNoStories';
 import { getSavedStories } from '@/lib/api/clientApi';
 import css from './SavedStoriesPageClient.module.css';
-import Link from 'next/link';
+/* import Link from 'next/link'; */
 import Loader from '@/components/common/Loader/Loader';
 
 export default function SavedStoriesPageClient() {
@@ -35,9 +35,7 @@ export default function SavedStoriesPageClient() {
   if (isError) {
     return (
       <div className={css.container}>
-        <p className={css.message}>
-          Не вдалося завантажити збережені історії.
-        </p>
+        <p className={css.message}>Не вдалося завантажити збережені історії.</p>
       </div>
     );
   }
@@ -47,7 +45,11 @@ export default function SavedStoriesPageClient() {
   if (stories.length === 0) {
     return (
       <div className={css.container}>
-        <MessageNoStories />
+        <MessageNoStories
+          text="У вас поки немає збережених історій."
+          buttonText="Переглянути історії"
+          href="/stories"
+        />
       </div>
     );
   }
