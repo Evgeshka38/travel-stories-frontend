@@ -9,7 +9,6 @@ interface ProfileLayout {
 export default async function ProfileLayout({ children }: ProfileLayout) {
   return (
     <div className={css.container}>
-      <h1 style={{ color: 'red' }}>ProfileLayout</h1>
       <ProfileTravellerInfo />
       <PageToggle />
       {children}
