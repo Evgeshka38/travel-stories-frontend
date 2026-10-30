@@ -1,5 +1,4 @@
 import { nextApi } from './api';
-
 import type {
   Story,
   Traveller,
@@ -43,7 +42,25 @@ export interface CreateStoryRequest {
   cover: File;
 }
 
+export interface EditStoryRequest {
+  title?: string;
+  category?: string;
+  article?: string;
+  cover?: File;
+  id: string;
+}
+
 export interface CreatedStory {
+  _id: string;
+  img: string;
+  title: string;
+  article: string;
+  category: string;
+  ownerId: string;
+  date: string;
+}
+
+export interface EditedStory {
   _id: string;
   img: string;
   title: string;
@@ -76,15 +93,11 @@ interface UpdateUserData {
   description?: string;
 }
 
-export async function register(
-  registerData: RegisterRequest,
-): Promise<void> {
+export async function register(registerData: RegisterRequest): Promise<void> {
   await nextApi.post('/auth/register', registerData);
 }
 
-export async function login(
-  loginData: LoginRequest,
-): Promise<void> {
+export async function login(loginData: LoginRequest): Promise<void> {
   await nextApi.post('/auth/login', loginData);
 }
 
@@ -115,10 +128,20 @@ export async function createStory(
   return data.data;
 }
 
-export async function getUsers(
-  page = 1,
-  limit = 4,
-): Promise<Traveller[]> {
+export async function editStory(storyData: EditStoryRequest): Promise<Story> {
+  const formData = new FormData();
+
+  if (storyData.cover) formData.append('cover', storyData.cover);
+  if (storyData.title) formData.append('title', storyData.title);
+  if (storyData.category) formData.append('category', storyData.category);
+  if (storyData.article) formData.append('article', storyData.article);
+
+  const { data } = await nextApi.patch(`/stories/${storyData.id}`, formData);
+
+  return data.data;
+}
+
+export async function getUsers(page = 1, limit = 4): Promise<Traveller[]> {
   const { data } = await nextApi.get<UsersResponse>('/users', {
     params: { page, limit },
   });
@@ -127,8 +150,7 @@ export async function getUsers(
 }
 
 export async function getUsersMe(): Promise<getUsersMeResponse> {
-  const { data } =
-    await nextApi.get<getUsersMeResponse>('/users/me');
+  const { data } = await nextApi.get<getUsersMeResponse>('/users/me');
 
   return data;
 }
@@ -165,16 +187,15 @@ export async function getPopularStories(
   page = 1,
   perPage = 3,
 ): Promise<GetPopularStoriesResponse> {
-  const { data } =
-    await nextApi.get<GetPopularStoriesResponse>(
-      '/stories/popular',
-      {
-        params: {
-          page,
-          perPage,
-        },
+  const { data } = await nextApi.get<GetPopularStoriesResponse>(
+    '/stories/popular',
+    {
+      params: {
+        page,
+        perPage,
       },
-    );
+    },
+  );
 
   return data;
 }
@@ -184,40 +205,29 @@ export async function getStories(
   perPage = 9,
   category?: string | null,
 ): Promise<GetPopularStoriesResponse> {
-  const { data } =
-    await nextApi.get<GetPopularStoriesResponse>(
-      '/stories',
-      {
-        params: {
-          page,
-          perPage,
-          ...(category ? { category } : {}),
-        },
-      },
-    );
+  const { data } = await nextApi.get<GetPopularStoriesResponse>('/stories', {
+    params: {
+      page,
+      perPage,
+      ...(category ? { category } : {}),
+    },
+  });
 
   return data;
 }
 
-export async function updateUser(
-  data: UpdateUserData,
-) {
+export async function updateUser(data: UpdateUserData) {
   const response = await nextApi.patch('/users', data);
 
   return response.data;
 }
 
-export async function updateUserAvatar(
-  file: File,
-) {
+export async function updateUserAvatar(file: File) {
   const formData = new FormData();
 
   formData.append('avatar', file);
 
-  const response = await nextApi.patch(
-    '/users/avatar',
-    formData,
-  );
+  const response = await nextApi.patch('/users/avatar', formData);
 
   return response.data;
 }
@@ -227,23 +237,17 @@ export async function getTravellerProfile(
   page = 1,
   limit = 6,
 ): Promise<TravellerProfileResponse> {
-  const { data } = await nextApi.get(
-    `/users/${travellerId}`,
-    {
-      params: { page, limit },
-    },
-  );
+  const { data } = await nextApi.get(`/users/${travellerId}`, {
+    params: { page, limit },
+  });
 
   return data.data;
 }
 
-export async function getStoryById(
-  storyId: string,
-): Promise<Story> {
-  const { data } =
-    await nextApi.get<GetStoryByIdResponse>(
-      `/stories/${storyId}`,
-    );
+export async function getStoryById(storyId: string): Promise<Story> {
+  const { data } = await nextApi.get<GetStoryByIdResponse>(
+    `/stories/${storyId}`,
+  );
 
   return data.data;
 }
@@ -251,10 +255,9 @@ export async function getStoryById(
 export async function addStoryToFavorites(
   id: string,
 ): Promise<AddRemoveStoryToFormFavoritesResponse> {
-  const { data } =
-    await nextApi.patch<AddRemoveStoryToFormFavoritesResponse>(
-      `/stories/favorite/add/${id}`,
-    );
+  const { data } = await nextApi.patch<AddRemoveStoryToFormFavoritesResponse>(
+    `/stories/favorite/add/${id}`,
+  );
 
   return data;
 }
@@ -262,10 +265,9 @@ export async function addStoryToFavorites(
 export async function removeStoryFromFavorites(
   id: string,
 ): Promise<AddRemoveStoryToFormFavoritesResponse> {
-  const { data } =
-    await nextApi.patch<AddRemoveStoryToFormFavoritesResponse>(
-      `/stories/favorite/remove/${id}`,
-    );
+  const { data } = await nextApi.patch<AddRemoveStoryToFormFavoritesResponse>(
+    `/stories/favorite/remove/${id}`,
+  );
 
   return data;
 }
