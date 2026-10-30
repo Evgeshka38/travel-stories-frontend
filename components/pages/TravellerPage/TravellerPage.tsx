@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { getTravellerProfile } from '@/lib/api/clientApi';
 import { TravellerProfileResponse } from '@/lib/types/stories';
@@ -13,10 +14,28 @@ type Props = {
   initialData: TravellerProfileResponse | null;
 };
 
-const LIMIT = 6;
-
 export default function TravellerPageClient({ travellerId, initialData }: Props) {
-  const queryKey = ['traveller-profile', travellerId];
+  const [limit, setLimit] = useState<number>(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth < 1440 ? 4 : 6;
+    }
+    return 6;
+  });
+
+  useEffect(() => {
+    const handleResize = () => {
+      const newLimit = window.innerWidth < 1440 ? 4 : 6;
+      if (newLimit !== limit) {
+        setLimit(newLimit);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [limit]);
+
+
+  const queryKey = ['traveller-profile', travellerId, limit];
 
   const {
     data,
@@ -25,9 +44,9 @@ export default function TravellerPageClient({ travellerId, initialData }: Props)
     isFetchingNextPage,
   } = useInfiniteQuery({
     queryKey,
-    queryFn: ({ pageParam = 1 }) => getTravellerProfile(travellerId, pageParam, LIMIT),
+    queryFn: ({ pageParam = 1 }) => getTravellerProfile(travellerId, pageParam, limit),
     initialPageParam: 1,
-    initialData: initialData ? { pages: [initialData], pageParams: [1] } : undefined,
+    initialData: initialData && limit === 6 ? { pages: [initialData], pageParams: [1] } : undefined,
     getNextPageParam: (lastPage: TravellerProfileResponse) => {
       const nextPage = lastPage.page + 1;
       return lastPage.hasNextPage ? nextPage : undefined;
