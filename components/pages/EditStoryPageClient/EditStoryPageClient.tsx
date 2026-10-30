@@ -1,3 +1,5 @@
+'use client';
+
 import * as Yup from 'yup';
 
 import css from './EditStoryPageClient.module.css';
