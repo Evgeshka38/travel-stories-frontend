@@ -46,7 +46,7 @@ export interface EditStoryRequest {
   title?: string;
   category?: string;
   article?: string;
-  cover?: File | string;
+  cover?: File;
   id: string;
 }
 

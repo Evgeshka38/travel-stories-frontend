@@ -39,7 +39,7 @@ function getInitialValues(story?: Story): AddStoryFormUniversalValues {
       title: story.title,
       category: story.category._id,
       content: story.article,
-      cover: story.img,
+      cover: null,
     };
 
   const savedDraft = sessionStorage.getItem('add-story-draft');
