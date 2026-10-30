@@ -39,6 +39,20 @@ type Props = {
   queryKey: QueryKey;
 };
 
+function handleError(
+  error: AxiosError<AddRemoveStoryToFormFavoritesResponse>,
+  fallbackMessage: string,
+) {
+  if (error instanceof AxiosError) {
+    const data = error.response?.data;
+    if (data && data.message && typeof data.message === 'string') {
+      toast.error(data.message);
+    } else {
+      toast.error(fallbackMessage);
+    }
+  }
+}
+
 export default function TravellersStoriesItem({
   id,
   imgUrl,
@@ -97,16 +111,8 @@ export default function TravellersStoriesItem({
         }),
       ]);
     },
-    // todo common callback
     onError: (error: AxiosError<AddRemoveStoryToFormFavoritesResponse>) => {
-      if (error instanceof AxiosError) {
-        const data = error.response?.data;
-        if (data && data.message && typeof data.message === 'string') {
-          toast.error(data.message);
-        } else {
-          toast.error('Не вдалося зберегти історію');
-        }
-      }
+      handleError(error, 'Не вдалося зберегти історію');
     },
   });
 
@@ -126,16 +132,8 @@ export default function TravellersStoriesItem({
         }),
       ]);
     },
-    // todo common callback
     onError: (error: AxiosError<AddRemoveStoryToFormFavoritesResponse>) => {
-      if (error instanceof AxiosError) {
-        const data = error.response?.data;
-        if (data && data.message && typeof data.message === 'string') {
-          toast.error(data.message);
-        } else {
-          toast.error('Не вдалося видалити історію зі збережених');
-        }
-      }
+      handleError(error, 'Не вдалося видалити історію зі збережених');
     },
   });
 
