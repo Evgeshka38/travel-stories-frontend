@@ -1,24 +1,30 @@
+'use client';
+
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import clsx from 'clsx';
 import css from './PageToggle.module.css';
 
-interface PageToggleProps {
-  onClick?: () => void;
-  isLoading?: boolean;
-}
+export default function PageToggle() {
+  const pathname = usePathname();
 
-export default function PageToggle({
-  onClick,
-  isLoading = false,
-}: PageToggleProps) {
   return (
-    <div className={css.container}>
-      <button
-        type="button"
-        className={css.button}
-        onClick={onClick}
-        disabled={isLoading || !onClick}
+    <nav className={css.container} aria-label="Вкладки профілю">
+      <Link
+        href="/profile/saved"
+        className={clsx(css.link, pathname === '/profile/saved' && css.active)}
+        aria-current={pathname === '/profile/saved' ? 'page' : undefined}
       >
-        {isLoading ? 'Завантаження...' : 'Показати ще'}
-      </button>
-    </div>
+        Збережені історії
+      </Link>
+
+      <Link
+        href="/profile/own"
+        className={clsx(css.link, pathname === '/profile/own' && css.active)}
+        aria-current={pathname === '/profile/own' ? 'page' : undefined}
+      >
+        Мої історії
+      </Link>
+    </nav>
   );
 }

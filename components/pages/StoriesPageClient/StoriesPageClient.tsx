@@ -5,7 +5,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 
 import CategoriesList from '@/components/common/CategoriesList/CategoriesList';
 import TravellersStories from '@/components/common/TravellersStories/TravellersStories';
-import PageToggle from '@/components/common/PageToggle/PageToggle';
+import LoadMoreButton from '@/components/common/LoadMoreButton/LoadMoreButton';
 import MessageNoStories from '@/components/common/MessageNoStories/MessageNoStories';
 import { getStories } from '@/lib/api/clientApi';
 
@@ -71,7 +71,7 @@ export default function StoriesPageClient() {
         )}
 
         {hasNextPage && (
-          <PageToggle
+          <LoadMoreButton
             onClick={() => fetchNextPage()}
             isLoading={isFetchingNextPage}
           />
