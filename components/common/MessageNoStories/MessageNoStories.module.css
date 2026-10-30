@@ -24,27 +24,27 @@
   height: 48px;
   padding: 6px 12px;
   border-radius: 8px;
-  background-color: #4169e1;
-  color: #fff;
+  background-color: var(--color-royal-blue);
+  color:	var(--color-white);
   font-size: 16px;
   font-weight: 500;
   line-height: 1.5;
   text-decoration: none;
-  border: 1px solid transparent;
+  border: 1px solid var(--opacity-transparent);
   transition: background-color 200ms, border-color 200ms, color 200ms;
 }
 
 .button:hover,
 .button:focus-visible {
-  background-color: #e8eeff;
-  border-color: #4169e1;
-  color: #191919;
+  background-color: var(--color-royal-blue-lighter);
+  border-color: var(--color-royal-blue);
+  color: var(--color-neutral-darker);
 }
 
 .button:active {
-  background-color: #7a96ea;
-  border-color: #4169e1;
-  color: #000;
+  background-color: var(--color-royal-blue-light);
+  border-color: var(--color-royal-blue);
+  color: var(--color-scheme-1-text);
 }
 
 @media (min-width: 768px) {

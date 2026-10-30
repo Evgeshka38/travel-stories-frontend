@@ -14,7 +14,7 @@
   width: 100%;
   max-width: 335px;
   padding: 64px 20px 20px;
-  background-color: #fff;
+  background-color: var(--color-white);
   border-radius: 24px;
   text-align: center;
 }
@@ -32,7 +32,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  color: #171717;
+  color: var(--color-scheme-1-text);
   transition: color 200ms;
 }
 
@@ -42,17 +42,17 @@
 
 .closeButton:hover,
 .closeButton:focus-visible {
-  color: #4169e1;
+  color: var(--color-royal-blue);
 }
 
 .title {
   margin-block-end: 16px;
-  font-family: var(--font-inter);
+  font-family: var(--second-family);
   font-size: 26px;
   font-weight: 700;
   line-height: 1.2;
   letter-spacing: -0.01em;
-  color: #000;
+  color: var(--color-scheme-1-text);
 }
 
 .text {
@@ -60,7 +60,7 @@
   font-size: 16px;
   font-weight: 400;
   line-height: 1.5;
-  color: #666;
+  color: var(--color-scheme-1-text);
 }
 
 .buttons {
@@ -86,41 +86,41 @@
 }
 
 .confirmButton {
-  background-color: #4169e1;
-   border: 1px solid transparent;
-  color: #fff;
+  background-color: var(--color-royal-blue);
+  border: 1px solid var(--opacity-transparent);
+  color: var(--color-white);
 }
 
 .confirmButton:hover,
 .confirmButton:focus-visible {
-  background-color: #e8eeff;
-  border-color: #4169e1;
-  color: #191919;;
+  background-color: var(--color-royal-blue-lighter);
+  border-color: var(--color-royal-blue);
+  color: var(--color-neutral-darker);
 }
 
 .confirmButton:active {
-  background-color: #7a96ea;
-  border-color: #4169e1;
-  color: #000;
+  background-color: var(--color-royal-blue-light);
+  border-color: var(--color-royal-blue);
+  color: var(--color-scheme-1-text);
 }
 
 .cancelButton {
-  background-color: rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  color: #000;
+  background-color: var(--opacity-neutral-darkest-5);
+  border: 1px solid var(--color-scheme-2-border);
+  color: var(--color-scheme-1-text);
 }
 
 .cancelButton:hover,
 .cancelButton:focus-visible {
-  background-color: #4169e1;
-  border-color: transparent;
-  color: #fff;
+  background-color: var(--color-royal-blue);
+  border-color: var(--opacity-transparent);
+  color: var(--color-white);
 }
 
 .cancelButton:active {
-  background-color: #1a2a5a;
-  border-color: transparent;
-  color: #fff;
+  background-color: var(--color-royal-blue-darker);
+  border-color: var(--opacity-transparent);
+  color: var(--color-white);
 }
 
 /* tablet */
