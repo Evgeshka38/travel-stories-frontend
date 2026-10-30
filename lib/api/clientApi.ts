@@ -1,15 +1,14 @@
 import { nextApi } from './api';
-import {
+import type {
   Story,
   Traveller,
   TravellerProfileResponse,
-} from '@/lib/types/stories';
-import type {
   AddRemoveStoryToFormFavoritesResponse,
   GetPopularStoriesResponse,
   GetStoryByIdResponse,
   PaginatedStoriesData,
 } from '@/lib/types/stories';
+
 import type { getUsersMeResponse } from '@/lib/types/users';
 
 export interface RegisterRequest {
@@ -88,6 +87,12 @@ export interface OwnStoriesData {
   hasNextPage: boolean;
 }
 
+interface UpdateUserData {
+  name?: string;
+  email?: string;
+  description?: string;
+}
+
 export async function register(registerData: RegisterRequest): Promise<void> {
   await nextApi.post('/auth/register', registerData);
 }
@@ -146,6 +151,7 @@ export async function getUsers(page = 1, limit = 4): Promise<Traveller[]> {
 
 export async function getUsersMe(): Promise<getUsersMeResponse> {
   const { data } = await nextApi.get<getUsersMeResponse>('/users/me');
+
   return data;
 }
 
@@ -168,12 +174,11 @@ export async function getSavedStories(
   page = 1,
   perPage = 12,
 ): Promise<PaginatedStoriesData> {
-  const { data } = await nextApi.get<{ data: PaginatedStoriesData }>(
-    '/stories/saved',
-    {
-      params: { page, perPage },
-    },
-  );
+  const { data } = await nextApi.get<{
+    data: PaginatedStoriesData;
+  }>('/stories/saved', {
+    params: { page, perPage },
+  });
 
   return data.data;
 }
@@ -211,6 +216,22 @@ export async function getStories(
   return data;
 }
 
+export async function updateUser(data: UpdateUserData) {
+  const response = await nextApi.patch('/users', data);
+
+  return response.data;
+}
+
+export async function updateUserAvatar(file: File) {
+  const formData = new FormData();
+
+  formData.append('avatar', file);
+
+  const response = await nextApi.patch('/users/avatar', formData);
+
+  return response.data;
+}
+
 export async function getTravellerProfile(
   travellerId: string,
   page = 1,
@@ -219,6 +240,7 @@ export async function getTravellerProfile(
   const { data } = await nextApi.get(`/users/${travellerId}`, {
     params: { page, limit },
   });
+
   return data.data;
 }
 
@@ -236,6 +258,7 @@ export async function addStoryToFavorites(
   const { data } = await nextApi.patch<AddRemoveStoryToFormFavoritesResponse>(
     `/stories/favorite/add/${id}`,
   );
+
   return data;
 }
 
@@ -245,5 +268,6 @@ export async function removeStoryFromFavorites(
   const { data } = await nextApi.patch<AddRemoveStoryToFormFavoritesResponse>(
     `/stories/favorite/remove/${id}`,
   );
+
   return data;
 }
