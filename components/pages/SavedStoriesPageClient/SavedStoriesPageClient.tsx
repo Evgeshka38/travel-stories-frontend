@@ -2,8 +2,11 @@
 
 import { useInfiniteQuery } from '@tanstack/react-query';
 import TravellersStories from '@/components/common/TravellersStories/TravellersStories';
+import MessageNoStories from '@/components/common/MessageNoStories/MessageNoStories';
 import { getSavedStories } from '@/lib/api/clientApi';
 import css from './SavedStoriesPageClient.module.css';
+import Link from 'next/link';
+import Loader from '@/components/common/Loader/Loader';
 
 export default function SavedStoriesPageClient() {
   const {
@@ -24,7 +27,7 @@ export default function SavedStoriesPageClient() {
   if (isPending) {
     return (
       <div className={css.container}>
-        <p>Завантаження збережених історій...</p>
+        <Loader />
       </div>
     );
   }
@@ -32,7 +35,9 @@ export default function SavedStoriesPageClient() {
   if (isError) {
     return (
       <div className={css.container}>
-        <p>Не вдалося завантажити збережені історії.</p>
+        <p className={css.message}>
+          Не вдалося завантажити збережені історії.
+        </p>
       </div>
     );
   }
@@ -42,7 +47,7 @@ export default function SavedStoriesPageClient() {
   if (stories.length === 0) {
     return (
       <div className={css.container}>
-        <p>У вас поки немає збережених історій.</p>
+        <MessageNoStories />
       </div>
     );
   }
@@ -58,6 +63,7 @@ export default function SavedStoriesPageClient() {
       {hasNextPage && (
         <button
           type="button"
+          className={css.loadMore}
           onClick={() => fetchNextPage()}
           disabled={isFetchingNextPage}
         >

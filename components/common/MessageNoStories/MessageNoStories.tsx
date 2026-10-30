@@ -11,7 +11,6 @@ export default function MessageNoStories({ text, buttonText, href }: Props) {
   return (
     <div className={css.container}>
       <p className={css.text}>{text}</p>
-
       <Link href={href} className={css.button}>
         {buttonText}
       </Link>

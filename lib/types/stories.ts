@@ -105,3 +105,19 @@ export interface AddStoryFormUniversalValues {
   content: string;
   cover: File | null;
 }
+export interface Traveller {
+  _id: string;
+  name: string;
+  avatarUrl: string;
+  articlesAmount: number;
+  description: string;
+}
+
+export interface TravellerProfileResponse {
+  traveller: Traveller;
+  stories: Story[];
+  page: number;
+  perPage: number;
+  totalItems: number;
+  hasNextPage: boolean;
+}

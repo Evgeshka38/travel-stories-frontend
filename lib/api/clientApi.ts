@@ -1,5 +1,9 @@
 import { nextApi } from './api';
-import { Story } from '@/lib/types/stories';
+import {
+  Story,
+  Traveller,
+  TravellerProfileResponse,
+} from '@/lib/types/stories';
 import type {
   AddRemoveStoryToFormFavoritesResponse,
   GetPopularStoriesResponse,
@@ -65,14 +69,6 @@ export interface EditedStory {
   category: string;
   ownerId: string;
   date: string;
-}
-
-export interface Traveller {
-  _id: string;
-  name: string;
-  avatarUrl: string;
-  articlesAmount: number;
-  description: string;
 }
 
 interface UsersResponse {
@@ -213,6 +209,17 @@ export async function getStories(
   });
 
   return data;
+}
+
+export async function getTravellerProfile(
+  travellerId: string,
+  page = 1,
+  limit = 6,
+): Promise<TravellerProfileResponse> {
+  const { data } = await nextApi.get(`/users/${travellerId}`, {
+    params: { page, limit },
+  });
+  return data.data;
 }
 
 export async function getStoryById(storyId: string): Promise<Story> {
