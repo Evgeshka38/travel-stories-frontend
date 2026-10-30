@@ -1,5 +1,5 @@
 import { nextApi } from './api';
-import { Story } from '@/lib/types/stories';
+import { Story, Traveller, TravellerProfileResponse } from '@/lib/types/stories';
 import type {
   AddRemoveStoryToFormFavoritesResponse,
   GetPopularStoriesResponse,
@@ -48,14 +48,6 @@ export interface CreatedStory {
   date: string;
 }
 
-export interface Traveller {
-  _id: string;
-  name: string;
-  avatarUrl: string;
-  articlesAmount: number;
-  description: string;
-}
-
 interface UsersResponse {
   status: number;
   message: string;
@@ -66,15 +58,6 @@ interface UsersResponse {
 }
 
 export interface OwnStoriesData {
-  stories: Story[];
-  page: number;
-  perPage: number;
-  totalItems: number;
-  hasNextPage: boolean;
-}
-
-export interface TravellerProfileResponse {
-  traveller: Traveller;
   stories: Story[];
   page: number;
   perPage: number;
