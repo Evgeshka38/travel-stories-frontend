@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default async function AddStoryPage() {
   const categories = await getCategories().catch((error) => {
     console.log(error);
-    throw new Error(error);
+    throw Error(error);
   }); //! replace on Server's analog
 
   return (

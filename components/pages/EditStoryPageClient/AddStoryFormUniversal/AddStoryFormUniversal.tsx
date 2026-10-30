@@ -32,7 +32,7 @@ interface EditStoryFormProps {
   editStorySchema: Schema;
   onSubmit: (
     values: AddStoryFormUniversalValues,
-  ) => Promise<Story> | Promise<CreatedStory>;
+  ) => Promise<Story | CreatedStory>;
 }
 
 function getInitialValues(story?: Story): AddStoryFormUniversalValues {
@@ -58,6 +58,9 @@ function getInitialValues(story?: Story): AddStoryFormUniversalValues {
       parsed !== null &&
       !Array.isArray(parsed)
     ) {
+      if (typeof window === 'undefined') {
+        return { ...defaultValues };
+      }
       const draft = parsed as StoryDraft;
 
       return {

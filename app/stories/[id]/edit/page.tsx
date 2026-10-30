@@ -18,12 +18,12 @@ export default async function EditStoryPage({ params }: EditStoryPageProps) {
   const [story, categories] = await Promise.all([
     getStoryById(storyId).catch((error) => {
       console.log(error);
-      throw new Error(error);
+      throw Error(error);
     }), //! replace on Server's analog
 
     getCategories().catch((error) => {
       console.log(error);
-      throw new Error(error);
+      throw Error(error);
     }), //! replace on Server's analog
   ]);
 

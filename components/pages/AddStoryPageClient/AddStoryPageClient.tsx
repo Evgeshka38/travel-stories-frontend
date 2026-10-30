@@ -2,7 +2,7 @@
 import * as Yup from 'yup';
 import css from './AddStoryPageClient.module.css';
 import AddStoryFormUniversal from '../EditStoryPageClient/AddStoryFormUniversal/AddStoryFormUniversal';
-import { Category, createStory, editStory } from '@/lib/api/clientApi';
+import { Category, createStory } from '@/lib/api/clientApi';
 import { AddStoryFormUniversalValues } from '@/lib/types/stories';
 interface AddStoryPageClientProps {
   categories: Category[];
