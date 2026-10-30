@@ -16,6 +16,7 @@ import ConfirmModal from '@/components/common/modals/ConfirmModal/ConfirmModal';
 import { NavLink } from '@/types/link';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 import { logout } from '@/lib/api/clientApi';
+import { useFavoriteStoriesStore } from '@/lib/store/favoriteStoriesIdsStore';
 
 export default function Header() {
   const pathname = usePathname();
@@ -23,6 +24,10 @@ export default function Header() {
   const queryClient = useQueryClient();
 
   const { data: user } = useCurrentUser();
+  
+  const clearFavoriteStoriesIds = useFavoriteStoriesStore(
+    (store) => store.clearFavoriteStoriesIds,
+  );
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
@@ -103,6 +108,8 @@ export default function Header() {
       await logout();
 
       queryClient.setQueryData(['currentUser'], null);
+      queryClient.setQueryData(['userMe'], null);
+      clearFavoriteStoriesIds();
 
       setIsLogoutModalOpen(false);
 

@@ -196,11 +196,18 @@
     color: var(--color-white);
   }
 
-  &:active {
-    background-color: var(--color-royal-blue-darker);
+  &:disabled {
+    background-color: var(--opacity-neutral-darkest-5);
     outline: 1px solid var(--opacity-transparent);
-    color: var(--color-white);
+    opacity: 0.3;
   }
+}
+
+.button:active,
+.buttonSaved {
+  background-color: var(--color-royal-blue-darker);
+  outline: 1px solid var(--opacity-transparent);
+  color: var(--color-white);
 }
 
 .buttonWide {

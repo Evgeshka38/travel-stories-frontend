@@ -5,7 +5,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 
 import CategoriesList from '@/components/common/CategoriesList/CategoriesList';
 import TravellersStories from '@/components/common/TravellersStories/TravellersStories';
-import PageToggle from '@/components/common/PageToggle/PageToggle';
+import LoadMoreButton from '@/components/common/LoadMoreButton/LoadMoreButton';
 import MessageNoStories from '@/components/common/MessageNoStories/MessageNoStories';
 import { getStories } from '@/lib/api/clientApi';
 
@@ -14,8 +14,7 @@ import css from './StoriesPageClient.module.css';
 const PER_PAGE = 9;
 
 export default function StoriesPageClient() {
-  const [selectedCategory, setSelectedCategory] =
-    useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const {
     data,
@@ -30,13 +29,10 @@ export default function StoriesPageClient() {
       getStories(pageParam, PER_PAGE, selectedCategory),
     initialPageParam: 1,
     getNextPageParam: (lastPage) =>
-      lastPage.data.hasNextPage
-        ? lastPage.data.page + 1
-        : undefined,
+      lastPage.data.hasNextPage ? lastPage.data.page + 1 : undefined,
   });
 
-  const stories =
-    data?.pages.flatMap((page) => page.data.stories) ?? [];
+  const stories = data?.pages.flatMap((page) => page.data.stories) ?? [];
 
   return (
     <section className={css.section}>
@@ -55,22 +51,23 @@ export default function StoriesPageClient() {
         )}
 
         {!isLoading && !isError && stories.length === 0 && (
-          <MessageNoStories 
+          <MessageNoStories
             text="Історій поки немає. Станьте першим, хто поділиться своєю!"
             buttonText="Назад до історій"
             href="/stories/create"
-  />
+          />
         )}
 
         {stories.length > 0 && (
           <TravellersStories
             stories={stories}
             variant="save"
+            queryKey={['stories', selectedCategory]}
           />
         )}
 
         {hasNextPage && (
-          <PageToggle
+          <LoadMoreButton
             onClick={() => fetchNextPage()}
             isLoading={isFetchingNextPage}
           />

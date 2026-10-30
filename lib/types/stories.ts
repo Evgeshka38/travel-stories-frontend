@@ -60,9 +60,18 @@ export interface GetStoryByIdResponse {
   data: Story;
 }
 
+export interface AddStoryToFavoritesRequest {
+  id: string;
+}
+
+export interface RemoveStoryFromFavoritesRequest {
+  id: string;
+}
+
 export interface AddRemoveStoryToFormFavoritesResponse {
   status: number;
   message: string;
+  // data is null if response code is not 2**
   data: {
     user: {
       _id: string;
@@ -87,5 +96,22 @@ export interface AddRemoveStoryToFormFavoritesResponse {
       createdAt: string;
       updatedAt: string;
     };
-  };
+  } | null;
+}
+
+export interface Traveller {
+  _id: string;
+  name: string;
+  avatarUrl: string;
+  articlesAmount: number;
+  description: string;
+}
+
+export interface TravellerProfileResponse {
+  traveller: Traveller;
+  stories: Story[];
+  page: number;
+  perPage: number;
+  totalItems: number;
+  hasNextPage: boolean;
 }
