@@ -44,6 +44,9 @@ function getInitialValues(story?: Story): AddStoryFormUniversalValues {
       cover: null,
     };
 
+  if (typeof window === 'undefined') {
+    return { ...defaultValues };
+  }
   const savedDraft = sessionStorage.getItem('add-story-draft');
 
   if (!savedDraft) {
@@ -58,9 +61,6 @@ function getInitialValues(story?: Story): AddStoryFormUniversalValues {
       parsed !== null &&
       !Array.isArray(parsed)
     ) {
-      if (typeof window === 'undefined') {
-        return { ...defaultValues };
-      }
       const draft = parsed as StoryDraft;
 
       return {
