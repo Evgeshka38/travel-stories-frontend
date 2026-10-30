@@ -1,11 +1,15 @@
 import { nextApi } from './api';
-import { Story, Traveller, TravellerProfileResponse } from '@/lib/types/stories';
+
 import type {
+  Story,
+  Traveller,
+  TravellerProfileResponse,
   AddRemoveStoryToFormFavoritesResponse,
   GetPopularStoriesResponse,
   GetStoryByIdResponse,
   PaginatedStoriesData,
 } from '@/lib/types/stories';
+
 import type { getUsersMeResponse } from '@/lib/types/users';
 
 export interface RegisterRequest {
@@ -66,11 +70,21 @@ export interface OwnStoriesData {
   hasNextPage: boolean;
 }
 
-export async function register(registerData: RegisterRequest): Promise<void> {
+interface UpdateUserData {
+  name?: string;
+  email?: string;
+  description?: string;
+}
+
+export async function register(
+  registerData: RegisterRequest,
+): Promise<void> {
   await nextApi.post('/auth/register', registerData);
 }
 
-export async function login(loginData: LoginRequest): Promise<void> {
+export async function login(
+  loginData: LoginRequest,
+): Promise<void> {
   await nextApi.post('/auth/login', loginData);
 }
 
@@ -101,7 +115,10 @@ export async function createStory(
   return data.data;
 }
 
-export async function getUsers(page = 1, limit = 4): Promise<Traveller[]> {
+export async function getUsers(
+  page = 1,
+  limit = 4,
+): Promise<Traveller[]> {
   const { data } = await nextApi.get<UsersResponse>('/users', {
     params: { page, limit },
   });
@@ -110,7 +127,9 @@ export async function getUsers(page = 1, limit = 4): Promise<Traveller[]> {
 }
 
 export async function getUsersMe(): Promise<getUsersMeResponse> {
-  const { data } = await nextApi.get<getUsersMeResponse>('/users/me');
+  const { data } =
+    await nextApi.get<getUsersMeResponse>('/users/me');
+
   return data;
 }
 
@@ -133,12 +152,11 @@ export async function getSavedStories(
   page = 1,
   perPage = 12,
 ): Promise<PaginatedStoriesData> {
-  const { data } = await nextApi.get<{ data: PaginatedStoriesData }>(
-    '/stories/saved',
-    {
-      params: { page, perPage },
-    },
-  );
+  const { data } = await nextApi.get<{
+    data: PaginatedStoriesData;
+  }>('/stories/saved', {
+    params: { page, perPage },
+  });
 
   return data.data;
 }
@@ -147,15 +165,16 @@ export async function getPopularStories(
   page = 1,
   perPage = 3,
 ): Promise<GetPopularStoriesResponse> {
-  const { data } = await nextApi.get<GetPopularStoriesResponse>(
-    '/stories/popular',
-    {
-      params: {
-        page,
-        perPage,
+  const { data } =
+    await nextApi.get<GetPopularStoriesResponse>(
+      '/stories/popular',
+      {
+        params: {
+          page,
+          perPage,
+        },
       },
-    },
-  );
+    );
 
   return data;
 }
@@ -165,32 +184,66 @@ export async function getStories(
   perPage = 9,
   category?: string | null,
 ): Promise<GetPopularStoriesResponse> {
-  const { data } = await nextApi.get<GetPopularStoriesResponse>('/stories', {
-    params: {
-      page,
-      perPage,
-      ...(category ? { category } : {}),
-    },
-  });
+  const { data } =
+    await nextApi.get<GetPopularStoriesResponse>(
+      '/stories',
+      {
+        params: {
+          page,
+          perPage,
+          ...(category ? { category } : {}),
+        },
+      },
+    );
 
   return data;
 }
 
-export async function getTravellerProfile(
-  travellerId: string, 
-  page = 1, 
-  limit = 6
-): Promise<TravellerProfileResponse> {
-  const { data } = await nextApi.get(`/users/${travellerId}`, {
-    params: { page, limit },
-  });
-  return data.data; 
+export async function updateUser(
+  data: UpdateUserData,
+) {
+  const response = await nextApi.patch('/users', data);
+
+  return response.data;
 }
 
-export async function getStoryById(storyId: string): Promise<Story> {
-  const { data } = await nextApi.get<GetStoryByIdResponse>(
-    `/stories/${storyId}`,
+export async function updateUserAvatar(
+  file: File,
+) {
+  const formData = new FormData();
+
+  formData.append('avatar', file);
+
+  const response = await nextApi.patch(
+    '/users/avatar',
+    formData,
   );
+
+  return response.data;
+}
+
+export async function getTravellerProfile(
+  travellerId: string,
+  page = 1,
+  limit = 6,
+): Promise<TravellerProfileResponse> {
+  const { data } = await nextApi.get(
+    `/users/${travellerId}`,
+    {
+      params: { page, limit },
+    },
+  );
+
+  return data.data;
+}
+
+export async function getStoryById(
+  storyId: string,
+): Promise<Story> {
+  const { data } =
+    await nextApi.get<GetStoryByIdResponse>(
+      `/stories/${storyId}`,
+    );
 
   return data.data;
 }
@@ -198,17 +251,21 @@ export async function getStoryById(storyId: string): Promise<Story> {
 export async function addStoryToFavorites(
   id: string,
 ): Promise<AddRemoveStoryToFormFavoritesResponse> {
-  const { data } = await nextApi.patch<AddRemoveStoryToFormFavoritesResponse>(
-    `/stories/favorite/add/${id}`,
-  );
+  const { data } =
+    await nextApi.patch<AddRemoveStoryToFormFavoritesResponse>(
+      `/stories/favorite/add/${id}`,
+    );
+
   return data;
 }
 
 export async function removeStoryFromFavorites(
   id: string,
 ): Promise<AddRemoveStoryToFormFavoritesResponse> {
-  const { data } = await nextApi.patch<AddRemoveStoryToFormFavoritesResponse>(
-    `/stories/favorite/remove/${id}`,
-  );
+  const { data } =
+    await nextApi.patch<AddRemoveStoryToFormFavoritesResponse>(
+      `/stories/favorite/remove/${id}`,
+    );
+
   return data;
 }
