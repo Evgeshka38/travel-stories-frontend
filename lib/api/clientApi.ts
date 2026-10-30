@@ -135,7 +135,7 @@ export async function editStory(storyData: EditStoryRequest): Promise<Story> {
   if (storyData.category) formData.append('category', storyData.category);
   if (storyData.article) formData.append('article', storyData.article);
 
-  const { data } = await nextApi.patch(`/stories${storyData.id}`, formData);
+  const { data } = await nextApi.patch(`/stories/${storyData.id}`, formData);
 
   return data.data;
 }
