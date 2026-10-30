@@ -1,7 +1,7 @@
 import TravellersStoriesItem from '@/components/common/TravellersStoriesItem/TravellersStoriesItem';
 import type { PopularStory } from '@/lib/types/stories';
 import css from './TravellersStories.module.css';
-import { QueryKey } from '@tanstack/react-query';
+import type { QueryKey } from '@tanstack/react-query';
 
 type TravellerType = {
   _id: string;
