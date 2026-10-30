@@ -17,6 +17,8 @@ import {
 import { useFavoriteStoriesStore } from '@/lib/store/favoriteStoriesIdsStore';
 import Loader from '../Loader/Loader';
 import type { QueryKey } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
+import { AddRemoveStoryToFormFavoritesResponse } from '@/lib/types/stories';
 
 type Props = {
   id: string;
@@ -95,8 +97,16 @@ export default function TravellersStoriesItem({
         }),
       ]);
     },
-    onError: () => {
-      toast.error('Не вдалося зберегти історію');
+    // todo common callback
+    onError: (error: AxiosError<AddRemoveStoryToFormFavoritesResponse>) => {
+      if (error instanceof AxiosError) {
+        const data = error.response?.data;
+        if (data && data.message && typeof data.message === 'string') {
+          toast.error(data.message);
+        } else {
+          toast.error('Не вдалося зберегти історію');
+        }
+      }
     },
   });
 
@@ -116,8 +126,16 @@ export default function TravellersStoriesItem({
         }),
       ]);
     },
-    onError: () => {
-      toast.error('Не вдалося видалити історію зі збережених');
+    // todo common callback
+    onError: (error: AxiosError<AddRemoveStoryToFormFavoritesResponse>) => {
+      if (error instanceof AxiosError) {
+        const data = error.response?.data;
+        if (data && data.message && typeof data.message === 'string') {
+          toast.error(data.message);
+        } else {
+          toast.error('Не вдалося видалити історію зі збережених');
+        }
+      }
     },
   });
 
