@@ -103,7 +103,7 @@ export interface AddStoryFormUniversalValues {
   title: string;
   category: string;
   content: string;
-  cover: File | null;
+  cover: File | null | string;
 }
 export interface Traveller {
   _id: string;
