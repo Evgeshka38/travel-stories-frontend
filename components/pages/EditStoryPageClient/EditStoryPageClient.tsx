@@ -3,9 +3,9 @@
 import * as Yup from 'yup';
 
 import css from './EditStoryPageClient.module.css';
-import EditStoryForm from './AddStoryFormUniversal/AddStoryFormUniversal';
 import { AddStoryFormUniversalValues, Story } from '@/lib/types/stories';
 import { Category, editStory } from '@/lib/api/clientApi';
+import AddStoryFormUniversal from './AddStoryFormUniversal/AddStoryFormUniversal';
 
 type EditStoryPageClientProps = {
   story: Story;
@@ -59,7 +59,7 @@ export default function EditStoryPageClient({
   };
   return (
     <div className={css.container}>
-      <EditStoryForm
+      <AddStoryFormUniversal
         editingStory={story}
         categories={categories}
         onSubmit={handleSubmit}
