@@ -1,12 +1,12 @@
 import TravellersStoriesItem from '@/components/common/TravellersStoriesItem/TravellersStoriesItem';
 import type { PopularStory } from '@/lib/types/stories';
-
 import css from './TravellersStories.module.css';
+import type { QueryKey } from '@tanstack/react-query';
 
 type Props = {
   stories?: PopularStory[];
   variant?: 'save' | 'edit';
-  queryKey: (string | null)[];
+  queryKey: QueryKey;
 };
 
 export default function TravellersStories({

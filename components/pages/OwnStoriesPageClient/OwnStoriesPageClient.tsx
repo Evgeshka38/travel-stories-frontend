@@ -3,6 +3,8 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { getOwnStories } from '@/lib/api/clientApi';
 import TravellersStories from '@/components/common/TravellersStories/TravellersStories';
+import Loader from '@/components/common/Loader/Loader';
+import MessageNoStories from '@/components/common/MessageNoStories/MessageNoStories';
 import css from './OwnStoriesPageClient.module.css';
 
 export default function OwnStoriesPageClient() {
@@ -21,13 +23,21 @@ export default function OwnStoriesPageClient() {
       lastPage.hasNextPage ? lastPage.page + 1 : undefined,
   });
 
-  if (isLoading) return <p>Завантаження...</p>;
+  if (isLoading) return <Loader />;
 
   if (isError) return <p>Не вдалося завантажити історії</p>;
 
   const stories = data?.pages.flatMap((page) => page.stories) ?? [];
 
-  if (stories.length === 0) return <p>У вас поки немає історій</p>;
+  if (stories.length === 0) {
+  return (
+    <MessageNoStories
+      text="Ви ще нічого не публікували, поділіться своєю першою історією!"
+      buttonText="Опублікувати історію"
+      href="/stories/create"
+    />
+  );
+};
 
   return (
     <div className={css.container}>

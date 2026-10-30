@@ -6,8 +6,17 @@ import { formatDateFromApi } from '@/lib/util/formatUtils';
 import placeholderImage from '@/public/images/placeholderImage.webp';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 import toast from 'react-hot-toast';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AuthNavModal from '../modals/AuthNavModal/AuthNavModal';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  addStoryToFavorites,
+  getUsersMe,
+  removeStoryFromFavorites,
+} from '@/lib/api/clientApi';
+import { useFavoriteStoriesStore } from '@/lib/store/favoriteStoriesIdsStore';
+import Loader from '../Loader/Loader';
+import type { QueryKey } from '@tanstack/react-query';
 
 type Props = {
   id: string;
@@ -24,7 +33,8 @@ type Props = {
   favoriteCount: number;
 
   variant: 'save' | 'edit';
-  queryKey: string[];
+
+  queryKey: QueryKey;
 };
 
 export default function TravellersStoriesItem({
@@ -40,19 +50,94 @@ export default function TravellersStoriesItem({
   variant,
   queryKey,
 }: Props) {
+  const queryClient = useQueryClient();
+
+  const favoriteStoriesIds = useFavoriteStoriesStore(
+    (store) => store.favoriteStoriesIds,
+  );
+  const setFavoriteStoriesIds = useFavoriteStoriesStore(
+    (store) => store.setFavoriteStoriesIds,
+  );
+
+  const isSaved = favoriteStoriesIds.includes(id);
+
   const { data: currentUser } = useCurrentUser();
   const [isAuthNavModalShown, setAuthNavModalShown] = useState<boolean>(false);
 
-  function handleButtonSquareIconClick() {
-    const canSave = !!currentUser;
-
-    // todo api req
-    if (canSave) {
-      toast.success('saving');
-    } else {
-      toast.error('you need to log in');
-      setAuthNavModalShown(true);
+  const userMeQuery = useQuery({
+    queryKey: ['userMe'],
+    queryFn: () => getUsersMe(),
+    retry: 0,
+  });
+  useEffect(() => {
+    // useQuery has no onSuccess so im doing a work around
+    const ids = userMeQuery.data?.data?.favorites;
+    if (ids) {
+      // todo: somehow modify the data inside queryKey directly and remove useFavoriteStoriesStore
+      setFavoriteStoriesIds(ids);
     }
+  }, [userMeQuery, setFavoriteStoriesIds]);
+
+  const saveMutation = useMutation({
+    mutationFn: () => addStoryToFavorites(id),
+    onSuccess: async (data) => {
+      // docs: https://tanstack.com/query/latest/docs/framework/react/guides/mutations#mutation-side-effects
+      if (data.data) {
+        setFavoriteStoriesIds(data.data.user.favorites);
+      }
+
+      toast.success('Історію збережено!');
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: queryKey,
+        }),
+        queryClient.invalidateQueries({
+          queryKey: ['userMe'],
+        }),
+      ]);
+    },
+    onError: () => {
+      toast.error('Не вдалося зберегти історію');
+    },
+  });
+
+  const removeMutation = useMutation({
+    mutationFn: () => removeStoryFromFavorites(id),
+    onSuccess: async (data) => {
+      // docs: https://tanstack.com/query/latest/docs/framework/react/guides/mutations#mutation-side-effects
+      if (data.data) {
+        setFavoriteStoriesIds(data.data.user.favorites);
+      }
+      toast.success('Історію видалено зі збережених!');
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: queryKey,
+        }),
+        queryClient.invalidateQueries({
+          queryKey: ['userMe'],
+        }),
+      ]);
+    },
+    onError: () => {
+      toast.error('Не вдалося видалити історію зі збережених');
+    },
+  });
+
+  function handleButtonSquareIconClick() {
+    if (!currentUser) {
+      toast.error('Увійди в акаунт, щоб зберігати історії');
+      setAuthNavModalShown(true);
+      return;
+    }
+
+    if (isSaved) {
+      toast('Видалення історії зі збережених');
+      removeMutation.mutate();
+      return;
+    }
+
+    toast('Збереження історії');
+    saveMutation.mutate();
   }
 
   return (
@@ -110,28 +195,44 @@ export default function TravellersStoriesItem({
             {/* todo: use universal button */}
             {variant === 'save' && (
               <button
-                className={clsx(css.button, css.buttonSquare)}
+                className={clsx(
+                  css.button,
+                  css.buttonSquare,
+                  isSaved && css.buttonSaved,
+                )}
                 type="button"
+                disabled={
+                  saveMutation.isPending ||
+                  removeMutation.isPending ||
+                  userMeQuery.isPending
+                }
                 title="Додати в збережені історії"
                 aria-label="Додати в збережені історії"
                 name="Додати в збережені історії"
                 onClick={() => handleButtonSquareIconClick()}
               >
-                <svg
-                  className={css.buttonSquareIcon}
-                  width="24"
-                  height="24"
-                  aria-hidden="true"
-                  focusable="false"
-                >
-                  <use href={'/sprite.svg#icon-bookmark'} />
-                </svg>
+                {saveMutation.isPending ||
+                removeMutation.isPending ||
+                userMeQuery.isPending ? (
+                  <Loader width={22} height={22} />
+                ) : (
+                  <svg
+                    className={css.buttonSquareIcon}
+                    width="24"
+                    height="24"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <use href={'/sprite.svg#icon-bookmark'} />
+                  </svg>
+                )}
               </button>
             )}
             {variant === 'edit' && (
               <Link
                 href={`/stories/${id}/edit`}
                 className={clsx(css.button, css.buttonSquare)}
+                aria-label="Редагувати історію"
               >
                 <svg
                   className={css.buttonSquareIcon}
@@ -147,7 +248,9 @@ export default function TravellersStoriesItem({
           </div>
         </div>
       </article>
-      {isAuthNavModalShown && <AuthNavModal />}
+      {isAuthNavModalShown && (
+        <AuthNavModal onClose={() => setAuthNavModalShown(false)} />
+      )}
     </>
   );
 }

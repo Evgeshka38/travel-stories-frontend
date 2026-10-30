@@ -87,7 +87,10 @@ export default function StructurePageClient() {
     {
       pageName: 'StoriesPageClient',
       route: '/stories',
-      components: [{ componentName: 'TravellersStories(common)' }],
+      components: [
+        { componentName: 'TravellersStories(common)' },
+        { componentName: 'LoadMoreButton' },
+      ],
       innerPages: [
         {
           pageName: 'StoryPageClient',
@@ -141,7 +144,7 @@ export default function StructurePageClient() {
       pageName: 'ProfilePageClient:',
       route: '/profile',
       components: [
-        { componentName: 'TravellerInfo' },
+        { componentName: 'TravellerInfo(common)' },
         { componentName: 'PageToggle' },
       ],
       innerPages: [

@@ -12,7 +12,7 @@ import './globals.css';
 import Header from '@/components/common/headers/Header/Header';
 import AppFooter from '@/components/common/footers/AppFooter/AppFooter';
 import TanStackProvider from '@/components/providers/TanStackProvider/TanStackProvider';
-import { checkSessionServer } from '@/lib/api/serverApi';
+import { checkSessionServer, getUsersMe } from '@/lib/api/serverApi';
 
 const inter = Inter({
   variable: '--font-inter',
@@ -38,14 +38,23 @@ export default async function RootLayout({
 }: LayoutProps<'/'>) {
   const queryClient = new QueryClient();
 
-  await queryClient
-    .query({
-      queryKey: ['currentUser'],
-      queryFn: checkSessionServer,
-    })
-    .catch(() => {
-      queryClient.setQueryData(['currentUser'], null);
-    });
+  await Promise.all([
+    queryClient
+      .query({
+        queryKey: ['currentUser'],
+        queryFn: checkSessionServer,
+      })
+      .catch(() => {
+        queryClient.setQueryData(['currentUser'], null);
+      }),
+    queryClient
+      .query({
+        queryKey: ['userMe'],
+        queryFn: () => getUsersMe(),
+
+      })
+      .catch(() => undefined),
+  ]);
 
   return (
     <html lang="uk" className={`${inter.variable} ${nunitoSans.variable}`}>

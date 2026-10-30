@@ -5,7 +5,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 
 import CategoriesList from '@/components/common/CategoriesList/CategoriesList';
 import TravellersStories from '@/components/common/TravellersStories/TravellersStories';
-import PageToggle from '@/components/common/PageToggle/PageToggle';
+import LoadMoreButton from '@/components/common/LoadMoreButton/LoadMoreButton';
 import MessageNoStories from '@/components/common/MessageNoStories/MessageNoStories';
 import { getStories } from '@/lib/api/clientApi';
 
@@ -50,7 +50,13 @@ export default function StoriesPageClient() {
           <p className={css.message}>Не вдалося завантажити історії.</p>
         )}
 
-        {!isLoading && !isError && stories.length === 0 && <MessageNoStories />}
+        {!isLoading && !isError && stories.length === 0 && (
+          <MessageNoStories
+            text="Історій поки немає. Станьте першим, хто поділиться своєю!"
+            buttonText="Назад до історій"
+            href="/stories/create"
+          />
+        )}
 
         {stories.length > 0 && (
           <TravellersStories
@@ -61,7 +67,7 @@ export default function StoriesPageClient() {
         )}
 
         {hasNextPage && (
-          <PageToggle
+          <LoadMoreButton
             onClick={() => fetchNextPage()}
             isLoading={isFetchingNextPage}
           />
