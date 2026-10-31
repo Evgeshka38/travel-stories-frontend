@@ -3,7 +3,10 @@ import css from './TravellersPage.module.css';
 import TravellersPageClient from '@/components/pages/TravellersPageClient/TravellersPageClient';
 
 export const metadata: Metadata = {
-  title: 'TravellersPage',
+  title: 'Мандрівники - Подорожники',
+  openGraph: {
+    title: 'Мандрівники - Подорожники',
+  },
 };
 
 export default async function TravellersPage() {
