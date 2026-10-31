@@ -23,8 +23,8 @@
   color: var(--color-scheme-1-text);
 }
 
-.message {
-  text-align: center;
+.loader {
+  margin: 0px auto;
 }
 
 @media (min-width: 768px) {
