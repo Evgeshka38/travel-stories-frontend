@@ -13,6 +13,7 @@
 }
 
 .absoluteWrapper {
+  /* background: var(--color-royal-blue-lightest); */
   width: 100%;
 }
 
@@ -88,8 +89,10 @@
 }
 
 .menu {
-  display: none;
+  /* display: none; */
+  display: flex;
   position: absolute;
+  visibility: hidden;
   top: 72px;
   left: 0;
 
@@ -101,6 +104,10 @@
   padding: 16px 20px;
 
   background: inherit;
+
+  transform: translateY(100%);
+
+  transition: transform 0.9s ease;
 
   @media (max-width: 374px) {
   }
@@ -116,6 +123,9 @@
 
     width: auto;
     padding: 0;
+
+    visibility: visible;
+    transform: none;
   }
 }
 
@@ -173,17 +183,22 @@
 }
 
 .absolute {
+  background: var(--opacity-transparent);
   position: absolute;
   top: 0;
   left: 0;
+  /* overflow: hidden; */
 }
 
 .menu.menuOpen {
   display: flex;
+  visibility: visible;
   height: calc(100dvh - 72px);
   width: 100vw;
   background: var(--color-royal-blue-lightest);
   color: var(--color-neutral-darkest);
+
+  transform: translateY(0);
 
   @media (min-width: 1440px) {
     position: static;
@@ -210,6 +225,7 @@
   }
 }
 
-.container.auth {
+.container.auth,
+.absoluteWrapper.auth {
   background: var(--color-white);
 }
