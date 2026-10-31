@@ -42,16 +42,16 @@ export default async function RootLayout({
     queryClient
       .query({
         queryKey: ['currentUser'],
-        queryFn: checkSessionServer,
+        queryFn: () => checkSessionServer(),
       })
       .catch(() => {
         queryClient.setQueryData(['currentUser'], null);
       }),
+
     queryClient
       .query({
         queryKey: ['userMe'],
         queryFn: () => getUsersMe(),
-
       })
       .catch(() => undefined),
   ]);
