@@ -1,4 +1,5 @@
 'use client';
+
 import { useState } from 'react';
 import Image from 'next/image';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -23,6 +24,7 @@ type Props = {
 export default function StoryDetails({ storyId }: Props) {
   const queryClient = useQueryClient();
   const { data: currentUser } = useCurrentUser();
+
   const [isJustSaved, setIsJustSaved] = useState(false);
   const [isAuthNavModalShown, setAuthNavModalShown] = useState(false);
 
@@ -35,6 +37,7 @@ export default function StoryDetails({ storyId }: Props) {
     queryFn: () => getStoryById(storyId),
     retry: false,
   });
+
   const { data: savedStories } = useQuery({
     queryKey: ['savedStories', 'ids'],
     queryFn: () => getSavedStories(1, 50),
@@ -42,9 +45,11 @@ export default function StoryDetails({ storyId }: Props) {
   });
 
   const isSaved =
-    isJustSaved || !!savedStories?.stories.some((item) => item._id === storyId);
+    isJustSaved ||
+    !!savedStories?.stories.some((item) => item._id === storyId);
 
-  const isOwnStory = !!currentUser && story?.ownerId._id === currentUser._id;
+  const isOwnStory =
+    !!currentUser && story?.ownerId?._id === currentUser._id;
 
   const refreshStoriesData = () => {
     queryClient.invalidateQueries({ queryKey: ['story', storyId] });
@@ -55,13 +60,17 @@ export default function StoryDetails({ storyId }: Props) {
 
   const { mutate: saveStory, isPending: isSaving } = useMutation({
     mutationFn: () => addStoryToFavorites(storyId),
+
     onSuccess: () => {
       setIsJustSaved(true);
       refreshStoriesData();
       toast.success('Історію збережено');
     },
+
     onError: (error) => {
-      const status = isAxiosError(error) ? error.response?.status : undefined;
+      const status = isAxiosError(error)
+        ? error.response?.status
+        : undefined;
 
       if (status === 400) {
         setIsJustSaved(true);
@@ -69,15 +78,18 @@ export default function StoryDetails({ storyId }: Props) {
         toast('Ця історія вже у збережених');
         return;
       }
+
       if (status === 401) {
         toast.error('Увійдіть, щоб зберігати історії');
         setAuthNavModalShown(true);
         return;
       }
+
       if (status === 403) {
         toast.error('Не можна зберегти власну історію');
         return;
       }
+
       toast.error('Не вдалося зберегти історію');
     },
   });
@@ -88,6 +100,7 @@ export default function StoryDetails({ storyId }: Props) {
       setAuthNavModalShown(true);
       return;
     }
+
     saveStory();
   };
 
@@ -107,26 +120,34 @@ export default function StoryDetails({ storyId }: Props) {
     );
   }
 
+  const ownerName = story.ownerId?.name ?? 'Невідомий автор';
+  const categoryName = story.category?.name ?? 'Без категорії';
+
   return (
     <section className={css.section}>
       <div className={css.content1}>
         <h1 className={css.title}>{story.title}</h1>
+
         <div className={css.meta}>
           <p className={css.metaItem}>
             <span className={css.metaLabel}>Автор статті</span>
-            {story.ownerId.name}
+            {ownerName}
           </p>
+
           <p className={css.metaItem}>
             <span className={css.metaLabel}>Опубліковано</span>
-            <time dateTime={story.date}>{formatDateFromApi(story.date)}</time>
+            <time dateTime={story.date}>
+              {formatDateFromApi(story.date)}
+            </time>
           </p>
-          <p className={css.category}>{story.category.name}</p>
+
+          <p className={css.category}>{categoryName}</p>
         </div>
 
         <Image
           className={css.image}
           src={story.img}
-          alt={'Обкладинка історії ' + story.title}
+          alt={`Обкладинка історії ${story.title}`}
           width={1312}
           height={874}
           sizes="(min-width: 1440px) 1312px, (min-width: 768px) 704px, 335px"
@@ -139,24 +160,34 @@ export default function StoryDetails({ storyId }: Props) {
 
         {!isOwnStory && (
           <aside className={css.saveBox}>
-            <h2 className={css.saveTitle}>Збережіть собі історію</h2>
+            <h2 className={css.saveTitle}>
+              Збережіть собі історію
+            </h2>
+
             <p className={css.saveText}>
               Вона буде доступна у вашому профілі у розділі збережене
             </p>
+
             <button
               className={css.saveButton}
               type="button"
               onClick={handleSave}
               disabled={isSaving || isSaved}
             >
-              {isSaved ? 'Збережено' : isSaving ? 'Зберігаємо…' : 'Зберегти'}
+              {isSaved
+                ? 'Збережено'
+                : isSaving
+                  ? 'Зберігаємо…'
+                  : 'Зберегти'}
             </button>
           </aside>
         )}
       </div>
 
       {isAuthNavModalShown && (
-        <AuthNavModal onClose={() => setAuthNavModalShown(false)} />
+        <AuthNavModal
+          onClose={() => setAuthNavModalShown(false)}
+        />
       )}
     </section>
   );

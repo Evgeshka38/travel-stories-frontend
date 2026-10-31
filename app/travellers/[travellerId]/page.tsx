@@ -1,7 +1,9 @@
+import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+
 import TravellerPageClient from '@/components/pages/TravellerPage/TravellerPage';
 import css from './TravellerPage.module.css';
-import { Metadata } from 'next';
-import { getTravellerProfile } from '@/lib/api/clientApi';
+import { getTravellerProfileServer } from '@/lib/api/serverApi';
 
 export const metadata: Metadata = {
   title: 'TravellerPage',
@@ -14,17 +16,23 @@ type Props = {
 export default async function TravellerPage({ params }: Props) {
   const { travellerId } = await params;
 
-  let initialData = null;
-  try {
-    initialData = await getTravellerProfile(travellerId, 1, 6);
-  } catch (error) {
-    console.error('Помилка завантаження профілю мандрівника:', error);
+  const initialData = await getTravellerProfileServer(
+    travellerId,
+    1,
+    6,
+  );
+
+  if (!initialData) {
+    notFound();
   }
 
   return (
     <div className={css.page}>
       <main className={css.main}>
-        <TravellerPageClient travellerId={travellerId} initialData={initialData} />
+        <TravellerPageClient
+          travellerId={travellerId}
+          initialData={initialData}
+        />
       </main>
     </div>
   );

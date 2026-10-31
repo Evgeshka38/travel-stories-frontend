@@ -1,10 +1,12 @@
-import { cookies } from 'next/headers';
 import { serverApi } from './api';
-import { GetPopularStoriesResponse } from '@/lib/types/stories';
 import type { OwnStoriesData } from './clientApi';
-import type { PaginatedStoriesData } from '@/lib/types/stories';
-import { Story } from '@/lib/types/stories';
-
+import type {
+  GetPopularStoriesResponse,
+  GetStoryByIdResponse,
+  PaginatedStoriesData,
+  Story,
+  TravellerProfileResponse,
+} from '@/lib/types/stories';
 import type { getUsersMeResponse } from '@/lib/types/users';
 
 export interface ServerCurrentUser {
@@ -49,21 +51,54 @@ interface UsersResponse {
   };
 }
 
-export async function checkSessionServer(): Promise<ServerCurrentUser | null> {
+interface RefreshSessionResponse {
+  status: number;
+  message: string;
+  data: null;
+}
+
+async function getRequestCookieHeader(): Promise<string> {
+  const { cookies } = await import('next/headers');
   const cookieStore = await cookies();
+  return cookieStore.toString();
+}
+
+export async function checkSessionServer(
+  cookieHeader?: string,
+): Promise<ServerCurrentUser | null> {
+  const cookie = cookieHeader ?? (await getRequestCookieHeader());
 
   const { data } = await serverApi.get<SessionResponse>('/auth/session', {
-    headers: {
-      Cookie: cookieStore.toString(),
-    },
+    headers: cookie ? { Cookie: cookie } : undefined,
   });
 
   return data.data;
 }
 
+export async function refreshSessionServer(
+  cookieHeader: string,
+): Promise<string[]> {
+  const response = await serverApi.post<RefreshSessionResponse>(
+    '/auth/refresh',
+    undefined,
+    {
+      headers: {
+        Cookie: cookieHeader,
+      },
+    },
+  );
+
+  const setCookie = response.headers['set-cookie'];
+
+  if (!setCookie) {
+    return [];
+  }
+
+  return Array.isArray(setCookie) ? setCookie : [setCookie];
+}
+
 export async function getCategoriesServer(): Promise<ServerCategory[]> {
   const { data } = await serverApi.get<CategoriesResponse>('/categories');
-
   return data.data;
 }
 
@@ -72,17 +107,19 @@ export async function getUsersServer(
   limit = 4,
 ): Promise<ServerTraveller[]> {
   const { data } = await serverApi.get<UsersResponse>('/users', {
-    params: {
-      page,
-      limit,
-    },
+    params: { page, limit },
   });
 
   return data.data.users;
 }
 
 export async function getUsersMe(): Promise<getUsersMeResponse> {
-  const { data } = await serverApi.get<getUsersMeResponse>('/users/me');
+  const cookie = await getRequestCookieHeader();
+
+  const { data } = await serverApi.get<getUsersMeResponse>('/users/me', {
+    headers: cookie ? { Cookie: cookie } : undefined,
+  });
+
   return data;
 }
 
@@ -93,10 +130,7 @@ export async function getPopularStoriesServer(
   const { data } = await serverApi.get<GetPopularStoriesResponse>(
     '/stories/popular',
     {
-      params: {
-        page,
-        perPage,
-      },
+      params: { page, perPage },
     },
   );
 
@@ -119,18 +153,43 @@ export async function getStoriesServer(
   return data;
 }
 
+export async function getStoryByIdServer(storyId: string): Promise<Story> {
+  const { data } = await serverApi.get<GetStoryByIdResponse>(
+    `/stories/${storyId}`,
+  );
+
+  return data.data;
+}
+
+export async function getTravellerProfileServer(
+  travellerId: string,
+  page = 1,
+  limit = 6,
+): Promise<TravellerProfileResponse> {
+  const { data } = await serverApi.get<{
+    status: number;
+    message: string;
+    data: TravellerProfileResponse;
+  }>(`/users/${travellerId}`, {
+    params: { page, limit },
+  });
+
+  return data.data;
+}
+
 export async function getOwnStoriesServer(
   page = 1,
   perPage = 12,
 ): Promise<OwnStoriesData> {
-  const cookieStore = await cookies();
+  const cookie = await getRequestCookieHeader();
 
-  const { data } = await serverApi.get('/stories/own', {
-    params: { page, perPage },
-    headers: {
-      Cookie: cookieStore.toString(),
+  const { data } = await serverApi.get<{ data: OwnStoriesData }>(
+    '/stories/own',
+    {
+      params: { page, perPage },
+      headers: cookie ? { Cookie: cookie } : undefined,
     },
-  });
+  );
 
   return data.data;
 }
@@ -139,35 +198,15 @@ export async function getSavedStoriesServer(
   page = 1,
   perPage = 12,
 ): Promise<PaginatedStoriesData> {
-  const cookieStore = await cookies();
+  const cookie = await getRequestCookieHeader();
 
-  const { data } = await serverApi.get<{
-    data: PaginatedStoriesData;
-  }>('/stories/saved', {
-
-    params: { page, perPage },
-    headers: {
-      Cookie: cookieStore.toString(),
+  const { data } = await serverApi.get<{ data: PaginatedStoriesData }>(
+    '/stories/saved',
+    {
+      params: { page, perPage },
+      headers: cookie ? { Cookie: cookie } : undefined,
     },
-  });
+  );
 
   return data.data;
-
-}
-
-export interface Traveller {
-  _id: string;
-  name: string;
-  avatarUrl: string;
-  articlesAmount: number;
-  description: string;
-}
-
-export interface TravellerProfileResponse {
-  traveller: Traveller;
-  stories: Story[];
-  page: number;
-  perPage: number;
-  totalItems: number;
-  hasNextPage: boolean;
 }
