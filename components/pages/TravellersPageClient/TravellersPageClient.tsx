@@ -54,7 +54,9 @@ export default function TravellersPageClient() {
       <h1 className={css.title}>Мандрівники</h1>
 
       {initialLimit === null || (isPending && !data) ? (
-        <p>Завантаження...</p>
+        <div className={css.loader}>
+          <Loader />
+        </div>
       ) : isError && !data ? (
         <p>Не вдалося завантажити мандрівників.</p>
       ) : (
