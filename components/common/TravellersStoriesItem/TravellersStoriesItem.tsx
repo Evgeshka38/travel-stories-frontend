@@ -17,6 +17,8 @@ import {
 import { useFavoriteStoriesStore } from '@/lib/store/favoriteStoriesIdsStore';
 import Loader from '../Loader/Loader';
 import type { QueryKey } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
+import { AddRemoveStoryToFormFavoritesResponse } from '@/lib/types/stories';
 
 type Props = {
   id: string;
@@ -36,6 +38,20 @@ type Props = {
 
   queryKey: QueryKey;
 };
+
+function handleError(
+  error: AxiosError<AddRemoveStoryToFormFavoritesResponse>,
+  fallbackMessage: string,
+) {
+  if (error instanceof AxiosError) {
+    const data = error.response?.data;
+    if (data && data.message && typeof data.message === 'string') {
+      toast.error(data.message);
+    } else {
+      toast.error(fallbackMessage);
+    }
+  }
+}
 
 export default function TravellersStoriesItem({
   id,
@@ -86,7 +102,6 @@ export default function TravellersStoriesItem({
         setFavoriteStoriesIds(data.data.user.favorites);
       }
 
-      toast.success('Історію збережено!');
       await Promise.all([
         queryClient.invalidateQueries({
           queryKey: queryKey,
@@ -96,8 +111,8 @@ export default function TravellersStoriesItem({
         }),
       ]);
     },
-    onError: () => {
-      toast.error('Не вдалося зберегти історію');
+    onError: (error: AxiosError<AddRemoveStoryToFormFavoritesResponse>) => {
+      handleError(error, 'Не вдалося зберегти історію');
     },
   });
 
@@ -108,7 +123,6 @@ export default function TravellersStoriesItem({
       if (data.data) {
         setFavoriteStoriesIds(data.data.user.favorites);
       }
-      toast.success('Історію видалено зі збережених!');
       await Promise.all([
         queryClient.invalidateQueries({
           queryKey: queryKey,
@@ -118,25 +132,22 @@ export default function TravellersStoriesItem({
         }),
       ]);
     },
-    onError: () => {
-      toast.error('Не вдалося видалити історію зі збережених');
+    onError: (error: AxiosError<AddRemoveStoryToFormFavoritesResponse>) => {
+      handleError(error, 'Не вдалося видалити історію зі збережених');
     },
   });
 
   function handleButtonSquareIconClick() {
     if (!currentUser) {
-      toast.error('Увійди в акаунт, щоб зберігати історії');
       setAuthNavModalShown(true);
       return;
     }
 
     if (isSaved) {
-      toast('Видалення історії зі збережених');
       removeMutation.mutate();
       return;
     }
 
-    toast('Збереження історії');
     saveMutation.mutate();
   }
 
