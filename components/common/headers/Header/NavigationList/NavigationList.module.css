@@ -20,6 +20,12 @@
   line-height: 1.5;
   color: var(--color-neutral-darkest);
 
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    fill 0.2s ease,
+    border 0.2s ease;
+
   @media (min-width: 1440px) {
     font-size: 18px;
   }

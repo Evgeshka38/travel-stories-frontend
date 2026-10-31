@@ -24,7 +24,7 @@ export default function Header() {
   const queryClient = useQueryClient();
 
   const { data: user } = useCurrentUser();
-  
+
   const clearFavoriteStoriesIds = useFavoriteStoriesStore(
     (store) => store.clearFavoriteStoriesIds,
   );
@@ -272,8 +272,9 @@ export default function Header() {
                     height={32}
                     alt="Фото профілю"
                   />
-
-                  <p className={css.userName}>{user?.name || "Ім'я"}</p>
+                  <Link href="/profile" aria-label="Мій Профіль">
+                    <p className={css.userName}>{user?.name || "Ім'я"}</p>
+                  </Link>
 
                   <span className={css.divider} />
 
