@@ -76,6 +76,9 @@ export default function TravellersStoriesItem({
   );
 
   const isSaved = favoriteStoriesIds.includes(id);
+  const saveAriaText = isSaved
+    ? 'Видалити із збережених історії'
+    : 'Додати в збережені історії';
 
   const { data: currentUser } = useCurrentUser();
   const [isAuthNavModalShown, setAuthNavModalShown] = useState<boolean>(false);
@@ -217,9 +220,9 @@ export default function TravellersStoriesItem({
                   removeMutation.isPending ||
                   userMeQuery.isPending
                 }
-                title="Додати в збережені історії"
-                aria-label="Додати в збережені історії"
-                name="Додати в збережені історії"
+                title={saveAriaText}
+                aria-label={saveAriaText}
+                name={saveAriaText}
                 onClick={() => handleButtonSquareIconClick()}
               >
                 {saveMutation.isPending ||
