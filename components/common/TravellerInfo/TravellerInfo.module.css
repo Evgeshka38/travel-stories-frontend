@@ -47,7 +47,6 @@
   .text_content {
     align-items: flex-start;
   }
- 
 }
 
 @media screen and (min-width: 1440px) {
@@ -60,6 +59,12 @@
   }
 
   .description {
+    width: 367px;
+    height: 108px;
+    opacity: 1;
+    font-weight: 400;
     font-size: 18px;
+    line-height: 150%;
+    letter-spacing: 0%;
   }
 }
