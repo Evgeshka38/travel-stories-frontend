@@ -10,7 +10,10 @@ import { getSavedStoriesServer } from '@/lib/api/serverApi';
 import type { PaginatedStoriesData } from '@/lib/types/stories';
 
 export const metadata: Metadata = {
-  title: 'SavedStoriesPage',
+  title: 'Збережені історії - Подорожники',
+  openGraph: {
+    title: 'Збережені історії - Подорожники',
+  },
 };
 
 export default async function SavedStoriesPage() {

@@ -3,7 +3,10 @@ import StoryPageClient from '@/components/pages/StoryPageClient/StoryPageClient'
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'StoryPage',
+  title: 'Історія - Подорожники',
+  openGraph: {
+    title: 'Історія - Подорожники',
+  },
 };
 
 type Props = {

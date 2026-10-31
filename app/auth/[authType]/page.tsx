@@ -4,7 +4,10 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
 export const metadata: Metadata = {
-  title: 'AuthPage',
+  title: 'Головна - Подорожники',
+  openGraph: {
+    title: 'Головна - Подорожники',
+  },
 };
 
 type Props = {

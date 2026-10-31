@@ -3,9 +3,9 @@ import { Metadata } from 'next';
 import css from './NotFound.module.css';
 
 export const metadata: Metadata = {
-  title: 'Сторінку не знайдено',
+  title: 'Сторінку не знайдено - Подорожники',
   openGraph: {
-    title: 'Сторінку не знайдено',
+    title: 'Сторінку не знайдено - Подорожники',
   },
 };
 

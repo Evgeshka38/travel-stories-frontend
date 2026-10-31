@@ -13,7 +13,10 @@ import {
 } from '@/lib/api/serverApi';
 
 export const metadata: Metadata = {
-  title: 'HomePage',
+  title: 'Головна - Подорожники',
+  openGraph: {
+    title: 'Головна - Подорожники',
+  },
 };
 
 export default async function HomePage() {

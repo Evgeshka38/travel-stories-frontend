@@ -6,7 +6,10 @@ import css from './TravellerPage.module.css';
 import { getTravellerProfileServer } from '@/lib/api/serverApi';
 
 export const metadata: Metadata = {
-  title: 'TravellerPage',
+  title: 'Мандрівник - Подорожники',
+  openGraph: {
+    title: 'Мандрівник - Подорожники',
+  },
 };
 
 type Props = {

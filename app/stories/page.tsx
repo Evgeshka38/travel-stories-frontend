@@ -14,7 +14,10 @@ import {
 import type { GetPopularStoriesResponse } from '@/lib/types/stories';
 
 export const metadata: Metadata = {
-  title: 'StoriesPage',
+  title: 'Історії - Подорожники',
+  openGraph: {
+    title: 'Історії - Подорожники',
+  },
 };
 
 const PER_PAGE = 9;
