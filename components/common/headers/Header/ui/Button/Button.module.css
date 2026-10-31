@@ -26,6 +26,11 @@
 
   color: var(--color-white);
   fill: var(--color-white);
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    fill 0.2s ease,
+    border 0.2s ease;
 }
 
 .secondary,
@@ -38,6 +43,11 @@
 
   color: var(--color-neutral-darkest);
   fill: var(--color-neutral-darkest);
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    fill 0.2s ease,
+    border 0.2s ease;
 }
 
 /*! CUSTOM COMPONENTS */

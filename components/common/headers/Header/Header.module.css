@@ -13,6 +13,7 @@
 }
 
 .absoluteWrapper {
+  /* background: var(--color-royal-blue-lightest); */
   width: 100%;
 }
 
@@ -173,6 +174,7 @@
 }
 
 .absolute {
+  background: var(--opacity-transparent);
   position: absolute;
   top: 0;
   left: 0;
@@ -210,6 +212,7 @@
   }
 }
 
-.container.auth {
+.container.auth,
+.absoluteWrapper.auth {
   background: var(--color-white);
 }

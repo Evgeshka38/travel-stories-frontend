@@ -1,46 +1,10 @@
-/* *,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-ul,
-ol,
-li,
-body {
-  margin: 0;
-  padding: 0;
-}
-ul,
-ol {
-  list-style: none;
-}
-
-button,
-input,
-select,
-textarea {
-  font: inherit;
-  cursor: pointer;
-}
-
-img {
-  display: block;
-  max-width: 100%;
-} */
 .container {
   max-width: 375px;
   padding: 0 20px;
   margin-left: auto;
   margin-right: auto;
   /* outline: 1px solid red; */
+  background: var(--color-royal-blue-lightest);
   @media only screen and (min-width: 768px) {
     max-width: 768px;
     padding-left: 32px;
