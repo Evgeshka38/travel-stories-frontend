@@ -9,7 +9,10 @@ import css from './OwnStoriesPage.module.css';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Мої історії',
+  title: 'Мої історії - Подорожники',
+  openGraph: {
+    title: 'Мої історії - Подорожники',
+  },
 };
 
 export default async function OwnStoriesPage() {

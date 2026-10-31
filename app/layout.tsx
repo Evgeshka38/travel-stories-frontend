@@ -29,8 +29,12 @@ const nunitoSans = Nunito_Sans({
 });
 
 export const metadata: Metadata = {
-  title: 'Travel Stories',
-  description: 'Travel Stories app',
+  title: 'Подорожники',
+  description: 'Подорожники - спільнота мандрівників',
+  openGraph: {
+    title: 'Подорожники',
+    description: 'Подорожники - спільнота мандрівників',
+  },
 };
 
 export default async function RootLayout({

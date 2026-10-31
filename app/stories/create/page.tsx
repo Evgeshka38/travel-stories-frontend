@@ -5,7 +5,10 @@ import AddStoryPageClient from '@/components/pages/AddStoryPageClient/AddStoryPa
 import { getCategoriesServer } from '@/lib/api/serverApi';
 
 export const metadata: Metadata = {
-  title: 'AddStoryPage',
+  title: 'Публікація історії - Подорожники',
+  openGraph: {
+    title: 'Публікація історії - Подорожники',
+  },
 };
 
 export default async function AddStoryPage() {

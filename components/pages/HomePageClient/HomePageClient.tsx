@@ -19,14 +19,10 @@ export default function HomePageClient() {
 
   return (
     <div className={css.container}>
-      <h1 className={css.homePageHeading} style={{ color: 'red' }}>
-        HomePageClient
-      </h1>
       <Hero />
       <About />
       <PopularStoriesSection />
       <OurTravellers travellers={travellers} />
-      
       {!isLoading && !user && <Join />}
     </div>
   );
