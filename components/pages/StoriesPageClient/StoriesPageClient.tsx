@@ -10,6 +10,7 @@ import MessageNoStories from '@/components/common/MessageNoStories/MessageNoStor
 import { getStories } from '@/lib/api/clientApi';
 
 import css from './StoriesPageClient.module.css';
+import Loader from '@/components/common/Loader/Loader';
 
 const PER_PAGE = 9;
 
@@ -44,7 +45,11 @@ export default function StoriesPageClient() {
           onSelect={setSelectedCategory}
         />
 
-        {isLoading && <p className={css.message}>Завантаження...</p>}
+        {isLoading && (
+          <div className={css.loader}>
+            <Loader />
+          </div>
+        )}
 
         {isError && (
           <p className={css.message}>Не вдалося завантажити історії.</p>

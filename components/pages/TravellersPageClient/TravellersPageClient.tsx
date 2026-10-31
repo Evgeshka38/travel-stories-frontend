@@ -5,6 +5,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import TravellersList from '@/components/common/TravellersList/TravellersList';
 import { getTravellers } from '@/lib/api/travellersApi';
 import css from './TravellersPageClient.module.css';
+import Loader from '@/components/common/Loader/Loader';
 
 export default function TravellersPageClient() {
   const [initialLimit, setInitialLimit] = useState<number | null>(null);
@@ -54,7 +55,9 @@ export default function TravellersPageClient() {
       <h1 className={css.title}>Мандрівники</h1>
 
       {initialLimit === null || (isPending && !data) ? (
-        <p>Завантаження...</p>
+        <div className={css.loader}>
+          <Loader />
+        </div>
       ) : isError && !data ? (
         <p>Не вдалося завантажити мандрівників.</p>
       ) : (
