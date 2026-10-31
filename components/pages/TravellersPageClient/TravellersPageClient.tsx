@@ -5,6 +5,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import TravellersList from '@/components/common/TravellersList/TravellersList';
 import { getTravellers } from '@/lib/api/travellersApi';
 import css from './TravellersPageClient.module.css';
+import Loader from '@/components/common/Loader/Loader';
 
 export default function TravellersPageClient() {
   const [initialLimit, setInitialLimit] = useState<number | null>(null);
