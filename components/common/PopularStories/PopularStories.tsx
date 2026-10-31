@@ -2,9 +2,10 @@ import TravellersStoriesItem from '../TravellersStoriesItem/TravellersStoriesIte
 import css from './PopularStories.module.css';
 import { useQuery } from '@tanstack/react-query';
 import { getPopularStories } from '@/lib/api/clientApi';
+import Loader from '../Loader/Loader';
 
 export default function PopularStories() {
-  const { data: popularStoriesResponse } = useQuery({
+  const { data: popularStoriesResponse, isLoading } = useQuery({
     queryKey: ['popularStories', 1, 4],
     queryFn: () => getPopularStories(1, 4),
   });
@@ -12,6 +13,12 @@ export default function PopularStories() {
   return (
     <div className={css.container}>
       <h2 className={css.title}>Популярні історії</h2>
+
+      {isLoading && (
+        <div className={css.loader}>
+          <Loader />
+        </div>
+      )}
 
       <ul className={css.popularStoriesList}>
         {popularStoriesResponse?.data.stories &&

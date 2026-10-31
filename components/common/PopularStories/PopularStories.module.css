@@ -33,6 +33,10 @@
   }
 }
 
+.loader {
+  margin: 0px auto;
+}
+
 .popularStoriesList {
   display: flex;
   flex-direction: column;
