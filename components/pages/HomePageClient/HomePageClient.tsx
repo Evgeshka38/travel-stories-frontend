@@ -19,7 +19,6 @@ export default function HomePageClient() {
 
   return (
     <div className={css.container}>
-      <h1 className="visually-hidden">Подорожники</h1>
       <Hero />
       <About />
       <PopularStoriesSection />
