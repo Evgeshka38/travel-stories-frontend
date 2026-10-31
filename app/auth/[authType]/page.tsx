@@ -20,10 +20,6 @@ export default async function AuthPage({ params }: Props) {
     notFound();
   }
 
-  if (authType !== 'register' && authType !== 'login') {
-    notFound();
-  }
-
   return (
     <div className={css.page}>
       <main className={css.main}>
