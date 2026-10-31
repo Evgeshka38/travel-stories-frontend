@@ -5,6 +5,15 @@ type Props = {
   params: Promise<{ id: string }>;
 };
 
+export async function GET(request: NextRequest, { params }: Props) {
+  const { id } = await params;
+
+  return proxyToBackend({
+    request,
+    path: `/stories/${id}`,
+  });
+}
+
 export async function PATCH(request: NextRequest, { params }: Props) {
   const { id } = await params;
 
