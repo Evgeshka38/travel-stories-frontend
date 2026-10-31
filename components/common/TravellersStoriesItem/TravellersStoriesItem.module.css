@@ -56,6 +56,7 @@
 
 .title {
   height: 54px;
+  line-height: 150%;
   font-weight: 700;
   font-size: 18px;
 
@@ -63,6 +64,7 @@
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;
+  line-clamp: 2;
   -webkit-line-clamp: 2;
   color: var(--color-scheme-1-text);
 
@@ -75,12 +77,14 @@
 .description {
   /* todo: note: limit lines fallback */
   height: 72px;
+  line-height: 150%;
   overflow: hidden;
   /* `text-overflow: ellipsis;` works if  `white-space: wrap;` */
 
   /* todo: note: limit lines not well supported but its how it is done in the design */
   display: -webkit-box;
   -webkit-box-orient: vertical;
+  line-clamp: 3;
   -webkit-line-clamp: 3;
 
   color: var(--color-scheme-1-text);
@@ -104,9 +108,6 @@
   height: 48px;
   border-radius: 50%;
   object-fit: cover;
-}
-
-.detailsRight {
 }
 
 .authorName {
