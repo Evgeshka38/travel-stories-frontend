@@ -115,7 +115,18 @@
   font-size: 12px;
   color: var(--color-scheme-1-text);
 
+  display: block;
+  max-width: 223px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+
+  @media (min-width: 768px) {
+    max-width: 228px;
+  }
+
   @media (min-width: 1440px) {
+    max-width: 309px;
     font-size: 16px;
   }
 }
