@@ -105,14 +105,15 @@
   }
 
   .aboutHeader {
+    display: flex;
     flex-direction: row;
     align-items: flex-start;
-    justify-content: flex-start;
+    justify-content: center;
 
     width: 100%;
     gap: 24px;
+    margin: 0;
   }
-
   .title {
     width: 340px;
     max-width: none;
