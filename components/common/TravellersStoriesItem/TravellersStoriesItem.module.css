@@ -201,13 +201,6 @@
   transition-duration: 200ms;
   transition-timing-function: ease;
 
-  &:hover,
-  &:focus {
-    background-color: var(--color-royal-blue);
-    outline: 1px solid var(--opacity-transparent);
-    color: var(--color-white);
-  }
-
   &:disabled {
     background-color: var(--opacity-neutral-darkest-5);
     outline: 1px solid var(--opacity-transparent);
@@ -215,11 +208,34 @@
   }
 }
 
+.buttonSquareIcon {
+  transition-property: fill;
+  transition-duration: 200ms;
+  transition-timing-function: ease;
+}
+
 .button:active,
 .buttonSaved {
   background-color: var(--color-royal-blue-darker);
   outline: 1px solid var(--opacity-transparent);
   color: var(--color-white);
+
+  .buttonSquareIcon {
+    fill: var(--color-white);
+  }
+}
+
+.button {
+  &:hover,
+  &:focus {
+    background-color: var(--color-royal-blue);
+    outline: 1px solid var(--opacity-transparent);
+    color: var(--color-white);
+
+    .buttonSquareIcon {
+      fill: var(--color-white);
+    }
+  }
 }
 
 .buttonWide {
