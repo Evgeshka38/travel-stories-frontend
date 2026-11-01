@@ -42,23 +42,24 @@ export default async function RootLayout({
 }: LayoutProps<'/'>) {
   const queryClient = new QueryClient();
 
-  await Promise.all([
-    queryClient
-      .query({
-        queryKey: ['currentUser'],
-        queryFn: () => checkSessionServer(),
-      })
-      .catch(() => {
-        queryClient.setQueryData(['currentUser'], null);
-      }),
+  const currentUser = await queryClient
+    .query({
+      queryKey: ['currentUser'],
+      queryFn: () => checkSessionServer(),
+    })
+    .catch(() => {
+      queryClient.setQueryData(['currentUser'], null);
+      return null;
+    });
 
-    queryClient
+  if (currentUser) {
+    await queryClient
       .query({
         queryKey: ['userMe'],
         queryFn: () => getUsersMe(),
       })
-      .catch(() => undefined),
-  ]);
+      .catch(() => undefined);
+  }
 
   return (
     <html lang="uk" className={`${inter.variable} ${nunitoSans.variable}`}>

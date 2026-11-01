@@ -21,7 +21,6 @@ export async function proxyToBackend({
   }
 
   const url = `${BACKEND_URL}/api${path}${request.nextUrl.search}`;
-
   const headers = new Headers();
 
   const cookie = request.headers.get('cookie');
@@ -52,14 +51,19 @@ export async function proxyToBackend({
     cache: 'no-store',
   });
 
-  const responseBody = await backendResponse.arrayBuffer();
+  const noBodyResponse =
+    method === 'HEAD' || [204, 205, 304].includes(backendResponse.status);
+
+  const responseBody = noBodyResponse
+    ? null
+    : await backendResponse.arrayBuffer();
 
   const response = new NextResponse(responseBody, {
     status: backendResponse.status,
   });
 
   const responseContentType = backendResponse.headers.get('content-type');
-  if (responseContentType) {
+  if (responseContentType && !noBodyResponse) {
     response.headers.set('content-type', responseContentType);
   }
 

@@ -6,27 +6,28 @@ const socialLinks = [
   {
     name: 'Facebook',
     icon: 'icon-facebook',
-    href: '#',
+    href: 'https://www.facebook.com/',
   },
   {
     name: 'Instagram',
     icon: 'icon-instagram',
-    href: '#',
+    href: 'https://www.instagram.com/',
   },
   {
     name: 'X',
     icon: 'icon-x',
-    href: '#',
+    href: 'https://x.com/',
   },
   {
     name: 'YouTube',
     icon: 'icon-youtube',
-    href: '#',
+    href: 'https://www.youtube.com/',
   },
 ];
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+
   return (
     <footer className={css.footer}>
       <div className={css.container}>
@@ -48,6 +49,8 @@ export default function Footer() {
                   href={href}
                   className={css.socialLink}
                   aria-label={name}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   <svg className={css.socialIcon}>
                     <use href={`/sprite.svg#${icon}`} />
