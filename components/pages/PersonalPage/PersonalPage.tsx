@@ -49,6 +49,7 @@ export default function PersonalPage() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['currentUser'] });
+      queryClient.invalidateQueries({ queryKey: ['userMe'] });
       toast.success('Профіль оновлено');
       router.push('/profile/saved');
     },

@@ -6,8 +6,8 @@ if (!backendUrl) {
   throw new Error('NEXT_PUBLIC_API_URL is not defined');
 }
 
-// Browser requests go through the Next.js same-origin rewrite (/api -> backend).
-// This lets auth cookies belong to the frontend origin and makes them available
+// Browser requests go through same-origin Next.js Route Handlers under /app/api.
+// This keeps auth cookies on the frontend origin and makes them available
 // to Server Components and proxy.ts.
 export const nextApi = axios.create({
   baseURL: '/api',
