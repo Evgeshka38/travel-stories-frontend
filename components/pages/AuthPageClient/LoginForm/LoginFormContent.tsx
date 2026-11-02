@@ -22,6 +22,7 @@ interface LoginDraft {
 
 const loginSchema = Yup.object().shape({
   email: Yup.string()
+    .trim()
     .email('Некоректний email')
     .max(64, 'Занадто довгий email')
     .required('Обов’язкове поле'),
