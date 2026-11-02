@@ -13,7 +13,6 @@ export const metadata: Metadata = {
 
 export default async function AddStoryPage() {
   const categories = await getCategoriesServer();
-
   return (
     <div className={css.page}>
       <main className={css.main}>

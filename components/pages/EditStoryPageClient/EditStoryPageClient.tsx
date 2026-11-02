@@ -3,9 +3,9 @@
 import * as Yup from 'yup';
 
 import css from './EditStoryPageClient.module.css';
-import { AddStoryFormUniversalValues, Story } from '@/lib/types/stories';
+import { AddStoryFormValues, Story } from '@/lib/types/stories';
 import { Category, editStory } from '@/lib/api/clientApi';
-import AddStoryFormUniversal from './AddStoryFormUniversal/AddStoryFormUniversal';
+import AddStoryForm from '../../common/AddStoryForm/AddStoryForm';
 
 type EditStoryPageClientProps = {
   story: Story;
@@ -44,7 +44,7 @@ export default function EditStoryPageClient({
       .required("Обов'язкове поле"),
   });
 
-  const handleSubmit = async (values: AddStoryFormUniversalValues) => {
+  const handleSubmit = async (values: AddStoryFormValues) => {
     const editedStory = await editStory({
       title: story.title !== values.title ? values.title : undefined,
       category:
@@ -59,7 +59,7 @@ export default function EditStoryPageClient({
   };
   return (
     <div className={css.container}>
-      <AddStoryFormUniversal
+      <AddStoryForm
         editingStory={story}
         categories={categories}
         onSubmit={handleSubmit}
