@@ -73,6 +73,10 @@
 
 /* Tablet */
 @media (min-width: 768px) {
+  .container {
+    align-items: flex-start;
+  }
+
   .loadMore {
     width: max-content;
   }
