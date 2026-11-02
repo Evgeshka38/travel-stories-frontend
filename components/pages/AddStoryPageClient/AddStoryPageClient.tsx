@@ -1,9 +1,9 @@
 'use client';
 import * as Yup from 'yup';
 import css from './AddStoryPageClient.module.css';
-import AddStoryFormUniversal from '../EditStoryPageClient/AddStoryFormUniversal/AddStoryFormUniversal';
+import AddStoryForm from '../../common/AddStoryForm/AddStoryForm';
 import { Category, createStory } from '@/lib/api/clientApi';
-import { AddStoryFormUniversalValues } from '@/lib/types/stories';
+import { AddStoryFormValues } from '@/lib/types/stories';
 interface AddStoryPageClientProps {
   categories: Category[];
 }
@@ -31,7 +31,7 @@ export default function AddStoryPageClient({
       .required("Обов'язкове поле"),
   });
 
-  const handleSubmit = async (values: AddStoryFormUniversalValues) => {
+  const handleSubmit = async (values: AddStoryFormValues) => {
     const createdStory = await createStory({
       title: values.title,
       category: values.category,
@@ -43,9 +43,8 @@ export default function AddStoryPageClient({
 
   return (
     <div className={css.container}>
-      {/* <AddStoryForm /> */}
       {
-        <AddStoryFormUniversal
+        <AddStoryForm
           categories={categories}
           editStorySchema={createStorySchema}
           onSubmit={handleSubmit}

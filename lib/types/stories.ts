@@ -99,7 +99,7 @@ export interface AddRemoveStoryToFormFavoritesResponse {
   } | null;
 }
 
-export interface AddStoryFormUniversalValues {
+export interface AddStoryFormValues {
   title: string;
   category: string;
   content: string;
