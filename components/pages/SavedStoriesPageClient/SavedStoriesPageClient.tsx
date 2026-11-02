@@ -37,9 +37,7 @@ export default function SavedStoriesPageClient() {
   if (isError) {
     return (
       <div className={css.container}>
-        <p className={css.message}>
-          Не вдалося завантажити збережені історії.
-        </p>
+        <p className={css.message}>Не вдалося завантажити збережені історії.</p>
       </div>
     );
   }
@@ -73,7 +71,7 @@ export default function SavedStoriesPageClient() {
           onClick={() => fetchNextPage()}
           disabled={isFetchingNextPage}
         >
-          {isFetchingNextPage ? 'Завантаження...' : 'Завантажити ще'}
+          {isFetchingNextPage ? 'Завантаження...' : 'Показати ще'}
         </button>
       )}
     </div>
