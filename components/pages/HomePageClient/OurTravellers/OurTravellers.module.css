@@ -1,10 +1,12 @@
 .section {
   padding: 64px 20px;
   background-color: rgba(247, 249, 255, 1);
+  width: 100%;
 }
 
 .container {
   width: 100%;
+  max-width: 335px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -15,12 +17,14 @@
   width: 100%;
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
 }
 
 .sectionTitle {
-  width: 335px;
-  height: 34px;
+  width: 100%;
+  height: auto;
   font-size: 28px;
+  margin: 0 auto;
   font-weight: 700;
   line-height: 1.2;
   color: rgba(0, 0, 0, 1);
@@ -45,7 +49,7 @@
 }
 
 .travellerCard {
-  width: 335px;
+  width: 100%;
   max-width: 340px;
   background: #e8eeff;
   border-radius: 12px;
