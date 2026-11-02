@@ -254,6 +254,7 @@ export default function Header() {
                     styleVariant="primary"
                     linkRoute="/stories/create"
                     ariaLabel="Опублікувати історію"
+                    handler={() => setIsMenuOpen(false)}
                   >
                     Опублікувати історію
                   </Button>
