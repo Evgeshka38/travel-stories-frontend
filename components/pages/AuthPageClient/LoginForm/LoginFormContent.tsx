@@ -100,7 +100,7 @@ export default function LoginFormContent() {
     <section className={css.section}>
       <div className={css.container}>
         <h1 className={css.title}>Вхід</h1>
-        <p className={css.subtitle}>Вітаємо знову у спільноту мандрівників!</p>
+        <p className={css.subtitle}>Вітаємо знову у спільноті мандрівників!</p>
 
         <Formik
           initialValues={initialValues}
