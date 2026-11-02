@@ -64,6 +64,7 @@ export default function Button({
             )}
             href={linkRoute}
             aria-label={ariaLabel}
+            onClick={handler}
           >
             {children}
           </Link>
