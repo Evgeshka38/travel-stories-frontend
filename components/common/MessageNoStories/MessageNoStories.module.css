@@ -54,7 +54,7 @@
 @media (min-width: 768px) {
   .container {
     max-width: 533px;
-    margin-inline: auto;
+    margin-inline: 0;
     padding: 40px 32px;
   }
 }

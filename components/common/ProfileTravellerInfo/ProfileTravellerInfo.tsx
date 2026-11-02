@@ -1,9 +1,7 @@
 'use client';
 
-
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 import TravellerInfo from '@/components/common/TravellerInfo/TravellerInfo';
-import css from './ProfileTravellerInfo.module.css';
 
 export default function ProfileTravellerInfo() {
   const { data: user } = useCurrentUser();
