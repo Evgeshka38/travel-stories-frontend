@@ -8,6 +8,8 @@
 }
 
 .avatar {
+  width: 199px;
+  height: 199px;
   flex-shrink: 0;
   border-radius: 50%;
   object-fit: cover;
