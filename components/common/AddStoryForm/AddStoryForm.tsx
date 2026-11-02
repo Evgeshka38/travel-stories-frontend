@@ -101,41 +101,6 @@ export default function AddStoryForm({
     };
   }, [coverPreview]);
 
-  // const handleSubmit = async (values: AddStoryFormValues) => {
-  //   if (!editingStory && !values.cover) {
-  //     toast.error('Завантажте обкладинку історії');
-  //     return;
-  //   }
-
-  //   setIsSubmitting(true);
-
-  //   try {
-  //     const story = await onSubmit(values);
-
-  //     sessionStorage.removeItem('add-story-draft');
-  //     toast.success(
-  //       editingStory
-  //         ? 'Історію успішно відредаговано'
-  //         : 'Історію успішно створено',
-  //     );
-  //     router.push(`/stories/${story._id}`);
-  //   } catch (error) {
-  //     console.error(
-  //       editingStory
-  //         ? 'Не вдалося відредагувати історію:'
-  //         : 'Не вдалося створити історію:',
-  //       error,
-  //     );
-  //     toast.error(
-  //       editingStory
-  //         ? 'Помилка збереження історії'
-  //         : 'Помилка створення історії ',
-  //     );
-  //   } finally {
-  //     setIsSubmitting(false);
-  //   }
-  // };
-
   const handleSubmit = async (values: AddStoryFormValues) => {
     if (isSubmitting) return;
 

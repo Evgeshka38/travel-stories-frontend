@@ -24,6 +24,7 @@ interface RegisterDraft {
 const registerSchema = Yup.object().shape({
   name: Yup.string().max(32, 'Занадто довге імʼя').required('Обов’язкове поле'),
   email: Yup.string()
+    .trim()
     .email('Некоректний email')
     .max(64, 'Занадто довгий email')
     .required('Обов’язкове поле'),
