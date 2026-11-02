@@ -21,6 +21,7 @@
   line-height: 1.1;
   letter-spacing: -0.01em;
   color: var(--color-scheme-1-text);
+  overflow-wrap: anywhere;
 
   @media only screen and (min-width: 768px) {
     font-size: 48px;
@@ -134,6 +135,8 @@
   line-height: 1.5;
   color: var(--color-scheme-1-text);
   white-space: pre-line;
+  overflow-wrap: anywhere;
+  min-width: 0;
   @media only screen and (min-width: 1440px) {
     flex: 1;
     max-width: 865px;
