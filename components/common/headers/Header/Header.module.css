@@ -32,6 +32,7 @@
   margin: 0 auto;
 
   background: var(--color-royal-blue-lightest);
+  z-index: 10;
 
   @media (min-width: 375px) {
     max-width: 767px;
@@ -103,7 +104,8 @@
   width: 100%;
   padding: 16px 20px;
 
-  background: inherit;
+  /* background: inherit; */
+  /* background: var(--color-royal-blue-lightest); */
 
   transform: translateY(100%);
 
@@ -131,8 +133,12 @@
 
 .authControls {
   display: flex;
+  flex-direction: column;
   gap: 32px;
-  align-items: center;
+  width: 100%;
+  @media (min-width: 1440px) {
+    flex-direction: row;
+  }
 }
 
 .storyPrivateBtn {
