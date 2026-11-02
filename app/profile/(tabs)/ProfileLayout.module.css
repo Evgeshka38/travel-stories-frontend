@@ -23,3 +23,52 @@
     padding: 64px;
   }
 }
+
+.tabsRow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+}
+
+.editLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  padding: 6px 16px;
+  border-radius: 8px;
+  background-color: var(--color-royal-blue);
+  border: 1px solid var(--opacity-transparent);
+  color: var(--color-white);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background-color 200ms,
+    border-color 200ms,
+    color 200ms;
+}
+
+.editLink:hover,
+.editLink:focus-visible {
+  background-color: var(--color-royal-blue-lighter);
+  border-color: var(--color-royal-blue);
+  color: var(--color-neutral-darker);
+}
+
+.editLink:active {
+  background-color: var(--color-royal-blue-light);
+  border-color: var(--color-royal-blue);
+  color: var(--color-scheme-1-text);
+}
+
+@media (min-width: 768px) {
+  .tabsRow {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
