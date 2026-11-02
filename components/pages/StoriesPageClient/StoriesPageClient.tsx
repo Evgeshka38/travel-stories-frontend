@@ -1,21 +1,42 @@
 'use client';
 
-import { useState } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import CategoriesList from '@/components/common/CategoriesList/CategoriesList';
 import TravellersStories from '@/components/common/TravellersStories/TravellersStories';
 import LoadMoreButton from '@/components/common/LoadMoreButton/LoadMoreButton';
 import MessageNoStories from '@/components/common/MessageNoStories/MessageNoStories';
+import Loader from '@/components/common/Loader/Loader';
 import { getStories } from '@/lib/api/clientApi';
 
 import css from './StoriesPageClient.module.css';
-import Loader from '@/components/common/Loader/Loader';
 
 const PER_PAGE = 9;
 
 export default function StoriesPageClient() {
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const selectedCategory = searchParams.get('category');
+
+  const handleCategorySelect = (categoryId: string | null) => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    if (categoryId) {
+      params.set('category', categoryId);
+    } else {
+      params.delete('category');
+    }
+
+    const queryString = params.toString();
+
+    router.replace(
+      queryString ? `${pathname}?${queryString}` : pathname,
+      { scroll: false },
+    );
+  };
 
   const {
     data,
@@ -42,7 +63,7 @@ export default function StoriesPageClient() {
 
         <CategoriesList
           selectedCategory={selectedCategory}
-          onSelect={setSelectedCategory}
+          onSelect={handleCategorySelect}
         />
 
         {isLoading && (
@@ -58,7 +79,7 @@ export default function StoriesPageClient() {
         {!isLoading && !isError && stories.length === 0 && (
           <MessageNoStories
             text="Історій поки немає. Станьте першим, хто поділиться своєю!"
-            buttonText="Назад до історій"
+            buttonText="Створити історію"
             href="/stories/create"
           />
         )}
