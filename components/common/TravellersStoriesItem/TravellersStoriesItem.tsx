@@ -1,14 +1,22 @@
 import Image from 'next/image';
-import css from './TravellersStoriesItem.module.css';
 import Link from 'next/link';
 import clsx from 'clsx';
+import toast from 'react-hot-toast';
+import { useEffect, useState } from 'react';
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
+import type { QueryKey } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
+
+import css from './TravellersStoriesItem.module.css';
+
 import { formatDateFromApi } from '@/lib/util/formatUtils';
 import placeholderImage from '@/public/images/placeholderImage.webp';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
-import toast from 'react-hot-toast';
-import { useEffect, useState } from 'react';
 import AuthNavModal from '../modals/AuthNavModal/AuthNavModal';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   addStoryToFavorites,
   getUsersMe,
@@ -16,8 +24,7 @@ import {
 } from '@/lib/api/clientApi';
 import { useFavoriteStoriesStore } from '@/lib/store/favoriteStoriesIdsStore';
 import Loader from '../Loader/Loader';
-import type { QueryKey } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
+
 import { AddRemoveStoryToFormFavoritesResponse } from '@/lib/types/stories';
 
 type Props = {
@@ -45,6 +52,7 @@ function handleError(
 ) {
   if (error instanceof AxiosError) {
     const data = error.response?.data;
+
     if (data && data.message && typeof data.message === 'string') {
       toast.error(data.message);
     } else {
@@ -71,72 +79,89 @@ export default function TravellersStoriesItem({
   const favoriteStoriesIds = useFavoriteStoriesStore(
     (store) => store.favoriteStoriesIds,
   );
+
   const setFavoriteStoriesIds = useFavoriteStoriesStore(
     (store) => store.setFavoriteStoriesIds,
   );
 
   const isSaved = favoriteStoriesIds.includes(id);
+
   const saveAriaText = isSaved
     ? 'Видалити із збережених історії'
     : 'Додати в збережені історії';
 
   const { data: currentUser } = useCurrentUser();
-  const [isAuthNavModalShown, setAuthNavModalShown] = useState<boolean>(false);
+
+  const [isAuthNavModalShown, setAuthNavModalShown] =
+    useState<boolean>(false);
 
   const userMeQuery = useQuery({
     queryKey: ['userMe'],
     queryFn: () => getUsersMe(),
+    enabled: !!currentUser,
     retry: 0,
   });
+
   useEffect(() => {
-    // useQuery has no onSuccess so im doing a work around
     const ids = userMeQuery.data?.data?.favorites;
+
     if (ids) {
-      // todo: somehow modify the data inside queryKey directly and remove useFavoriteStoriesStore
       setFavoriteStoriesIds(ids);
     }
-  }, [userMeQuery, setFavoriteStoriesIds]);
+  }, [userMeQuery.data, setFavoriteStoriesIds]);
 
   const saveMutation = useMutation({
     mutationFn: () => addStoryToFavorites(id),
+
     onSuccess: async (data) => {
-      // docs: https://tanstack.com/query/latest/docs/framework/react/guides/mutations#mutation-side-effects
       if (data.data) {
         setFavoriteStoriesIds(data.data.user.favorites);
       }
 
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: queryKey,
+          queryKey,
         }),
+
         queryClient.invalidateQueries({
           queryKey: ['userMe'],
         }),
       ]);
     },
-    onError: (error: AxiosError<AddRemoveStoryToFormFavoritesResponse>) => {
+
+    onError: (
+      error: AxiosError<AddRemoveStoryToFormFavoritesResponse>,
+    ) => {
       handleError(error, 'Не вдалося зберегти історію');
     },
   });
 
   const removeMutation = useMutation({
     mutationFn: () => removeStoryFromFavorites(id),
+
     onSuccess: async (data) => {
-      // docs: https://tanstack.com/query/latest/docs/framework/react/guides/mutations#mutation-side-effects
       if (data.data) {
         setFavoriteStoriesIds(data.data.user.favorites);
       }
+
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: queryKey,
+          queryKey,
         }),
+
         queryClient.invalidateQueries({
           queryKey: ['userMe'],
         }),
       ]);
     },
-    onError: (error: AxiosError<AddRemoveStoryToFormFavoritesResponse>) => {
-      handleError(error, 'Не вдалося видалити історію зі збережених');
+
+    onError: (
+      error: AxiosError<AddRemoveStoryToFormFavoritesResponse>,
+    ) => {
+      handleError(
+        error,
+        'Не вдалося видалити історію зі збережених',
+      );
     },
   });
 
@@ -154,6 +179,11 @@ export default function TravellersStoriesItem({
     saveMutation.mutate();
   }
 
+  const isActionPending =
+    saveMutation.isPending ||
+    removeMutation.isPending ||
+    (!!currentUser && userMeQuery.isPending);
+
   return (
     <>
       <article className={css.container}>
@@ -164,12 +194,16 @@ export default function TravellersStoriesItem({
           width={335}
           height={223}
         />
+
         <div className={css.infoContainer}>
           <header className={css.mainText}>
             <p className={css.category}>{categoryName}</p>
+
             <h3 className={css.title}>{title}</h3>
+
             <p className={css.description}>{article}</p>
           </header>
+
           <footer className={css.details}>
             <Image
               className={css.authorImage}
@@ -178,35 +212,54 @@ export default function TravellersStoriesItem({
               width={48}
               height={48}
             />
+
             <div className={css.detailsRight}>
-              <span className={css.authorName}>{ownerName}</span>
+              <span className={css.authorName}>
+                {ownerName}
+              </span>
+
               <div className={css.detailsLine}>
-                <time className={css.date} dateTime={date}>
+                <time
+                  className={css.date}
+                  dateTime={date}
+                >
                   {formatDateFromApi(date)}
                 </time>
-                <span className={css.decorationDot} aria-hidden="true" />
+
+                <span
+                  className={css.decorationDot}
+                  aria-hidden="true"
+                />
+
                 <span className={css.favoriteWrapper}>
-                  <span className={css.favoriteCount}>{favoriteCount}</span>
+                  <span className={css.favoriteCount}>
+                    {favoriteCount}
+                  </span>
+
                   <svg
                     width="16"
                     height="16"
                     aria-hidden="true"
                     focusable="false"
                   >
-                    <use href={'/sprite.svg#icon-bookmark'} />
+                    <use href="/sprite.svg#icon-bookmark" />
                   </svg>
                 </span>
               </div>
             </div>
           </footer>
+
           <div className={css.actions}>
             <Link
-              href={'/stories/' + id}
-              className={clsx(css.button, css.buttonWide)}
+              href={`/stories/${id}`}
+              className={clsx(
+                css.button,
+                css.buttonWide,
+              )}
             >
               Переглянути статтю
             </Link>
-            {/* todo: use universal button */}
+
             {variant === 'save' && (
               <button
                 className={clsx(
@@ -215,19 +268,13 @@ export default function TravellersStoriesItem({
                   isSaved && css.buttonSaved,
                 )}
                 type="button"
-                disabled={
-                  saveMutation.isPending ||
-                  removeMutation.isPending ||
-                  userMeQuery.isPending
-                }
+                disabled={isActionPending}
                 title={saveAriaText}
                 aria-label={saveAriaText}
                 name={saveAriaText}
-                onClick={() => handleButtonSquareIconClick()}
+                onClick={handleButtonSquareIconClick}
               >
-                {saveMutation.isPending ||
-                removeMutation.isPending ||
-                userMeQuery.isPending ? (
+                {isActionPending ? (
                   <Loader width={22} height={22} />
                 ) : (
                   <svg
@@ -237,15 +284,19 @@ export default function TravellersStoriesItem({
                     aria-hidden="true"
                     focusable="false"
                   >
-                    <use href={'/sprite.svg#icon-bookmark'} />
+                    <use href="/sprite.svg#icon-bookmark" />
                   </svg>
                 )}
               </button>
             )}
+
             {variant === 'edit' && (
               <Link
                 href={`/stories/${id}/edit`}
-                className={clsx(css.button, css.buttonSquare)}
+                className={clsx(
+                  css.button,
+                  css.buttonSquare,
+                )}
                 aria-label="Редагувати історію"
               >
                 <svg
@@ -255,15 +306,18 @@ export default function TravellersStoriesItem({
                   aria-hidden="true"
                   focusable="false"
                 >
-                  <use href={'/sprite.svg#icon-edit'} />
+                  <use href="/sprite.svg#icon-edit" />
                 </svg>
               </Link>
             )}
           </div>
         </div>
       </article>
+
       {isAuthNavModalShown && (
-        <AuthNavModal onClose={() => setAuthNavModalShown(false)} />
+        <AuthNavModal
+          onClose={() => setAuthNavModalShown(false)}
+        />
       )}
     </>
   );
