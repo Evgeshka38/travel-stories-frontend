@@ -37,6 +37,7 @@ type Props = {
 
   ownerAvatarUrl: string;
   ownerName: string;
+  ownerId: string;
 
   date: string;
   favoriteCount: number;
@@ -69,6 +70,7 @@ export default function TravellersStoriesItem({
   article,
   ownerAvatarUrl,
   ownerName,
+  ownerId,
   date,
   favoriteCount,
   variant,

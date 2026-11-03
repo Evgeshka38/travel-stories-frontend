@@ -32,6 +32,7 @@ export default function PopularStories() {
                 article={story.article}
                 ownerAvatarUrl={story.ownerId.avatarUrl}
                 ownerName={story.ownerId.name}
+                ownerId={story.ownerId._id}
                 date={story.date}
                 favoriteCount={story.favoriteCount}
                 variant="save"
