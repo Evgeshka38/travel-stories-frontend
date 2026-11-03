@@ -34,6 +34,7 @@ export default function TravellersStories({
             article={story.article}
             ownerAvatarUrl={story.ownerId?.avatarUrl ?? traveller?.avatarUrl ?? ''}
             ownerName={story.ownerId?.name ?? traveller?.name ?? 'Невідомий автор'}
+            ownerId={story.ownerId?._id}
             date={story.date}
             favoriteCount={story.favoriteCount}
             variant={variant}
