@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import css from './AuthNavModal.module.css';
@@ -9,13 +9,52 @@ interface AuthNavModalProps {
   onClose: () => void;
 }
 
+const FOCUSABLE_ELEMENTS =
+  'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
 export default function AuthNavModal({ onClose }: AuthNavModalProps) {
+  const modalRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
+    const previouslyFocusedElement = document.activeElement as HTMLElement | null;
+
+    const getFocusableElements = () =>
+      Array.from(
+        modalRef.current?.querySelectorAll<HTMLElement>(FOCUSABLE_ELEMENTS) ?? [],
+      );
+
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         onClose();
+        return;
+      }
+
+      if (event.key !== 'Tab') return;
+
+      const focusableElements = getFocusableElements();
+
+      if (focusableElements.length === 0) {
+        event.preventDefault();
+        return;
+      }
+
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+
+      if (event.shiftKey && document.activeElement === firstElement) {
+        event.preventDefault();
+        lastElement.focus();
+        return;
+      }
+
+      if (!event.shiftKey && document.activeElement === lastElement) {
+        event.preventDefault();
+        firstElement.focus();
       }
     };
+
+    const focusableElements = getFocusableElements();
+    focusableElements[0]?.focus();
 
     document.addEventListener('keydown', handleKeyDown);
     document.body.style.overflow = 'hidden';
@@ -23,6 +62,7 @@ export default function AuthNavModal({ onClose }: AuthNavModalProps) {
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
       document.body.style.overflow = '';
+      previouslyFocusedElement?.focus();
     };
   }, [onClose]);
 
@@ -43,7 +83,7 @@ export default function AuthNavModal({ onClose }: AuthNavModalProps) {
       aria-labelledby="auth-nav-title"
       aria-describedby="auth-nav-text"
     >
-      <div className={css.modal}>
+      <div ref={modalRef} className={css.modal}>
         <button
           type="button"
           className={css.closeButton}

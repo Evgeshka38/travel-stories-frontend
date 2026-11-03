@@ -1,4 +1,5 @@
 .container {
+  width: 100%;
   max-width: 335px;
   border-radius: 16px;
   overflow: hidden;
@@ -15,13 +16,16 @@
 }
 
 .image {
-  width: 335px;
-  height: 223px;
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 335 / 223;
   object-fit: cover;
 
   @media (min-width: 768px) {
     width: 340px;
     height: 226px;
+    aspect-ratio: auto;
   }
 
   @media (min-width: 1440px) {

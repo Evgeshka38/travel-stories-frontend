@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
@@ -12,14 +13,44 @@ import { getStories } from '@/lib/api/clientApi';
 
 import css from './StoriesPageClient.module.css';
 
-const PER_PAGE = 9;
+const MOBILE_PER_PAGE = 9;
+const TABLET_PER_PAGE = 8;
+const DESKTOP_PER_PAGE = 9;
+
+function getStoriesPerPage() {
+  if (typeof window === 'undefined') {
+    return DESKTOP_PER_PAGE;
+  }
+
+  if (window.innerWidth >= 768 && window.innerWidth < 1440) {
+    return TABLET_PER_PAGE;
+  }
+
+  if (window.innerWidth >= 1440) {
+    return DESKTOP_PER_PAGE;
+  }
+
+  return MOBILE_PER_PAGE;
+}
 
 export default function StoriesPageClient() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const [perPage, setPerPage] = useState(DESKTOP_PER_PAGE);
 
   const selectedCategory = searchParams.get('category');
+
+  useEffect(() => {
+    const updatePerPage = () => {
+      setPerPage(getStoriesPerPage());
+    };
+
+    updatePerPage();
+    window.addEventListener('resize', updatePerPage);
+
+    return () => window.removeEventListener('resize', updatePerPage);
+  }, []);
 
   const handleCategorySelect = (categoryId: string | null) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -46,9 +77,9 @@ export default function StoriesPageClient() {
     fetchNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery({
-    queryKey: ['stories', selectedCategory],
+    queryKey: ['stories', selectedCategory, perPage],
     queryFn: ({ pageParam }) =>
-      getStories(pageParam, PER_PAGE, selectedCategory),
+      getStories(pageParam, perPage, selectedCategory),
     initialPageParam: 1,
     getNextPageParam: (lastPage) =>
       lastPage.data.hasNextPage ? lastPage.data.page + 1 : undefined,
@@ -88,7 +119,7 @@ export default function StoriesPageClient() {
           <TravellersStories
             stories={stories}
             variant="save"
-            queryKey={['stories', selectedCategory]}
+            queryKey={['stories', selectedCategory, perPage]}
           />
         )}
 
