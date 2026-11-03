@@ -32,6 +32,7 @@ export default function TravellersPageClient() {
     hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
+    isFetchNextPageError,
   } = useInfiniteQuery({
     queryKey: ['travellers', initialLimit],
     queryFn: ({ pageParam }) => {
@@ -73,6 +74,12 @@ export default function TravellersPageClient() {
             >
               {isFetchingNextPage ? 'Завантаження...' : 'Показати ще'}
             </button>
+          )}
+
+          {isFetchNextPageError && (
+            <p role="alert">
+              Не вдалося завантажити ще мандрівників. Спробуйте ще раз.
+            </p>
           )}
         </>
       )}
