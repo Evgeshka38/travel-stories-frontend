@@ -53,3 +53,11 @@
     display: none;
   }
 }
+
+.popularStoriesListOnStoryIdPage {
+  .popularStoriesListItem:nth-child(n + 3) {
+    @media (max-width: 767px) {
+      display: none;
+    }
+  }
+}

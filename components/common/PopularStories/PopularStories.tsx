@@ -1,10 +1,18 @@
+'use client';
+
 import TravellersStoriesItem from '../TravellersStoriesItem/TravellersStoriesItem';
 import css from './PopularStories.module.css';
 import { useQuery } from '@tanstack/react-query';
 import { getPopularStories } from '@/lib/api/clientApi';
 import Loader from '../Loader/Loader';
+import { usePathname } from 'next/navigation';
+import clsx from 'clsx';
 
 export default function PopularStories() {
+  const pathname = usePathname();
+  const storyIdPageRegex = /^\/stories\/[a-f0-9]{24}$/;
+  const isStoryIdPage = storyIdPageRegex.test(pathname);
+
   const { data: popularStoriesResponse, isLoading } = useQuery({
     queryKey: ['popularStories', 1, 4],
     queryFn: () => getPopularStories(1, 4),
@@ -20,7 +28,12 @@ export default function PopularStories() {
         </div>
       )}
 
-      <ul className={css.popularStoriesList}>
+      <ul
+        className={clsx(
+          css.popularStoriesList,
+          isStoryIdPage && css.popularStoriesListOnStoryIdPage,
+        )}
+      >
         {popularStoriesResponse?.data.stories &&
           popularStoriesResponse.data.stories.map((story) => (
             <li key={story._id} className={css.popularStoriesListItem}>
