@@ -228,7 +228,7 @@
   }
 }
 
-.button {
+.button:not(.button:disabled) {
   &:hover,
   &:focus {
     background-color: var(--color-royal-blue);
