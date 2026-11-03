@@ -62,6 +62,14 @@ function handleError(
   }
 }
 
+function generateSaveAriaText(isSaved: boolean, isOwnStory: boolean) {
+  if (isOwnStory && !isSaved) return 'Не можна зберігати власні строї';
+  if (isSaved) return 'Видалити із збережених історії';
+  if (!isSaved) return 'Додати в збережені історії';
+
+  return 'Додати в збережені історії';
+}
+
 export default function TravellersStoriesItem({
   id,
   imgUrl,
@@ -87,10 +95,6 @@ export default function TravellersStoriesItem({
   );
 
   const isSaved = favoriteStoriesIds.includes(id);
-
-  const saveAriaText = isSaved
-    ? 'Видалити із збережених історії'
-    : 'Додати в збережені історії';
 
   const { data: currentUser } = useCurrentUser();
 
@@ -181,6 +185,9 @@ export default function TravellersStoriesItem({
     saveMutation.mutate();
   }
 
+  const isOwnStory = ownerId === userMeQuery.data?.data?._id;
+  const saveAriaText = generateSaveAriaText(isSaved, isOwnStory);
+
   const isActionPending =
     saveMutation.isPending ||
     removeMutation.isPending ||
@@ -270,7 +277,7 @@ export default function TravellersStoriesItem({
                   isSaved && css.buttonSaved,
                 )}
                 type="button"
-                disabled={isActionPending}
+                disabled={isActionPending || isOwnStory}
                 title={saveAriaText}
                 aria-label={saveAriaText}
                 name={saveAriaText}
