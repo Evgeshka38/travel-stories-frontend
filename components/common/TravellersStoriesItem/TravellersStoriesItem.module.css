@@ -1,5 +1,8 @@
 .container {
+  width: 100%;
   max-width: 335px;
+  min-width: 0;
+  box-sizing: border-box;
   border-radius: 16px;
   overflow: hidden;
 
@@ -15,22 +18,27 @@
 }
 
 .image {
-  width: 335px;
-  height: 223px;
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: 335 / 223;
   object-fit: cover;
 
   @media (min-width: 768px) {
-    width: 340px;
     height: 226px;
+    aspect-ratio: auto;
   }
 
   @media (min-width: 1440px) {
-    width: 421px;
     height: 280px;
   }
 }
 
 .infoContainer {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   padding: 24px;
 
   display: flex;
@@ -60,7 +68,6 @@
   font-weight: 700;
   font-size: 18px;
 
-  /* todo: note: limit lines not well supported but its how it is done in the design */
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -75,13 +82,10 @@
 }
 
 .description {
-  /* todo: note: limit lines fallback */
   height: 72px;
   line-height: 150%;
   overflow: hidden;
-  /* `text-overflow: ellipsis;` works if  `white-space: wrap;` */
 
-  /* todo: note: limit lines not well supported but its how it is done in the design */
   display: -webkit-box;
   -webkit-box-orient: vertical;
   line-clamp: 3;
@@ -148,7 +152,6 @@
 }
 
 .decorationDot::after {
-  /* todo? set content to none and use bg color and border radius */
   content: '•';
   color: var(--color-scheme-1-text);
 

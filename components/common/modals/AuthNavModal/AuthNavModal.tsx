@@ -1,19 +1,89 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import Link from 'next/link';
+
 import css from './AuthNavModal.module.css';
 
 interface AuthNavModalProps {
   onClose: () => void;
 }
 
+const FOCUSABLE_ELEMENTS_SELECTOR = [
+  'a[href]',
+  'button:not([disabled])',
+  'input:not([disabled])',
+  'select:not([disabled])',
+  'textarea:not([disabled])',
+  '[tabindex]:not([tabindex="-1"])',
+].join(',');
+
 export default function AuthNavModal({ onClose }: AuthNavModalProps) {
+  const modalRef = useRef<HTMLDivElement>(null);
+  const previouslyFocusedElementRef = useRef<HTMLElement | null>(null);
+
   useEffect(() => {
+    previouslyFocusedElementRef.current =
+      document.activeElement instanceof HTMLElement
+        ? document.activeElement
+        : null;
+
+    const modal = modalRef.current;
+
+    const getFocusableElements = () => {
+      if (!modal) return [];
+
+      return Array.from(
+        modal.querySelectorAll<HTMLElement>(FOCUSABLE_ELEMENTS_SELECTOR),
+      ).filter((element) => {
+        return (
+          !element.hasAttribute('disabled') &&
+          element.getAttribute('aria-hidden') !== 'true'
+        );
+      });
+    };
+
+    const focusableElements = getFocusableElements();
+
+    focusableElements[0]?.focus();
+
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         onClose();
+        return;
+      }
+
+      if (event.key !== 'Tab') {
+        return;
+      }
+
+      const currentFocusableElements = getFocusableElements();
+
+      if (currentFocusableElements.length === 0) {
+        event.preventDefault();
+        return;
+      }
+
+      const firstElement = currentFocusableElements[0];
+      const lastElement =
+        currentFocusableElements[currentFocusableElements.length - 1];
+
+      if (event.shiftKey) {
+        if (
+          document.activeElement === firstElement ||
+          document.activeElement === modal
+        ) {
+          event.preventDefault();
+          lastElement.focus();
+        }
+
+        return;
+      }
+
+      if (document.activeElement === lastElement) {
+        event.preventDefault();
+        firstElement.focus();
       }
     };
 
@@ -23,6 +93,8 @@ export default function AuthNavModal({ onClose }: AuthNavModalProps) {
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
       document.body.style.overflow = '';
+
+      previouslyFocusedElementRef.current?.focus();
     };
   }, [onClose]);
 
@@ -32,7 +104,9 @@ export default function AuthNavModal({ onClose }: AuthNavModalProps) {
     }
   };
 
-  if (typeof document === 'undefined') return null;
+  if (typeof document === 'undefined') {
+    return null;
+  }
 
   return createPortal(
     <div
@@ -43,7 +117,11 @@ export default function AuthNavModal({ onClose }: AuthNavModalProps) {
       aria-labelledby="auth-nav-title"
       aria-describedby="auth-nav-text"
     >
-      <div className={css.modal}>
+      <div
+        ref={modalRef}
+        className={css.modal}
+        tabIndex={-1}
+      >
         <button
           type="button"
           className={css.closeButton}
@@ -69,7 +147,10 @@ export default function AuthNavModal({ onClose }: AuthNavModalProps) {
             Увійти
           </Link>
 
-          <Link href="/auth/register" className={`${css.link} ${css.register}`}>
+          <Link
+            href="/auth/register"
+            className={`${css.link} ${css.register}`}
+          >
             Зареєструватись
           </Link>
         </div>

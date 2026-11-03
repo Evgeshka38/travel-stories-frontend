@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
@@ -12,7 +13,21 @@ import { getStories } from '@/lib/api/clientApi';
 
 import css from './StoriesPageClient.module.css';
 
-const PER_PAGE = 9;
+const MOBILE_PER_PAGE = 9;
+const TABLET_PER_PAGE = 8;
+const DESKTOP_PER_PAGE = 9;
+
+function getPerPage(width: number) {
+  if (width >= 1440) {
+    return DESKTOP_PER_PAGE;
+  }
+
+  if (width >= 768) {
+    return TABLET_PER_PAGE;
+  }
+
+  return MOBILE_PER_PAGE;
+}
 
 export default function StoriesPageClient() {
   const router = useRouter();
@@ -20,6 +35,22 @@ export default function StoriesPageClient() {
   const searchParams = useSearchParams();
 
   const selectedCategory = searchParams.get('category');
+
+  const [perPage, setPerPage] = useState<number | null>(null);
+
+  useEffect(() => {
+    const updatePerPage = () => {
+      setPerPage(getPerPage(window.innerWidth));
+    };
+
+    updatePerPage();
+
+    window.addEventListener('resize', updatePerPage);
+
+    return () => {
+      window.removeEventListener('resize', updatePerPage);
+    };
+  }, []);
 
   const handleCategorySelect = (categoryId: string | null) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -46,15 +77,18 @@ export default function StoriesPageClient() {
     fetchNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery({
-    queryKey: ['stories', selectedCategory],
+    queryKey: ['stories', selectedCategory, perPage],
     queryFn: ({ pageParam }) =>
-      getStories(pageParam, PER_PAGE, selectedCategory),
+      getStories(pageParam, perPage ?? MOBILE_PER_PAGE, selectedCategory),
     initialPageParam: 1,
+    enabled: perPage !== null,
     getNextPageParam: (lastPage) =>
       lastPage.data.hasNextPage ? lastPage.data.page + 1 : undefined,
   });
 
   const stories = data?.pages.flatMap((page) => page.data.stories) ?? [];
+
+  const isInitialLoading = perPage === null || isLoading;
 
   return (
     <section className={css.section}>
@@ -66,17 +100,17 @@ export default function StoriesPageClient() {
           onSelect={handleCategorySelect}
         />
 
-        {isLoading && (
+        {isInitialLoading && (
           <div className={css.loader}>
             <Loader />
           </div>
         )}
 
-        {isError && (
+        {!isInitialLoading && isError && (
           <p className={css.message}>Не вдалося завантажити історії.</p>
         )}
 
-        {!isLoading && !isError && stories.length === 0 && (
+        {!isInitialLoading && !isError && stories.length === 0 && (
           <MessageNoStories
             text="Історій поки немає. Станьте першим, хто поділиться своєю!"
             buttonText="Створити історію"
@@ -84,11 +118,11 @@ export default function StoriesPageClient() {
           />
         )}
 
-        {stories.length > 0 && (
+        {stories.length > 0 && perPage !== null && (
           <TravellersStories
             stories={stories}
             variant="save"
-            queryKey={['stories', selectedCategory]}
+            queryKey={['stories', selectedCategory, perPage]}
           />
         )}
 

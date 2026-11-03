@@ -2,36 +2,50 @@
   position: fixed;
   inset: 0;
   z-index: 1000;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   padding: 16px;
+
   background-color: rgba(0, 0, 0, 0.25);
 }
 
 .modal {
   position: relative;
+
   width: 100%;
   max-width: 335px;
+
   padding: 64px 20px 20px;
   border-radius: 24px;
+
   background-color: var(--color-scheme-2-background);
   text-align: center;
+
+  outline: none;
 }
 
 .closeButton {
   position: absolute;
   top: 20px;
   right: 20px;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   width: 24px;
   height: 24px;
+
   padding: 0;
   border: 0;
+
   background: transparent;
   color: #000;
+
+  cursor: pointer;
 }
 
 .closeButton:hover,
@@ -41,6 +55,7 @@
 
 .title {
   margin-bottom: 16px;
+
   font-family: var(--font-inter), sans-serif;
   font-size: 26px;
   font-weight: 700;
@@ -50,6 +65,7 @@
 
 .text {
   margin-bottom: 32px;
+
   font-size: 16px;
   line-height: 1.5;
 }
@@ -64,11 +80,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
+
   width: 100%;
   height: 48px;
+
   padding: 6px 12px;
   border: 1px solid;
   border-radius: 8px;
+
   font-size: 18px;
   font-weight: 500;
   line-height: 1.5;
@@ -121,7 +140,9 @@
   .modal {
     max-width: 768px;
     min-height: 400px;
+
     padding: 64px;
+
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -131,6 +152,7 @@
     max-width: 560px;
     margin-right: auto;
     margin-left: auto;
+
     font-size: 48px;
   }
 

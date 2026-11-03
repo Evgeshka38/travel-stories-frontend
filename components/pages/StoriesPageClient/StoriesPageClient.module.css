@@ -19,12 +19,12 @@
   font-size: 28px;
   line-height: 1.2;
   letter-spacing: -0.01em;
-  text-align: center;
+  text-align: left;
   color: var(--color-scheme-1-text);
 }
 
 .loader {
-  margin: 0px auto;
+  margin: 0 auto;
 }
 
 @media (min-width: 768px) {
@@ -39,6 +39,7 @@
 
   .title {
     font-size: 44px;
+    text-align: center;
   }
 }
 
