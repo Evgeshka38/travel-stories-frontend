@@ -147,3 +147,9 @@ h6,
   font-family: var(--font-inter), sans-serif;
   font-weight: 700;
 }
+
+textarea {
+  background-color: #fff;
+  -webkit-appearance: none;
+  appearance: none;
+}
